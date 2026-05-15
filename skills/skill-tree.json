@@ -1,0 +1,673 @@
+{
+  "version": "1.0",
+  "total_categories": 23,
+  "total_skills": 88,
+  "categories": {
+    "": {
+      "name": "",
+      "count": 1,
+      "skills": [
+        {
+          "id": "/dogfood",
+          "name": "dogfood",
+          "description": "Exploratory QA of web apps: find bugs, evidence, reports.",
+          "type": "general"
+        }
+      ]
+    },
+    "apple": {
+      "name": "apple",
+      "count": 4,
+      "skills": [
+        {
+          "id": "apple/apple-notes",
+          "name": "apple-notes",
+          "description": "Manage Apple Notes via memo CLI: create, search, edit.",
+          "type": "general"
+        },
+        {
+          "id": "apple/apple-reminders",
+          "name": "apple-reminders",
+          "description": "Apple Reminders via remindctl: add, list, complete.",
+          "type": "general"
+        },
+        {
+          "id": "apple/findmy",
+          "name": "findmy",
+          "description": "Track Apple devices/AirTags via FindMy.app on macOS.",
+          "type": "general"
+        },
+        {
+          "id": "apple/imessage",
+          "name": "imessage",
+          "description": "Send and receive iMessages/SMS via the imsg CLI on macOS.",
+          "type": "general"
+        }
+      ]
+    },
+    "autonomous-ai-agents": {
+      "name": "autonomous-ai-agents",
+      "count": 4,
+      "skills": [
+        {
+          "id": "autonomous-ai-agents/bmb-encover",
+          "name": "bmb-encover",
+          "description": "Configure, extend, or contribute to BlackMagicBox Encover Agent.",
+          "type": "general"
+        },
+        {
+          "id": "autonomous-ai-agents/claude-code",
+          "name": "claude-code",
+          "description": "Delegate coding to Claude Code CLI (features, PRs).",
+          "type": "general"
+        },
+        {
+          "id": "autonomous-ai-agents/codex",
+          "name": "codex",
+          "description": "Delegate coding to OpenAI Codex CLI (features, PRs).",
+          "type": "general"
+        },
+        {
+          "id": "autonomous-ai-agents/opencode",
+          "name": "opencode",
+          "description": "Delegate coding to OpenCode CLI (features, PR review).",
+          "type": "general"
+        }
+      ]
+    },
+    "creative": {
+      "name": "creative",
+      "count": 19,
+      "skills": [
+        {
+          "id": "creative/architecture-diagram",
+          "name": "architecture-diagram",
+          "description": "Dark-themed SVG architecture/cloud/infra diagrams as HTML.",
+          "type": "general"
+        },
+        {
+          "id": "creative/ascii-art",
+          "name": "ascii-art",
+          "description": "ASCII art: pyfiglet, cowsay, boxes, image-to-ascii.",
+          "type": "general"
+        },
+        {
+          "id": "creative/ascii-video",
+          "name": "ascii-video",
+          "description": "ASCII video: convert video/audio to colored ASCII MP4/GIF.",
+          "type": "general"
+        },
+        {
+          "id": "creative/baoyu-comic",
+          "name": "baoyu-comic",
+          "description": "Knowledge comics (知识漫画): educational, biography, tutorial.",
+          "type": "general"
+        },
+        {
+          "id": "creative/baoyu-infographic",
+          "name": "baoyu-infographic",
+          "description": "Infographics: 21 layouts x 21 styles (信息图, 可视化).",
+          "type": "general"
+        },
+        {
+          "id": "creative/claude-design",
+          "name": "claude-design",
+          "description": "Design one-off HTML artifacts (landing, deck, prototype).",
+          "type": "general"
+        },
+        {
+          "id": "creative/comfyui",
+          "name": "comfyui",
+          "description": "Generate images, video, and audio with ComfyUI — install, launch, manage nodes/models, run workflows",
+          "type": "general"
+        },
+        {
+          "id": "creative/design-md",
+          "name": "design-md",
+          "description": "Author/validate/export Google's DESIGN.md token spec files.",
+          "type": "general"
+        },
+        {
+          "id": "creative/excalidraw",
+          "name": "excalidraw",
+          "description": "Hand-drawn Excalidraw JSON diagrams (arch, flow, seq).",
+          "type": "general"
+        },
+        {
+          "id": "creative/humanizer",
+          "name": "humanizer",
+          "description": "Humanize text: strip AI-isms and add real voice.",
+          "type": "general"
+        },
+        {
+          "id": "creative/ideation",
+          "name": "ideation",
+          "description": "Generate project ideas via creative constraints.",
+          "type": "general"
+        },
+        {
+          "id": "creative/manim-video",
+          "name": "manim-video",
+          "description": "Manim CE animations: 3Blue1Brown math/algo videos.",
+          "type": "general"
+        },
+        {
+          "id": "creative/p5js",
+          "name": "p5js",
+          "description": "p5.js sketches: gen art, shaders, interactive, 3D.",
+          "type": "general"
+        },
+        {
+          "id": "creative/pixel-art",
+          "name": "pixel-art",
+          "description": "Pixel art w/ era palettes (NES, Game Boy, PICO-8).",
+          "type": "general"
+        },
+        {
+          "id": "creative/popular-web-designs",
+          "name": "popular-web-designs",
+          "description": "54 real design systems (Stripe, Linear, Vercel) as HTML/CSS.",
+          "type": "general"
+        },
+        {
+          "id": "creative/pretext",
+          "name": "pretext",
+          "description": "Use when building creative browser demos with @chenglou/pretext — DOM-free text layout for ASCII art",
+          "type": "general"
+        },
+        {
+          "id": "creative/sketch",
+          "name": "sketch",
+          "description": "Throwaway HTML mockups: 2-3 design variants to compare.",
+          "type": "general"
+        },
+        {
+          "id": "creative/songwriting-and-ai-music",
+          "name": "songwriting-and-ai-music",
+          "description": "Songwriting craft and Suno AI music prompts.",
+          "type": "general"
+        },
+        {
+          "id": "creative/touchdesigner-mcp",
+          "name": "touchdesigner-mcp",
+          "description": "Control a running TouchDesigner instance via twozero MCP — create operators, set parameters, wire co",
+          "type": "general"
+        }
+      ]
+    },
+    "data-science": {
+      "name": "data-science",
+      "count": 1,
+      "skills": [
+        {
+          "id": "data-science/jupyter-live-kernel",
+          "name": "jupyter-live-kernel",
+          "description": "Iterative Python via live Jupyter kernel (hamelnb).",
+          "type": "general"
+        }
+      ]
+    },
+    "devops": {
+      "name": "devops",
+      "count": 3,
+      "skills": [
+        {
+          "id": "devops/kanban-orchestrator",
+          "name": "kanban-orchestrator",
+          "description": "Decomposition playbook + specialist-roster conventions + anti-temptation rules for an orchestrator p",
+          "type": "general"
+        },
+        {
+          "id": "devops/kanban-worker",
+          "name": "kanban-worker",
+          "description": "Pitfalls, examples, and edge cases for Hermes Kanban workers. The lifecycle itself is auto-injected ",
+          "type": "general"
+        },
+        {
+          "id": "devops/webhook-subscriptions",
+          "name": "webhook-subscriptions",
+          "description": "Webhook subscriptions: event-driven agent runs.",
+          "type": "general"
+        }
+      ]
+    },
+    "email": {
+      "name": "email",
+      "count": 1,
+      "skills": [
+        {
+          "id": "email/himalaya",
+          "name": "himalaya",
+          "description": "Himalaya CLI: IMAP/SMTP email from terminal.",
+          "type": "general"
+        }
+      ]
+    },
+    "evaluation": {
+      "name": "evaluation",
+      "count": 2,
+      "skills": [
+        {
+          "id": "evaluation/evaluating-llms-harness",
+          "name": "evaluating-llms-harness",
+          "description": "lm-eval-harness: benchmark LLMs (MMLU, GSM8K, etc.).",
+          "type": "general"
+        },
+        {
+          "id": "evaluation/weights-and-biases",
+          "name": "weights-and-biases",
+          "description": "W&B: log ML experiments, sweeps, model registry, dashboards.",
+          "type": "general"
+        }
+      ]
+    },
+    "gaming": {
+      "name": "gaming",
+      "count": 2,
+      "skills": [
+        {
+          "id": "gaming/minecraft-modpack-server",
+          "name": "minecraft-modpack-server",
+          "description": "Host modded Minecraft servers (CurseForge, Modrinth).",
+          "type": "general"
+        },
+        {
+          "id": "gaming/pokemon-player",
+          "name": "pokemon-player",
+          "description": "Play Pokemon via headless emulator + RAM reads.",
+          "type": "general"
+        }
+      ]
+    },
+    "github": {
+      "name": "github",
+      "count": 6,
+      "skills": [
+        {
+          "id": "github/codebase-inspection",
+          "name": "codebase-inspection",
+          "description": "Inspect codebases w/ pygount: LOC, languages, ratios.",
+          "type": "general"
+        },
+        {
+          "id": "github/github-auth",
+          "name": "github-auth",
+          "description": "GitHub auth setup: HTTPS tokens, SSH keys, gh CLI login.",
+          "type": "general"
+        },
+        {
+          "id": "github/github-code-review",
+          "name": "github-code-review",
+          "description": "Review PRs: diffs, inline comments via gh or REST.",
+          "type": "general"
+        },
+        {
+          "id": "github/github-issues",
+          "name": "github-issues",
+          "description": "Create, triage, label, assign GitHub issues via gh or REST.",
+          "type": "general"
+        },
+        {
+          "id": "github/github-pr-workflow",
+          "name": "github-pr-workflow",
+          "description": "GitHub PR lifecycle: branch, commit, open, CI, merge.",
+          "type": "general"
+        },
+        {
+          "id": "github/github-repo-management",
+          "name": "github-repo-management",
+          "description": "Clone/create/fork repos; manage remotes, releases.",
+          "type": "general"
+        }
+      ]
+    },
+    "inference": {
+      "name": "inference",
+      "count": 4,
+      "skills": [
+        {
+          "id": "inference/llama-cpp",
+          "name": "llama-cpp",
+          "description": "llama.cpp local GGUF inference + HF Hub model discovery.",
+          "type": "general"
+        },
+        {
+          "id": "inference/obliteratus",
+          "name": "obliteratus",
+          "description": "OBLITERATUS: abliterate LLM refusals (diff-in-means).",
+          "type": "general"
+        },
+        {
+          "id": "inference/outlines",
+          "name": "outlines",
+          "description": "Outlines: structured JSON/regex/Pydantic LLM generation.",
+          "type": "general"
+        },
+        {
+          "id": "inference/serving-llms-vllm",
+          "name": "serving-llms-vllm",
+          "description": "vLLM: high-throughput LLM serving, OpenAI API, quantization.",
+          "type": "general"
+        }
+      ]
+    },
+    "mcp": {
+      "name": "mcp",
+      "count": 1,
+      "skills": [
+        {
+          "id": "mcp/native-mcp",
+          "name": "native-mcp",
+          "description": "MCP client: connect servers, register tools (stdio/HTTP).",
+          "type": "general"
+        }
+      ]
+    },
+    "media": {
+      "name": "media",
+      "count": 5,
+      "skills": [
+        {
+          "id": "media/gif-search",
+          "name": "gif-search",
+          "description": "Search/download GIFs from Tenor via curl + jq.",
+          "type": "general"
+        },
+        {
+          "id": "media/heartmula",
+          "name": "heartmula",
+          "description": "HeartMuLa: Suno-like song generation from lyrics + tags.",
+          "type": "general"
+        },
+        {
+          "id": "media/songsee",
+          "name": "songsee",
+          "description": "Audio spectrograms/features (mel, chroma, MFCC) via CLI.",
+          "type": "general"
+        },
+        {
+          "id": "media/spotify",
+          "name": "spotify",
+          "description": "Spotify: play, search, queue, manage playlists and devices.",
+          "type": "general"
+        },
+        {
+          "id": "media/youtube-content",
+          "name": "youtube-content",
+          "description": "YouTube transcripts to summaries, threads, blogs.",
+          "type": "general"
+        }
+      ]
+    },
+    "meta": {
+      "name": "meta",
+      "count": 1,
+      "skills": [
+        {
+          "id": "meta/bmb-skills-hub",
+          "name": "bmb-skills-hub",
+          "description": "Skills Hub agéntico para BMB Encover — index.json, skill-tree, MCP manifest, embeddings index, READM",
+          "type": "general"
+        }
+      ]
+    },
+    "mlops": {
+      "name": "mlops",
+      "count": 1,
+      "skills": [
+        {
+          "id": "mlops/huggingface-hub",
+          "name": "huggingface-hub",
+          "description": "HuggingFace hf CLI: search/download/upload models, datasets.",
+          "type": "general"
+        }
+      ]
+    },
+    "models": {
+      "name": "models",
+      "count": 2,
+      "skills": [
+        {
+          "id": "models/audiocraft-audio-generation",
+          "name": "audiocraft-audio-generation",
+          "description": "AudioCraft: MusicGen text-to-music, AudioGen text-to-sound.",
+          "type": "general"
+        },
+        {
+          "id": "models/segment-anything-model",
+          "name": "segment-anything-model",
+          "description": "SAM: zero-shot image segmentation via points, boxes, masks.",
+          "type": "general"
+        }
+      ]
+    },
+    "note-taking": {
+      "name": "note-taking",
+      "count": 1,
+      "skills": [
+        {
+          "id": "note-taking/obsidian",
+          "name": "obsidian",
+          "description": "Read, search, and create notes in the Obsidian vault.",
+          "type": "general"
+        }
+      ]
+    },
+    "productivity": {
+      "name": "productivity",
+      "count": 8,
+      "skills": [
+        {
+          "id": "productivity/airtable",
+          "name": "airtable",
+          "description": "Airtable REST API via curl. Records CRUD, filters, upserts.",
+          "type": "general"
+        },
+        {
+          "id": "productivity/google-workspace",
+          "name": "google-workspace",
+          "description": "Google OAuth2 client credentials (downloaded from Google Cloud Console)",
+          "type": "general"
+        },
+        {
+          "id": "productivity/linear",
+          "name": "linear",
+          "description": "Linear: manage issues, projects, teams via GraphQL + curl.",
+          "type": "general"
+        },
+        {
+          "id": "productivity/maps",
+          "name": "maps",
+          "description": "Geocode, POIs, routes, timezones via OpenStreetMap/OSRM.",
+          "type": "general"
+        },
+        {
+          "id": "productivity/nano-pdf",
+          "name": "nano-pdf",
+          "description": "Edit PDF text/typos/titles via nano-pdf CLI (NL prompts).",
+          "type": "general"
+        },
+        {
+          "id": "productivity/notion",
+          "name": "notion",
+          "description": "Notion API via curl: pages, databases, blocks, search.",
+          "type": "general"
+        },
+        {
+          "id": "productivity/ocr-and-documents",
+          "name": "ocr-and-documents",
+          "description": "Extract text from PDFs/scans (pymupdf, marker-pdf).",
+          "type": "general"
+        },
+        {
+          "id": "productivity/powerpoint",
+          "name": "powerpoint",
+          "description": "Create, read, edit .pptx decks, slides, notes, templates.",
+          "type": "general"
+        }
+      ]
+    },
+    "research": {
+      "name": "research",
+      "count": 6,
+      "skills": [
+        {
+          "id": "research/arxiv",
+          "name": "arxiv",
+          "description": "Search arXiv papers by keyword, author, category, or ID.",
+          "type": "general"
+        },
+        {
+          "id": "research/blogwatcher",
+          "name": "blogwatcher",
+          "description": "Monitor blogs and RSS/Atom feeds via blogwatcher-cli tool.",
+          "type": "general"
+        },
+        {
+          "id": "research/dspy",
+          "name": "dspy",
+          "description": "DSPy: declarative LM programs, auto-optimize prompts, RAG.",
+          "type": "general"
+        },
+        {
+          "id": "research/llm-wiki",
+          "name": "llm-wiki",
+          "description": "Karpathy's LLM Wiki: build/query interlinked markdown KB.",
+          "type": "general"
+        },
+        {
+          "id": "research/polymarket",
+          "name": "polymarket",
+          "description": "Query Polymarket: markets, prices, orderbooks, history.",
+          "type": "general"
+        },
+        {
+          "id": "research/research-paper-writing",
+          "name": "research-paper-writing",
+          "description": "Write ML papers for NeurIPS/ICML/ICLR: design→submit.",
+          "type": "general"
+        }
+      ]
+    },
+    "smart-home": {
+      "name": "smart-home",
+      "count": 1,
+      "skills": [
+        {
+          "id": "smart-home/openhue",
+          "name": "openhue",
+          "description": "Control Philips Hue lights, scenes, rooms via OpenHue CLI.",
+          "type": "general"
+        }
+      ]
+    },
+    "social-media": {
+      "name": "social-media",
+      "count": 1,
+      "skills": [
+        {
+          "id": "social-media/xurl",
+          "name": "xurl",
+          "description": "X/Twitter via xurl CLI: post, search, DM, media, v2 API.",
+          "type": "general"
+        }
+      ]
+    },
+    "software-development": {
+      "name": "software-development",
+      "count": 11,
+      "skills": [
+        {
+          "id": "software-development/bmb-encover-skill-authoring",
+          "name": "bmb-encover-skill-authoring",
+          "description": "Author in-repo SKILL.md: frontmatter, validator, structure.",
+          "type": "general"
+        },
+        {
+          "id": "software-development/debugging-bmb-tui-commands",
+          "name": "debugging-bmb-tui-commands",
+          "description": "Debug Hermes TUI slash commands: Python, gateway, Ink UI.",
+          "type": "general"
+        },
+        {
+          "id": "software-development/node-inspect-debugger",
+          "name": "node-inspect-debugger",
+          "description": "Debug Node.js via --inspect + Chrome DevTools Protocol CLI.",
+          "type": "general"
+        },
+        {
+          "id": "software-development/plan",
+          "name": "plan",
+          "description": "Plan mode: write markdown plan to .hermes/plans/, no exec.",
+          "type": "general"
+        },
+        {
+          "id": "software-development/python-debugpy",
+          "name": "python-debugpy",
+          "description": "Debug Python: pdb REPL + debugpy remote (DAP).",
+          "type": "general"
+        },
+        {
+          "id": "software-development/requesting-code-review",
+          "name": "requesting-code-review",
+          "description": "Pre-commit review: security scan, quality gates, auto-fix.",
+          "type": "general"
+        },
+        {
+          "id": "software-development/spike",
+          "name": "spike",
+          "description": "Throwaway experiments to validate an idea before build.",
+          "type": "general"
+        },
+        {
+          "id": "software-development/subagent-driven-development",
+          "name": "subagent-driven-development",
+          "description": "Execute plans via delegate_task subagents (2-stage review).",
+          "type": "general"
+        },
+        {
+          "id": "software-development/systematic-debugging",
+          "name": "systematic-debugging",
+          "description": "4-phase root cause debugging: understand bugs before fixing.",
+          "type": "general"
+        },
+        {
+          "id": "software-development/test-driven-development",
+          "name": "test-driven-development",
+          "description": "TDD: enforce RED-GREEN-REFACTOR, tests before code.",
+          "type": "general"
+        },
+        {
+          "id": "software-development/writing-plans",
+          "name": "writing-plans",
+          "description": "Write implementation plans: bite-sized tasks, paths, code.",
+          "type": "general"
+        }
+      ]
+    },
+    "training": {
+      "name": "training",
+      "count": 3,
+      "skills": [
+        {
+          "id": "training/axolotl",
+          "name": "axolotl",
+          "description": "Axolotl: YAML LLM fine-tuning (LoRA, DPO, GRPO).",
+          "type": "general"
+        },
+        {
+          "id": "training/fine-tuning-with-trl",
+          "name": "fine-tuning-with-trl",
+          "description": "TRL: SFT, DPO, PPO, GRPO, reward modeling for LLM RLHF.",
+          "type": "general"
+        },
+        {
+          "id": "training/unsloth",
+          "name": "unsloth",
+          "description": "Unsloth: 2-5x faster LoRA/QLoRA fine-tuning, less VRAM.",
+          "type": "general"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "name": "bmb-encover",
+  "display_name": "BlackMagicBox Encover Agent",
+  "description": "AI agent by Encover with 90+ tools, persistent memory, and multi-platform support",
+  "icon": "icon.svg",
+  "distribution": {
+    "type": "command",
+    "command": "bmb",
+    "args": ["acp"]
+  }
+}

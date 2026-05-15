@@ -1,0 +1,447 @@
+{
+  "version": "1.0",
+  "model": "text-embedding-3-small (simulado)",
+  "total_skills": 88,
+  "entries": [
+    {
+      "id": "/dogfood",
+      "text": "dogfood: Exploratory QA of web apps: find bugs, evidence, reports. [qa, testing, browser, web, dogfood]",
+      "name": "dogfood"
+    },
+    {
+      "id": "apple/apple-notes",
+      "text": "apple-notes: Manage Apple Notes via memo CLI: create, search, edit. [Notes, Apple, macOS, note-taking]",
+      "name": "apple-notes"
+    },
+    {
+      "id": "apple/apple-reminders",
+      "text": "apple-reminders: Apple Reminders via remindctl: add, list, complete. [Reminders, tasks, todo, macOS, Apple]",
+      "name": "apple-reminders"
+    },
+    {
+      "id": "apple/findmy",
+      "text": "findmy: Track Apple devices/AirTags via FindMy.app on macOS. [FindMy, AirTag, location, tracking, macOS, Apple]",
+      "name": "findmy"
+    },
+    {
+      "id": "apple/imessage",
+      "text": "imessage: Send and receive iMessages/SMS via the imsg CLI on macOS. [iMessage, SMS, messaging, macOS, Apple]",
+      "name": "imessage"
+    },
+    {
+      "id": "autonomous-ai-agents/bmb-encover",
+      "text": "bmb-encover: Configure, extend, or contribute to BlackMagicBox Encover Agent. [hermes, setup, configuration, multi-agent, spawning, cli, gateway, development]",
+      "name": "bmb-encover"
+    },
+    {
+      "id": "autonomous-ai-agents/claude-code",
+      "text": "claude-code: Delegate coding to Claude Code CLI (features, PRs). [Coding-Agent, Claude, Anthropic, Code-Review, Refactoring, PTY, Automation]",
+      "name": "claude-code"
+    },
+    {
+      "id": "autonomous-ai-agents/codex",
+      "text": "codex: Delegate coding to OpenAI Codex CLI (features, PRs). [Coding-Agent, Codex, OpenAI, Code-Review, Refactoring]",
+      "name": "codex"
+    },
+    {
+      "id": "autonomous-ai-agents/opencode",
+      "text": "opencode: Delegate coding to OpenCode CLI (features, PR review). [Coding-Agent, OpenCode, Autonomous, Refactoring, Code-Review]",
+      "name": "opencode"
+    },
+    {
+      "id": "creative/architecture-diagram",
+      "text": "architecture-diagram: Dark-themed SVG architecture/cloud/infra diagrams as HTML. [architecture, diagrams, SVG, HTML, visualization, infrastructure, cloud]",
+      "name": "architecture-diagram"
+    },
+    {
+      "id": "creative/ascii-art",
+      "text": "ascii-art: ASCII art: pyfiglet, cowsay, boxes, image-to-ascii. [ASCII, Art, Banners, Creative, Unicode, Text-Art, pyfiglet, figlet, cowsay, boxes]",
+      "name": "ascii-art"
+    },
+    {
+      "id": "creative/ascii-video",
+      "text": "ascii-video: ASCII video: convert video/audio to colored ASCII MP4/GIF. ",
+      "name": "ascii-video"
+    },
+    {
+      "id": "creative/baoyu-comic",
+      "text": "baoyu-comic: Knowledge comics (知识漫画): educational, biography, tutorial. [comic, knowledge-comic, creative, image-generation]",
+      "name": "baoyu-comic"
+    },
+    {
+      "id": "creative/baoyu-infographic",
+      "text": "baoyu-infographic: Infographics: 21 layouts x 21 styles (信息图, 可视化). [infographic, visual-summary, creative, image-generation]",
+      "name": "baoyu-infographic"
+    },
+    {
+      "id": "creative/claude-design",
+      "text": "claude-design: Design one-off HTML artifacts (landing, deck, prototype). [design, html, prototype, ux, ui, creative, artifact, deck, motion, design-system]",
+      "name": "claude-design"
+    },
+    {
+      "id": "creative/comfyui",
+      "text": "comfyui: Generate images, video, and audio with ComfyUI — install, launch, manage nodes/models, run workflows with parameter injection. Uses the official comfy-cli for lifecycle and direct REST/WebSocket API f ",
+      "name": "comfyui"
+    },
+    {
+      "id": "creative/design-md",
+      "text": "design-md: Author/validate/export Google's DESIGN.md token spec files. [design, design-system, tokens, ui, accessibility, wcag, tailwind, dtcg, google]",
+      "name": "design-md"
+    },
+    {
+      "id": "creative/excalidraw",
+      "text": "excalidraw: Hand-drawn Excalidraw JSON diagrams (arch, flow, seq). [Excalidraw, Diagrams, Flowcharts, Architecture, Visualization, JSON]",
+      "name": "excalidraw"
+    },
+    {
+      "id": "creative/humanizer",
+      "text": "humanizer: Humanize text: strip AI-isms and add real voice. [writing, editing, humanize, anti-ai-slop, voice, prose, text]",
+      "name": "humanizer"
+    },
+    {
+      "id": "creative/ideation",
+      "text": "ideation: Generate project ideas via creative constraints. [Creative, Ideation, Projects, Brainstorming, Inspiration]",
+      "name": "ideation"
+    },
+    {
+      "id": "creative/manim-video",
+      "text": "manim-video: Manim CE animations: 3Blue1Brown math/algo videos. ",
+      "name": "manim-video"
+    },
+    {
+      "id": "creative/p5js",
+      "text": "p5js: p5.js sketches: gen art, shaders, interactive, 3D. [creative-coding, generative-art, p5js, canvas, interactive, visualization, webgl, shaders, animation]",
+      "name": "p5js"
+    },
+    {
+      "id": "creative/pixel-art",
+      "text": "pixel-art: Pixel art w/ era palettes (NES, Game Boy, PICO-8). [creative, pixel-art, arcade, snes, nes, gameboy, retro, image, video]",
+      "name": "pixel-art"
+    },
+    {
+      "id": "creative/popular-web-designs",
+      "text": "popular-web-designs: 54 real design systems (Stripe, Linear, Vercel) as HTML/CSS. [design, css, html, ui, web-development, design-systems, templates]",
+      "name": "popular-web-designs"
+    },
+    {
+      "id": "creative/pretext",
+      "text": "pretext: Use when building creative browser demos with @chenglou/pretext — DOM-free text layout for ASCII art, typographic flow around obstacles, text-as-geometry games, kinetic typography, and text-powered ge [creative-coding, typography, pretext, ascii-art, canvas, generative, text-layout, kinetic-typography]",
+      "name": "pretext"
+    },
+    {
+      "id": "creative/sketch",
+      "text": "sketch: Throwaway HTML mockups: 2-3 design variants to compare. [sketch, mockup, design, ui, prototype, html, variants, exploration, wireframe, comparison]",
+      "name": "sketch"
+    },
+    {
+      "id": "creative/songwriting-and-ai-music",
+      "text": "songwriting-and-ai-music: Songwriting craft and Suno AI music prompts. [songwriting, music, suno, parody, lyrics, creative]",
+      "name": "songwriting-and-ai-music"
+    },
+    {
+      "id": "creative/touchdesigner-mcp",
+      "text": "touchdesigner-mcp: Control a running TouchDesigner instance via twozero MCP — create operators, set parameters, wire connections, execute Python, build real-time visuals. 36 native tools. [TouchDesigner, MCP, twozero, creative-coding, real-time-visuals, generative-art, audio-reactive, VJ, installation, GLSL]",
+      "name": "touchdesigner-mcp"
+    },
+    {
+      "id": "data-science/jupyter-live-kernel",
+      "text": "jupyter-live-kernel: Iterative Python via live Jupyter kernel (hamelnb). [jupyter, notebook, repl, data-science, exploration, iterative]",
+      "name": "jupyter-live-kernel"
+    },
+    {
+      "id": "devops/kanban-orchestrator",
+      "text": "kanban-orchestrator: Decomposition playbook + specialist-roster conventions + anti-temptation rules for an orchestrator profile routing work through Kanban. The \"don't do the work yourself\" rule and the basic lifecycle ar [kanban, multi-agent, orchestration, routing]",
+      "name": "kanban-orchestrator"
+    },
+    {
+      "id": "devops/kanban-worker",
+      "text": "kanban-worker: Pitfalls, examples, and edge cases for Hermes Kanban workers. The lifecycle itself is auto-injected into every worker's system prompt as KANBAN_GUIDANCE (from agent/prompt_builder.py); this skill is w [kanban, multi-agent, collaboration, workflow, pitfalls]",
+      "name": "kanban-worker"
+    },
+    {
+      "id": "devops/webhook-subscriptions",
+      "text": "webhook-subscriptions: Webhook subscriptions: event-driven agent runs. [webhook, events, automation, integrations, notifications, push]",
+      "name": "webhook-subscriptions"
+    },
+    {
+      "id": "email/himalaya",
+      "text": "himalaya: Himalaya CLI: IMAP/SMTP email from terminal. [Email, IMAP, SMTP, CLI, Communication]",
+      "name": "himalaya"
+    },
+    {
+      "id": "evaluation/evaluating-llms-harness",
+      "text": "evaluating-llms-harness: lm-eval-harness: benchmark LLMs (MMLU, GSM8K, etc.). [Evaluation, LM Evaluation Harness, Benchmarking, MMLU, HumanEval, GSM8K, EleutherAI, Model Quality, Academic Benchmarks, Industry Standard]",
+      "name": "evaluating-llms-harness"
+    },
+    {
+      "id": "evaluation/weights-and-biases",
+      "text": "weights-and-biases: W&B: log ML experiments, sweeps, model registry, dashboards. [MLOps, Weights And Biases, WandB, Experiment Tracking, Hyperparameter Tuning, Model Registry, Collaboration, Real-Time Visualization, PyTorch, TensorFlow, HuggingFace]",
+      "name": "weights-and-biases"
+    },
+    {
+      "id": "gaming/minecraft-modpack-server",
+      "text": "minecraft-modpack-server: Host modded Minecraft servers (CurseForge, Modrinth). [minecraft, gaming, server, neoforge, forge, modpack]",
+      "name": "minecraft-modpack-server"
+    },
+    {
+      "id": "gaming/pokemon-player",
+      "text": "pokemon-player: Play Pokemon via headless emulator + RAM reads. [gaming, pokemon, emulator, pyboy, gameplay, gameboy]",
+      "name": "pokemon-player"
+    },
+    {
+      "id": "github/codebase-inspection",
+      "text": "codebase-inspection: Inspect codebases w/ pygount: LOC, languages, ratios. [LOC, Code Analysis, pygount, Codebase, Metrics, Repository]",
+      "name": "codebase-inspection"
+    },
+    {
+      "id": "github/github-auth",
+      "text": "github-auth: GitHub auth setup: HTTPS tokens, SSH keys, gh CLI login. [GitHub, Authentication, Git, gh-cli, SSH, Setup]",
+      "name": "github-auth"
+    },
+    {
+      "id": "github/github-code-review",
+      "text": "github-code-review: Review PRs: diffs, inline comments via gh or REST. [GitHub, Code-Review, Pull-Requests, Git, Quality]",
+      "name": "github-code-review"
+    },
+    {
+      "id": "github/github-issues",
+      "text": "github-issues: Create, triage, label, assign GitHub issues via gh or REST. [GitHub, Issues, Project-Management, Bug-Tracking, Triage]",
+      "name": "github-issues"
+    },
+    {
+      "id": "github/github-pr-workflow",
+      "text": "github-pr-workflow: GitHub PR lifecycle: branch, commit, open, CI, merge. [GitHub, Pull-Requests, CI/CD, Git, Automation, Merge]",
+      "name": "github-pr-workflow"
+    },
+    {
+      "id": "github/github-repo-management",
+      "text": "github-repo-management: Clone/create/fork repos; manage remotes, releases. [GitHub, Repositories, Git, Releases, Secrets, Configuration]",
+      "name": "github-repo-management"
+    },
+    {
+      "id": "inference/llama-cpp",
+      "text": "llama-cpp: llama.cpp local GGUF inference + HF Hub model discovery. [llama.cpp, GGUF, Quantization, Hugging Face Hub, CPU Inference, Apple Silicon, Edge Deployment, AMD GPUs, Intel GPUs, NVIDIA, URL-first]",
+      "name": "llama-cpp"
+    },
+    {
+      "id": "inference/obliteratus",
+      "text": "obliteratus: OBLITERATUS: abliterate LLM refusals (diff-in-means). [Abliteration, Uncensoring, Refusal-Removal, LLM, Weight-Projection, SVD, Mechanistic-Interpretability, HuggingFace, Model-Surgery]",
+      "name": "obliteratus"
+    },
+    {
+      "id": "inference/outlines",
+      "text": "outlines: Outlines: structured JSON/regex/Pydantic LLM generation. [Prompt Engineering, Outlines, Structured Generation, JSON Schema, Pydantic, Local Models, Grammar-Based Generation, vLLM, Transformers, Type Safety]",
+      "name": "outlines"
+    },
+    {
+      "id": "inference/serving-llms-vllm",
+      "text": "serving-llms-vllm: vLLM: high-throughput LLM serving, OpenAI API, quantization. [vLLM, Inference Serving, PagedAttention, Continuous Batching, High Throughput, Production, OpenAI API, Quantization, Tensor Parallelism]",
+      "name": "serving-llms-vllm"
+    },
+    {
+      "id": "mcp/native-mcp",
+      "text": "native-mcp: MCP client: connect servers, register tools (stdio/HTTP). [MCP, Tools, Integrations]",
+      "name": "native-mcp"
+    },
+    {
+      "id": "media/gif-search",
+      "text": "gif-search: Search/download GIFs from Tenor via curl + jq. [GIF, Media, Search, Tenor, API]",
+      "name": "gif-search"
+    },
+    {
+      "id": "media/heartmula",
+      "text": "heartmula: HeartMuLa: Suno-like song generation from lyrics + tags. [music, audio, generation, ai, heartmula, heartcodec, lyrics, songs]",
+      "name": "heartmula"
+    },
+    {
+      "id": "media/songsee",
+      "text": "songsee: Audio spectrograms/features (mel, chroma, MFCC) via CLI. [Audio, Visualization, Spectrogram, Music, Analysis]",
+      "name": "songsee"
+    },
+    {
+      "id": "media/spotify",
+      "text": "spotify: Spotify: play, search, queue, manage playlists and devices. [spotify, music, playback, playlists, media]",
+      "name": "spotify"
+    },
+    {
+      "id": "media/youtube-content",
+      "text": "youtube-content: YouTube transcripts to summaries, threads, blogs. ",
+      "name": "youtube-content"
+    },
+    {
+      "id": "meta/bmb-skills-hub",
+      "text": "bmb-skills-hub: Skills Hub agéntico para BMB Encover — index.json, skill-tree, MCP manifest, embeddings index, README auto-generado. Inspirado en clawhub-skills (hanabi-jpn). skills index mcp catalog agentic discovery",
+      "name": "bmb-skills-hub"
+    },
+    {
+      "id": "mlops/huggingface-hub",
+      "text": "huggingface-hub: HuggingFace hf CLI: search/download/upload models, datasets. [huggingface, hf, models, datasets, hub, mlops]",
+      "name": "huggingface-hub"
+    },
+    {
+      "id": "models/audiocraft-audio-generation",
+      "text": "audiocraft-audio-generation: AudioCraft: MusicGen text-to-music, AudioGen text-to-sound. [Multimodal, Audio Generation, Text-to-Music, Text-to-Audio, MusicGen]",
+      "name": "audiocraft-audio-generation"
+    },
+    {
+      "id": "models/segment-anything-model",
+      "text": "segment-anything-model: SAM: zero-shot image segmentation via points, boxes, masks. [Multimodal, Image Segmentation, Computer Vision, SAM, Zero-Shot]",
+      "name": "segment-anything-model"
+    },
+    {
+      "id": "note-taking/obsidian",
+      "text": "obsidian: Read, search, and create notes in the Obsidian vault. ",
+      "name": "obsidian"
+    },
+    {
+      "id": "productivity/airtable",
+      "text": "airtable: Airtable REST API via curl. Records CRUD, filters, upserts. [Airtable, Productivity, Database, API]",
+      "name": "airtable"
+    },
+    {
+      "id": "productivity/google-workspace",
+      "text": "google-workspace: Google OAuth2 client credentials (downloaded from Google Cloud Console) [Google, Gmail, Calendar, Drive, Sheets, Docs, Contacts, Email, OAuth]",
+      "name": "google-workspace"
+    },
+    {
+      "id": "productivity/linear",
+      "text": "linear: Linear: manage issues, projects, teams via GraphQL + curl. [Linear, Project Management, Issues, GraphQL, API, Productivity]",
+      "name": "linear"
+    },
+    {
+      "id": "productivity/maps",
+      "text": "maps: Geocode, POIs, routes, timezones via OpenStreetMap/OSRM. [maps, geocoding, places, routing, distance, directions, nearby, location, openstreetmap, nominatim, overpass, osrm]",
+      "name": "maps"
+    },
+    {
+      "id": "productivity/nano-pdf",
+      "text": "nano-pdf: Edit PDF text/typos/titles via nano-pdf CLI (NL prompts). [PDF, Documents, Editing, NLP, Productivity]",
+      "name": "nano-pdf"
+    },
+    {
+      "id": "productivity/notion",
+      "text": "notion: Notion API via curl: pages, databases, blocks, search. [Notion, Productivity, Notes, Database, API]",
+      "name": "notion"
+    },
+    {
+      "id": "productivity/ocr-and-documents",
+      "text": "ocr-and-documents: Extract text from PDFs/scans (pymupdf, marker-pdf). [PDF, Documents, Research, Arxiv, Text-Extraction, OCR]",
+      "name": "ocr-and-documents"
+    },
+    {
+      "id": "productivity/powerpoint",
+      "text": "powerpoint: Create, read, edit .pptx decks, slides, notes, templates. ",
+      "name": "powerpoint"
+    },
+    {
+      "id": "research/arxiv",
+      "text": "arxiv: Search arXiv papers by keyword, author, category, or ID. [Research, Arxiv, Papers, Academic, Science, API]",
+      "name": "arxiv"
+    },
+    {
+      "id": "research/blogwatcher",
+      "text": "blogwatcher: Monitor blogs and RSS/Atom feeds via blogwatcher-cli tool. [RSS, Blogs, Feed-Reader, Monitoring]",
+      "name": "blogwatcher"
+    },
+    {
+      "id": "research/dspy",
+      "text": "dspy: DSPy: declarative LM programs, auto-optimize prompts, RAG. [Prompt Engineering, DSPy, Declarative Programming, RAG, Agents, Prompt Optimization, LM Programming, Stanford NLP, Automatic Optimization, Modular AI]",
+      "name": "dspy"
+    },
+    {
+      "id": "research/llm-wiki",
+      "text": "llm-wiki: Karpathy's LLM Wiki: build/query interlinked markdown KB. [wiki, knowledge-base, research, notes, markdown, rag-alternative]",
+      "name": "llm-wiki"
+    },
+    {
+      "id": "research/polymarket",
+      "text": "polymarket: Query Polymarket: markets, prices, orderbooks, history. [polymarket, prediction-markets, market-data, trading]",
+      "name": "polymarket"
+    },
+    {
+      "id": "research/research-paper-writing",
+      "text": "research-paper-writing: Write ML papers for NeurIPS/ICML/ICLR: design→submit. [Research, Paper Writing, Experiments, ML, AI, NeurIPS, ICML, ICLR, ACL, AAAI, COLM, LaTeX, Citations, Statistical Analysis]",
+      "name": "research-paper-writing"
+    },
+    {
+      "id": "smart-home/openhue",
+      "text": "openhue: Control Philips Hue lights, scenes, rooms via OpenHue CLI. [Smart-Home, Hue, Lights, IoT, Automation]",
+      "name": "openhue"
+    },
+    {
+      "id": "social-media/xurl",
+      "text": "xurl: X/Twitter via xurl CLI: post, search, DM, media, v2 API. [twitter, x, social-media, xurl, official-api]",
+      "name": "xurl"
+    },
+    {
+      "id": "software-development/bmb-encover-skill-authoring",
+      "text": "bmb-encover-skill-authoring: Author in-repo SKILL.md: frontmatter, validator, structure. [skills, authoring, bmb-encover, conventions, skill-md]",
+      "name": "bmb-encover-skill-authoring"
+    },
+    {
+      "id": "software-development/debugging-bmb-tui-commands",
+      "text": "debugging-bmb-tui-commands: Debug Hermes TUI slash commands: Python, gateway, Ink UI. [debugging, bmb-encover, tui, slash-commands, typescript, python]",
+      "name": "debugging-bmb-tui-commands"
+    },
+    {
+      "id": "software-development/node-inspect-debugger",
+      "text": "node-inspect-debugger: Debug Node.js via --inspect + Chrome DevTools Protocol CLI. [debugging, nodejs, node-inspect, cdp, breakpoints, ui-tui]",
+      "name": "node-inspect-debugger"
+    },
+    {
+      "id": "software-development/plan",
+      "text": "plan: Plan mode: write markdown plan to .hermes/plans/, no exec. [planning, plan-mode, implementation, workflow]",
+      "name": "plan"
+    },
+    {
+      "id": "software-development/python-debugpy",
+      "text": "python-debugpy: Debug Python: pdb REPL + debugpy remote (DAP). [debugging, python, pdb, debugpy, breakpoints, dap, post-mortem]",
+      "name": "python-debugpy"
+    },
+    {
+      "id": "software-development/requesting-code-review",
+      "text": "requesting-code-review: Pre-commit review: security scan, quality gates, auto-fix. [code-review, security, verification, quality, pre-commit, auto-fix]",
+      "name": "requesting-code-review"
+    },
+    {
+      "id": "software-development/spike",
+      "text": "spike: Throwaway experiments to validate an idea before build. [spike, prototype, experiment, feasibility, throwaway, exploration, research, planning, mvp, proof-of-concept]",
+      "name": "spike"
+    },
+    {
+      "id": "software-development/subagent-driven-development",
+      "text": "subagent-driven-development: Execute plans via delegate_task subagents (2-stage review). [delegation, subagent, implementation, workflow, parallel]",
+      "name": "subagent-driven-development"
+    },
+    {
+      "id": "software-development/systematic-debugging",
+      "text": "systematic-debugging: 4-phase root cause debugging: understand bugs before fixing. [debugging, troubleshooting, problem-solving, root-cause, investigation]",
+      "name": "systematic-debugging"
+    },
+    {
+      "id": "software-development/test-driven-development",
+      "text": "test-driven-development: TDD: enforce RED-GREEN-REFACTOR, tests before code. [testing, tdd, development, quality, red-green-refactor]",
+      "name": "test-driven-development"
+    },
+    {
+      "id": "software-development/writing-plans",
+      "text": "writing-plans: Write implementation plans: bite-sized tasks, paths, code. [planning, design, implementation, workflow, documentation]",
+      "name": "writing-plans"
+    },
+    {
+      "id": "training/axolotl",
+      "text": "axolotl: Axolotl: YAML LLM fine-tuning (LoRA, DPO, GRPO). [Fine-Tuning, Axolotl, LLM, LoRA, QLoRA, DPO, KTO, ORPO, GRPO, YAML, HuggingFace, DeepSpeed, Multimodal]",
+      "name": "axolotl"
+    },
+    {
+      "id": "training/fine-tuning-with-trl",
+      "text": "fine-tuning-with-trl: TRL: SFT, DPO, PPO, GRPO, reward modeling for LLM RLHF. [Post-Training, TRL, Reinforcement Learning, Fine-Tuning, SFT, DPO, PPO, GRPO, RLHF, Preference Alignment, HuggingFace]",
+      "name": "fine-tuning-with-trl"
+    },
+    {
+      "id": "training/unsloth",
+      "text": "unsloth: Unsloth: 2-5x faster LoRA/QLoRA fine-tuning, less VRAM. [Fine-Tuning, Unsloth, Fast Training, LoRA, QLoRA, Memory-Efficient, Optimization, Llama, Mistral, Gemma, Qwen]",
+      "name": "unsloth"
+    }
+  ]
+}

@@ -1,0 +1,1762 @@
+{
+  "schemaVersion": "1.0",
+  "name": "BMB Skills Hub",
+  "description": "Catálogo de skills agénticos para BMB Encover Agent",
+  "version": "1.0.0",
+  "tools": [
+    {
+      "name": ".dogfood",
+      "description": "Exploratory QA of web apps: find bugs, evidence, reports.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for dogfood"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[qa, testing, browser, web, dogfood]"
+      ],
+      "category": ""
+    },
+    {
+      "name": "apple.apple-notes",
+      "description": "Manage Apple Notes via memo CLI: create, search, edit.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for apple-notes"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Notes, Apple, macOS, note-taking]"
+      ],
+      "category": "apple"
+    },
+    {
+      "name": "apple.apple-reminders",
+      "description": "Apple Reminders via remindctl: add, list, complete.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for apple-reminders"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Reminders, tasks, todo, macOS, Apple]"
+      ],
+      "category": "apple"
+    },
+    {
+      "name": "apple.findmy",
+      "description": "Track Apple devices/AirTags via FindMy.app on macOS.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for findmy"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[FindMy, AirTag, location, tracking, macOS, Apple]"
+      ],
+      "category": "apple"
+    },
+    {
+      "name": "apple.imessage",
+      "description": "Send and receive iMessages/SMS via the imsg CLI on macOS.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for imessage"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[iMessage, SMS, messaging, macOS, Apple]"
+      ],
+      "category": "apple"
+    },
+    {
+      "name": "autonomous-ai-agents.bmb-encover",
+      "description": "Configure, extend, or contribute to BlackMagicBox Encover Agent.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for bmb-encover"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[hermes, setup, configuration, multi-agent, spawning, cli, gateway, development]"
+      ],
+      "category": "autonomous-ai-agents"
+    },
+    {
+      "name": "autonomous-ai-agents.claude-code",
+      "description": "Delegate coding to Claude Code CLI (features, PRs).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for claude-code"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Coding-Agent, Claude, Anthropic, Code-Review, Refactoring, PTY, Automation]"
+      ],
+      "category": "autonomous-ai-agents"
+    },
+    {
+      "name": "autonomous-ai-agents.codex",
+      "description": "Delegate coding to OpenAI Codex CLI (features, PRs).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for codex"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Coding-Agent, Codex, OpenAI, Code-Review, Refactoring]"
+      ],
+      "category": "autonomous-ai-agents"
+    },
+    {
+      "name": "autonomous-ai-agents.opencode",
+      "description": "Delegate coding to OpenCode CLI (features, PR review).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for opencode"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Coding-Agent, OpenCode, Autonomous, Refactoring, Code-Review]"
+      ],
+      "category": "autonomous-ai-agents"
+    },
+    {
+      "name": "creative.architecture-diagram",
+      "description": "Dark-themed SVG architecture/cloud/infra diagrams as HTML.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for architecture-diagram"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[architecture, diagrams, SVG, HTML, visualization, infrastructure, cloud]"
+      ],
+      "category": "creative"
+    },
+    {
+      "name": "creative.ascii-art",
+      "description": "ASCII art: pyfiglet, cowsay, boxes, image-to-ascii.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for ascii-art"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[ASCII, Art, Banners, Creative, Unicode, Text-Art, pyfiglet, figlet, cowsay, boxes]"
+      ],
+      "category": "creative"
+    },
+    {
+      "name": "creative.ascii-video",
+      "description": "ASCII video: convert video/audio to colored ASCII MP4/GIF.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for ascii-video"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [],
+      "category": "creative"
+    },
+    {
+      "name": "creative.baoyu-comic",
+      "description": "Knowledge comics (知识漫画): educational, biography, tutorial.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for baoyu-comic"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[comic, knowledge-comic, creative, image-generation]"
+      ],
+      "category": "creative"
+    },
+    {
+      "name": "creative.baoyu-infographic",
+      "description": "Infographics: 21 layouts x 21 styles (信息图, 可视化).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for baoyu-infographic"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[infographic, visual-summary, creative, image-generation]"
+      ],
+      "category": "creative"
+    },
+    {
+      "name": "creative.claude-design",
+      "description": "Design one-off HTML artifacts (landing, deck, prototype).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for claude-design"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[design, html, prototype, ux, ui, creative, artifact, deck, motion, design-system]"
+      ],
+      "category": "creative"
+    },
+    {
+      "name": "creative.comfyui",
+      "description": "Generate images, video, and audio with ComfyUI — install, launch, manage nodes/models, run workflows with parameter injection. Uses the official comfy-cli for lifecycle and direct REST/WebSocket API f",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for comfyui"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [],
+      "category": "creative"
+    },
+    {
+      "name": "creative.design-md",
+      "description": "Author/validate/export Google's DESIGN.md token spec files.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for design-md"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[design, design-system, tokens, ui, accessibility, wcag, tailwind, dtcg, google]"
+      ],
+      "category": "creative"
+    },
+    {
+      "name": "creative.excalidraw",
+      "description": "Hand-drawn Excalidraw JSON diagrams (arch, flow, seq).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for excalidraw"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Excalidraw, Diagrams, Flowcharts, Architecture, Visualization, JSON]"
+      ],
+      "category": "creative"
+    },
+    {
+      "name": "creative.humanizer",
+      "description": "Humanize text: strip AI-isms and add real voice.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for humanizer"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[writing, editing, humanize, anti-ai-slop, voice, prose, text]"
+      ],
+      "category": "creative"
+    },
+    {
+      "name": "creative.ideation",
+      "description": "Generate project ideas via creative constraints.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for ideation"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Creative, Ideation, Projects, Brainstorming, Inspiration]"
+      ],
+      "category": "creative"
+    },
+    {
+      "name": "creative.manim-video",
+      "description": "Manim CE animations: 3Blue1Brown math/algo videos.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for manim-video"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [],
+      "category": "creative"
+    },
+    {
+      "name": "creative.p5js",
+      "description": "p5.js sketches: gen art, shaders, interactive, 3D.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for p5js"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[creative-coding, generative-art, p5js, canvas, interactive, visualization, webgl, shaders, animation]"
+      ],
+      "category": "creative"
+    },
+    {
+      "name": "creative.pixel-art",
+      "description": "Pixel art w/ era palettes (NES, Game Boy, PICO-8).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for pixel-art"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[creative, pixel-art, arcade, snes, nes, gameboy, retro, image, video]"
+      ],
+      "category": "creative"
+    },
+    {
+      "name": "creative.popular-web-designs",
+      "description": "54 real design systems (Stripe, Linear, Vercel) as HTML/CSS.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for popular-web-designs"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[design, css, html, ui, web-development, design-systems, templates]"
+      ],
+      "category": "creative"
+    },
+    {
+      "name": "creative.pretext",
+      "description": "Use when building creative browser demos with @chenglou/pretext — DOM-free text layout for ASCII art, typographic flow around obstacles, text-as-geometry games, kinetic typography, and text-powered ge",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for pretext"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[creative-coding, typography, pretext, ascii-art, canvas, generative, text-layout, kinetic-typography]"
+      ],
+      "category": "creative"
+    },
+    {
+      "name": "creative.sketch",
+      "description": "Throwaway HTML mockups: 2-3 design variants to compare.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for sketch"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[sketch, mockup, design, ui, prototype, html, variants, exploration, wireframe, comparison]"
+      ],
+      "category": "creative"
+    },
+    {
+      "name": "creative.songwriting-and-ai-music",
+      "description": "Songwriting craft and Suno AI music prompts.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for songwriting-and-ai-music"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[songwriting, music, suno, parody, lyrics, creative]"
+      ],
+      "category": "creative"
+    },
+    {
+      "name": "creative.touchdesigner-mcp",
+      "description": "Control a running TouchDesigner instance via twozero MCP — create operators, set parameters, wire connections, execute Python, build real-time visuals. 36 native tools.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for touchdesigner-mcp"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[TouchDesigner, MCP, twozero, creative-coding, real-time-visuals, generative-art, audio-reactive, VJ, installation, GLSL]"
+      ],
+      "category": "creative"
+    },
+    {
+      "name": "data-science.jupyter-live-kernel",
+      "description": "Iterative Python via live Jupyter kernel (hamelnb).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for jupyter-live-kernel"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[jupyter, notebook, repl, data-science, exploration, iterative]"
+      ],
+      "category": "data-science"
+    },
+    {
+      "name": "devops.kanban-orchestrator",
+      "description": "Decomposition playbook + specialist-roster conventions + anti-temptation rules for an orchestrator profile routing work through Kanban. The \"don't do the work yourself\" rule and the basic lifecycle ar",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for kanban-orchestrator"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[kanban, multi-agent, orchestration, routing]"
+      ],
+      "category": "devops"
+    },
+    {
+      "name": "devops.kanban-worker",
+      "description": "Pitfalls, examples, and edge cases for Hermes Kanban workers. The lifecycle itself is auto-injected into every worker's system prompt as KANBAN_GUIDANCE (from agent/prompt_builder.py); this skill is w",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for kanban-worker"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[kanban, multi-agent, collaboration, workflow, pitfalls]"
+      ],
+      "category": "devops"
+    },
+    {
+      "name": "devops.webhook-subscriptions",
+      "description": "Webhook subscriptions: event-driven agent runs.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for webhook-subscriptions"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[webhook, events, automation, integrations, notifications, push]"
+      ],
+      "category": "devops"
+    },
+    {
+      "name": "email.himalaya",
+      "description": "Himalaya CLI: IMAP/SMTP email from terminal.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for himalaya"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Email, IMAP, SMTP, CLI, Communication]"
+      ],
+      "category": "email"
+    },
+    {
+      "name": "evaluation.evaluating-llms-harness",
+      "description": "lm-eval-harness: benchmark LLMs (MMLU, GSM8K, etc.).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for evaluating-llms-harness"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Evaluation, LM Evaluation Harness, Benchmarking, MMLU, HumanEval, GSM8K, EleutherAI, Model Quality, Academic Benchmarks, Industry Standard]"
+      ],
+      "category": "evaluation"
+    },
+    {
+      "name": "evaluation.weights-and-biases",
+      "description": "W&B: log ML experiments, sweeps, model registry, dashboards.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for weights-and-biases"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[MLOps, Weights And Biases, WandB, Experiment Tracking, Hyperparameter Tuning, Model Registry, Collaboration, Real-Time Visualization, PyTorch, TensorFlow, HuggingFace]"
+      ],
+      "category": "evaluation"
+    },
+    {
+      "name": "gaming.minecraft-modpack-server",
+      "description": "Host modded Minecraft servers (CurseForge, Modrinth).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for minecraft-modpack-server"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[minecraft, gaming, server, neoforge, forge, modpack]"
+      ],
+      "category": "gaming"
+    },
+    {
+      "name": "gaming.pokemon-player",
+      "description": "Play Pokemon via headless emulator + RAM reads.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for pokemon-player"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[gaming, pokemon, emulator, pyboy, gameplay, gameboy]"
+      ],
+      "category": "gaming"
+    },
+    {
+      "name": "github.codebase-inspection",
+      "description": "Inspect codebases w/ pygount: LOC, languages, ratios.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for codebase-inspection"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[LOC, Code Analysis, pygount, Codebase, Metrics, Repository]"
+      ],
+      "category": "github"
+    },
+    {
+      "name": "github.github-auth",
+      "description": "GitHub auth setup: HTTPS tokens, SSH keys, gh CLI login.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for github-auth"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[GitHub, Authentication, Git, gh-cli, SSH, Setup]"
+      ],
+      "category": "github"
+    },
+    {
+      "name": "github.github-code-review",
+      "description": "Review PRs: diffs, inline comments via gh or REST.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for github-code-review"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[GitHub, Code-Review, Pull-Requests, Git, Quality]"
+      ],
+      "category": "github"
+    },
+    {
+      "name": "github.github-issues",
+      "description": "Create, triage, label, assign GitHub issues via gh or REST.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for github-issues"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[GitHub, Issues, Project-Management, Bug-Tracking, Triage]"
+      ],
+      "category": "github"
+    },
+    {
+      "name": "github.github-pr-workflow",
+      "description": "GitHub PR lifecycle: branch, commit, open, CI, merge.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for github-pr-workflow"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[GitHub, Pull-Requests, CI/CD, Git, Automation, Merge]"
+      ],
+      "category": "github"
+    },
+    {
+      "name": "github.github-repo-management",
+      "description": "Clone/create/fork repos; manage remotes, releases.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for github-repo-management"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[GitHub, Repositories, Git, Releases, Secrets, Configuration]"
+      ],
+      "category": "github"
+    },
+    {
+      "name": "inference.llama-cpp",
+      "description": "llama.cpp local GGUF inference + HF Hub model discovery.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for llama-cpp"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[llama.cpp, GGUF, Quantization, Hugging Face Hub, CPU Inference, Apple Silicon, Edge Deployment, AMD GPUs, Intel GPUs, NVIDIA, URL-first]"
+      ],
+      "category": "inference"
+    },
+    {
+      "name": "inference.obliteratus",
+      "description": "OBLITERATUS: abliterate LLM refusals (diff-in-means).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for obliteratus"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Abliteration, Uncensoring, Refusal-Removal, LLM, Weight-Projection, SVD, Mechanistic-Interpretability, HuggingFace, Model-Surgery]"
+      ],
+      "category": "inference"
+    },
+    {
+      "name": "inference.outlines",
+      "description": "Outlines: structured JSON/regex/Pydantic LLM generation.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for outlines"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Prompt Engineering, Outlines, Structured Generation, JSON Schema, Pydantic, Local Models, Grammar-Based Generation, vLLM, Transformers, Type Safety]"
+      ],
+      "category": "inference"
+    },
+    {
+      "name": "inference.serving-llms-vllm",
+      "description": "vLLM: high-throughput LLM serving, OpenAI API, quantization.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for serving-llms-vllm"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[vLLM, Inference Serving, PagedAttention, Continuous Batching, High Throughput, Production, OpenAI API, Quantization, Tensor Parallelism]"
+      ],
+      "category": "inference"
+    },
+    {
+      "name": "mcp.native-mcp",
+      "description": "MCP client: connect servers, register tools (stdio/HTTP).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for native-mcp"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[MCP, Tools, Integrations]"
+      ],
+      "category": "mcp"
+    },
+    {
+      "name": "media.gif-search",
+      "description": "Search/download GIFs from Tenor via curl + jq.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for gif-search"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[GIF, Media, Search, Tenor, API]"
+      ],
+      "category": "media"
+    },
+    {
+      "name": "media.heartmula",
+      "description": "HeartMuLa: Suno-like song generation from lyrics + tags.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for heartmula"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[music, audio, generation, ai, heartmula, heartcodec, lyrics, songs]"
+      ],
+      "category": "media"
+    },
+    {
+      "name": "media.songsee",
+      "description": "Audio spectrograms/features (mel, chroma, MFCC) via CLI.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for songsee"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Audio, Visualization, Spectrogram, Music, Analysis]"
+      ],
+      "category": "media"
+    },
+    {
+      "name": "media.spotify",
+      "description": "Spotify: play, search, queue, manage playlists and devices.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for spotify"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[spotify, music, playback, playlists, media]"
+      ],
+      "category": "media"
+    },
+    {
+      "name": "media.youtube-content",
+      "description": "YouTube transcripts to summaries, threads, blogs.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for youtube-content"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [],
+      "category": "media"
+    },
+    {
+      "name": "meta.bmb-skills-hub",
+      "description": "Skills Hub agéntico para BMB Encover — index.json, skill-tree, MCP manifest, embeddings index, README auto-generado. Inspirado en clawhub-skills (hanabi-jpn).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for bmb-skills-hub"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "skills",
+        "index",
+        "mcp",
+        "catalog",
+        "agentic",
+        "discovery"
+      ],
+      "category": "meta"
+    },
+    {
+      "name": "mlops.huggingface-hub",
+      "description": "HuggingFace hf CLI: search/download/upload models, datasets.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for huggingface-hub"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[huggingface, hf, models, datasets, hub, mlops]"
+      ],
+      "category": "mlops"
+    },
+    {
+      "name": "models.audiocraft-audio-generation",
+      "description": "AudioCraft: MusicGen text-to-music, AudioGen text-to-sound.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for audiocraft-audio-generation"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Multimodal, Audio Generation, Text-to-Music, Text-to-Audio, MusicGen]"
+      ],
+      "category": "models"
+    },
+    {
+      "name": "models.segment-anything-model",
+      "description": "SAM: zero-shot image segmentation via points, boxes, masks.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for segment-anything-model"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Multimodal, Image Segmentation, Computer Vision, SAM, Zero-Shot]"
+      ],
+      "category": "models"
+    },
+    {
+      "name": "note-taking.obsidian",
+      "description": "Read, search, and create notes in the Obsidian vault.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for obsidian"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [],
+      "category": "note-taking"
+    },
+    {
+      "name": "productivity.airtable",
+      "description": "Airtable REST API via curl. Records CRUD, filters, upserts.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for airtable"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Airtable, Productivity, Database, API]"
+      ],
+      "category": "productivity"
+    },
+    {
+      "name": "productivity.google-workspace",
+      "description": "Google OAuth2 client credentials (downloaded from Google Cloud Console)",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for google-workspace"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Google, Gmail, Calendar, Drive, Sheets, Docs, Contacts, Email, OAuth]"
+      ],
+      "category": "productivity"
+    },
+    {
+      "name": "productivity.linear",
+      "description": "Linear: manage issues, projects, teams via GraphQL + curl.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for linear"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Linear, Project Management, Issues, GraphQL, API, Productivity]"
+      ],
+      "category": "productivity"
+    },
+    {
+      "name": "productivity.maps",
+      "description": "Geocode, POIs, routes, timezones via OpenStreetMap/OSRM.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for maps"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[maps, geocoding, places, routing, distance, directions, nearby, location, openstreetmap, nominatim, overpass, osrm]"
+      ],
+      "category": "productivity"
+    },
+    {
+      "name": "productivity.nano-pdf",
+      "description": "Edit PDF text/typos/titles via nano-pdf CLI (NL prompts).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for nano-pdf"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[PDF, Documents, Editing, NLP, Productivity]"
+      ],
+      "category": "productivity"
+    },
+    {
+      "name": "productivity.notion",
+      "description": "Notion API via curl: pages, databases, blocks, search.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for notion"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Notion, Productivity, Notes, Database, API]"
+      ],
+      "category": "productivity"
+    },
+    {
+      "name": "productivity.ocr-and-documents",
+      "description": "Extract text from PDFs/scans (pymupdf, marker-pdf).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for ocr-and-documents"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[PDF, Documents, Research, Arxiv, Text-Extraction, OCR]"
+      ],
+      "category": "productivity"
+    },
+    {
+      "name": "productivity.powerpoint",
+      "description": "Create, read, edit .pptx decks, slides, notes, templates.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for powerpoint"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [],
+      "category": "productivity"
+    },
+    {
+      "name": "research.arxiv",
+      "description": "Search arXiv papers by keyword, author, category, or ID.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for arxiv"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Research, Arxiv, Papers, Academic, Science, API]"
+      ],
+      "category": "research"
+    },
+    {
+      "name": "research.blogwatcher",
+      "description": "Monitor blogs and RSS/Atom feeds via blogwatcher-cli tool.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for blogwatcher"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[RSS, Blogs, Feed-Reader, Monitoring]"
+      ],
+      "category": "research"
+    },
+    {
+      "name": "research.dspy",
+      "description": "DSPy: declarative LM programs, auto-optimize prompts, RAG.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for dspy"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Prompt Engineering, DSPy, Declarative Programming, RAG, Agents, Prompt Optimization, LM Programming, Stanford NLP, Automatic Optimization, Modular AI]"
+      ],
+      "category": "research"
+    },
+    {
+      "name": "research.llm-wiki",
+      "description": "Karpathy's LLM Wiki: build/query interlinked markdown KB.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for llm-wiki"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[wiki, knowledge-base, research, notes, markdown, rag-alternative]"
+      ],
+      "category": "research"
+    },
+    {
+      "name": "research.polymarket",
+      "description": "Query Polymarket: markets, prices, orderbooks, history.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for polymarket"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[polymarket, prediction-markets, market-data, trading]"
+      ],
+      "category": "research"
+    },
+    {
+      "name": "research.research-paper-writing",
+      "description": "Write ML papers for NeurIPS/ICML/ICLR: design→submit.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for research-paper-writing"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Research, Paper Writing, Experiments, ML, AI, NeurIPS, ICML, ICLR, ACL, AAAI, COLM, LaTeX, Citations, Statistical Analysis]"
+      ],
+      "category": "research"
+    },
+    {
+      "name": "smart-home.openhue",
+      "description": "Control Philips Hue lights, scenes, rooms via OpenHue CLI.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for openhue"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Smart-Home, Hue, Lights, IoT, Automation]"
+      ],
+      "category": "smart-home"
+    },
+    {
+      "name": "social-media.xurl",
+      "description": "X/Twitter via xurl CLI: post, search, DM, media, v2 API.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for xurl"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[twitter, x, social-media, xurl, official-api]"
+      ],
+      "category": "social-media"
+    },
+    {
+      "name": "software-development.bmb-encover-skill-authoring",
+      "description": "Author in-repo SKILL.md: frontmatter, validator, structure.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for bmb-encover-skill-authoring"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[skills, authoring, bmb-encover, conventions, skill-md]"
+      ],
+      "category": "software-development"
+    },
+    {
+      "name": "software-development.debugging-bmb-tui-commands",
+      "description": "Debug Hermes TUI slash commands: Python, gateway, Ink UI.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for debugging-bmb-tui-commands"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[debugging, bmb-encover, tui, slash-commands, typescript, python]"
+      ],
+      "category": "software-development"
+    },
+    {
+      "name": "software-development.node-inspect-debugger",
+      "description": "Debug Node.js via --inspect + Chrome DevTools Protocol CLI.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for node-inspect-debugger"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[debugging, nodejs, node-inspect, cdp, breakpoints, ui-tui]"
+      ],
+      "category": "software-development"
+    },
+    {
+      "name": "software-development.plan",
+      "description": "Plan mode: write markdown plan to .hermes/plans/, no exec.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for plan"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[planning, plan-mode, implementation, workflow]"
+      ],
+      "category": "software-development"
+    },
+    {
+      "name": "software-development.python-debugpy",
+      "description": "Debug Python: pdb REPL + debugpy remote (DAP).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for python-debugpy"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[debugging, python, pdb, debugpy, breakpoints, dap, post-mortem]"
+      ],
+      "category": "software-development"
+    },
+    {
+      "name": "software-development.requesting-code-review",
+      "description": "Pre-commit review: security scan, quality gates, auto-fix.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for requesting-code-review"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[code-review, security, verification, quality, pre-commit, auto-fix]"
+      ],
+      "category": "software-development"
+    },
+    {
+      "name": "software-development.spike",
+      "description": "Throwaway experiments to validate an idea before build.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for spike"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[spike, prototype, experiment, feasibility, throwaway, exploration, research, planning, mvp, proof-of-concept]"
+      ],
+      "category": "software-development"
+    },
+    {
+      "name": "software-development.subagent-driven-development",
+      "description": "Execute plans via delegate_task subagents (2-stage review).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for subagent-driven-development"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[delegation, subagent, implementation, workflow, parallel]"
+      ],
+      "category": "software-development"
+    },
+    {
+      "name": "software-development.systematic-debugging",
+      "description": "4-phase root cause debugging: understand bugs before fixing.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for systematic-debugging"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[debugging, troubleshooting, problem-solving, root-cause, investigation]"
+      ],
+      "category": "software-development"
+    },
+    {
+      "name": "software-development.test-driven-development",
+      "description": "TDD: enforce RED-GREEN-REFACTOR, tests before code.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for test-driven-development"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[testing, tdd, development, quality, red-green-refactor]"
+      ],
+      "category": "software-development"
+    },
+    {
+      "name": "software-development.writing-plans",
+      "description": "Write implementation plans: bite-sized tasks, paths, code.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for writing-plans"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[planning, design, implementation, workflow, documentation]"
+      ],
+      "category": "software-development"
+    },
+    {
+      "name": "training.axolotl",
+      "description": "Axolotl: YAML LLM fine-tuning (LoRA, DPO, GRPO).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for axolotl"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Fine-Tuning, Axolotl, LLM, LoRA, QLoRA, DPO, KTO, ORPO, GRPO, YAML, HuggingFace, DeepSpeed, Multimodal]"
+      ],
+      "category": "training"
+    },
+    {
+      "name": "training.fine-tuning-with-trl",
+      "description": "TRL: SFT, DPO, PPO, GRPO, reward modeling for LLM RLHF.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for fine-tuning-with-trl"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Post-Training, TRL, Reinforcement Learning, Fine-Tuning, SFT, DPO, PPO, GRPO, RLHF, Preference Alignment, HuggingFace]"
+      ],
+      "category": "training"
+    },
+    {
+      "name": "training.unsloth",
+      "description": "Unsloth: 2-5x faster LoRA/QLoRA fine-tuning, less VRAM.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query for unsloth"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "tags": [
+        "[Fine-Tuning, Unsloth, Fast Training, LoRA, QLoRA, Memory-Efficient, Optimization, Llama, Mistral, Gemma, Qwen]"
+      ],
+      "category": "training"
+    }
+  ],
+  "totalTools": 88
+}

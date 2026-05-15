@@ -1,0 +1,14 @@
+venv/
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+build/
+dist/
+*.egg-info/
+.hermes/
+auth.json
+google_*.json
+.env
+*.log
+.DS_Store

@@ -1,0 +1,100 @@
+name: Build BMB Encover Agent
+
+on:
+  push:
+    tags:
+      - "v*"  # Dispara en tags como v0.1.0, v1.0.0
+  workflow_dispatch:  # También se puede disparar manualmente
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller
+          pip install -e . --no-deps
+          pip install -e .[pty,cli,mcp,cron,acp]
+
+      - name: Build with PyInstaller
+        run: pyinstaller --clean bmb-encover.spec
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bmb-windows-x64
+          path: dist/bmb.exe
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller
+          pip install -e . --no-deps
+          pip install -e .[pty,cli,mcp,cron,acp]
+
+      - name: Build with PyInstaller
+        run: pyinstaller --clean bmb-encover.spec
+
+      - name: Upload Linux artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bmb-linux-x64
+          path: dist/bmb
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller
+          pip install -e . --no-deps
+          pip install -e .[pty,cli,mcp,cron,acp]
+
+      - name: Build with PyInstaller
+        run: pyinstaller --clean bmb-encover.spec
+
+      - name: Upload macOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bmb-macos-x64
+          path: dist/bmb
+
+  create-release:
+    needs: [build-windows, build-linux, build-macos]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            bmb-windows-x64/bmb.exe
+            bmb-linux-x64/bmb
+            bmb-macos-x64/bmb
+          generate_release_notes: true
