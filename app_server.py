@@ -186,6 +186,13 @@ class AppServer:
         except Exception:
             return web.json_response({"error": "JSON inválido"}, status=400)
 
+        if not isinstance(body, dict):
+            try:
+                raw = await request.text()
+                body = json.loads(raw)
+            except Exception:
+                return web.json_response({"error": "JSON inválido"}, status=400)
+
         token = body.get("token", "")
         device_name = body.get("device_name", "Unknown")
         device_type = body.get("device_type", "unknown")
@@ -234,6 +241,16 @@ class AppServer:
             body = await request.json()
         except Exception:
             return web.json_response({"error": "JSON inválido"}, status=400)
+
+        if not isinstance(body, dict):
+            body = dict(await request.post())
+            if not body:
+                # Último intento: leer raw
+                try:
+                    raw = await request.text()
+                    body = json.loads(raw)
+                except Exception:
+                    return web.json_response({"error": "JSON inválido"}, status=400)
 
         message = body.get("message", "").strip()
         session_id = body.get("session_id", str(uuid.uuid4()))
