@@ -5134,6 +5134,13 @@ def cmd_pair(args):
     _pair([args.action] + ([args.device_id] if args.device_id else []))
 
 
+def cmd_app_server(args):
+    """Iniciar servidor para apps mobile/desktop."""
+    from app_server import AppServer
+    server = AppServer(host=args.host, port=args.port)
+    server.run()
+
+
 def cmd_version(args):
     """Show version."""
     print(f"BlackMagicBox Encover Agent v{__version__} ({__release_date__})")
@@ -10226,6 +10233,22 @@ Examples:
         help="ID del dispositivo a revocar (con action=revoke)",
     )
     pair_parser.set_defaults(func=cmd_pair)
+
+    # =========================================================================
+    # app-server command — Iniciar servidor para apps mobile/desktop
+    # =========================================================================
+    app_server_parser = subparsers.add_parser(
+        "app-server",
+        help="Iniciar servidor para apps (chat, live mode, QR pairing)",
+        description="Inicia el servidor WebSocket + REST para conectar las apps mobile/desktop de BMB.",
+    )
+    app_server_parser.add_argument(
+        "--host", default="0.0.0.0", help="Host (default: 0.0.0.0)"
+    )
+    app_server_parser.add_argument(
+        "--port", type=int, default=8643, help="Puerto (default: 8643)"
+    )
+    app_server_parser.set_defaults(func=cmd_app_server)
 
     # =========================================================================
     profile_export = profile_subparsers.add_parser(

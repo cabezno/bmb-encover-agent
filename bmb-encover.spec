@@ -395,7 +395,7 @@ extra_hidden = [
     "__future__",
 ]
 a = Analysis(
-    ["run_agent.py"],
+    ["bmb_cli/main.py"],
     pathex=[str(ROOT)],
     binaries=[],
     datas=datas,
