@@ -98,3 +98,4 @@ jobs:
             bmb-linux-x64/bmb
             bmb-macos-x64/bmb
           generate_release_notes: true
+# build.yml - Fri May 15 15:30:45 -03 2026
