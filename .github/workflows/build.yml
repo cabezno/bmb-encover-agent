@@ -2,9 +2,10 @@ name: Build BMB Encover Agent
 
 on:
   push:
+    branches: [main]
     tags:
-      - "v*"  # Dispara en tags como v0.1.0, v1.0.0
-  workflow_dispatch:  # También se puede disparar manualmente
+      - "v*"
+  workflow_dispatch:
 
 jobs:
   build-windows:
@@ -97,5 +98,3 @@ jobs:
             bmb-windows-x64/bmb.exe
             bmb-linux-x64/bmb
             bmb-macos-x64/bmb
-          generate_release_notes: true
-# build.yml - Fri May 15 15:30:45 -03 2026
