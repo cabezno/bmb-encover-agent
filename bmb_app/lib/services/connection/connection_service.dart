@@ -31,7 +31,10 @@ class ConnectionService {
 
   String get wsUrl {
     if (_ip == null || _port == null) return '';
-    return 'ws://$_ip:$_port/ws?api_key=$_apiKey';
+    if (_apiKey != null && _apiKey!.isNotEmpty) {
+      return 'ws://$_ip:$_port/ws?api_key=$_apiKey';
+    }
+    return 'ws://$_ip:$_port/ws';
   }
 
   Future<bool> connect(String ip, int port, String apiKey) async {
