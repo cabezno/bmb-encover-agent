@@ -535,3 +535,4 @@ def main():
 if __name__ == "__main__":
     main()
 # bump Fri May 15 20:32:16 -03 2026
+# force rebuild Fri May 15 22:25:32 -03 2026
