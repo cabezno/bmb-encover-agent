@@ -117,17 +117,12 @@ jobs:
         run: |
           cd bmb_app
           flutter build windows --release
-          echo "Contenido de Release:"
-          dir build\windows\runner\Release\*.exe /b
-          dir build\windows\x64\runner\Release\*.exe /b
 
       - name: Upload Flutter Windows
         uses: actions/upload-artifact@v4
         with:
           name: bmb-flutter-windows-x64
-          path: |
-            bmb_app/build/windows/x64/runner/Release/*.exe
-            bmb_app/build/windows/x64/runner/Release/*.dll
+          path: bmb_app/build/windows/x64/runner/Release/*.exe
 
   build-flutter-android:
     runs-on: ubuntu-latest
