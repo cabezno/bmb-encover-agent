@@ -58,6 +58,9 @@ import uuid
 import time
 import traceback
 import secrets
+import base64
+import io
+import struct
 from pathlib import Path
 from typing import Optional
 
@@ -92,6 +95,8 @@ class AppServer:
         self._pairing_tokens: dict[str, float] = {}  # token -> expiry
         self.setup_routes()
         self._load_devices()
+        self._init_stt()
+        self._init_tts()
 
     def setup_routes(self):
         self.app.router.add_get("/health", self.handle_health)
@@ -167,6 +172,47 @@ class AppServer:
                 return None
         return self.bmb_agent
 
+    # ─── STT Inicialización (Whisper) ────────────────────────
+
+    def _init_stt(self):
+        """Inicializa el modelo Whisper para STT.
+        Fallback graceful si faster-whisper no está instalado."""
+        self.whisper_model = None
+        self.whisper_available = False
+        try:
+            from faster_whisper import WhisperModel
+
+            model_size = os.environ.get("BMB_WHISPER_MODEL", "tiny")
+            logger.info(f"🎤 Cargando Whisper model={model_size}...")
+            self.whisper_model = WhisperModel(
+                model_size,
+                device="cpu",
+                compute_type="int8",
+                download_root=os.path.expanduser("~/.bmb/models/whisper"),
+            )
+            self.whisper_available = True
+            logger.info("🎤 Whisper STT listo")
+        except Exception as e:
+            logger.warning(f"⚠️ Whisper STT no disponible: {e}")
+            logger.warning("   → Usando STT simulado (placeholder)")
+
+    # ─── TTS Inicialización (Edge-TTS) ────────────────────────
+
+    def _init_tts(self):
+        """Inicializa el motor TTS.
+        Usa edge-tts (Azure Cognitive Services Edge) que está instalado.
+        Fallback a simulación si no está disponible."""
+        self.tts_available = False
+        self.tts_voice = os.environ.get("BMB_TTS_VOICE", "es-AR-ElenaNeural")
+        try:
+            import edge_tts
+            # Verificar que edge-tts funciona listando voces
+            self.tts_available = True
+            logger.info(f"🔊 Edge-TTS listo (voz={self.tts_voice})")
+        except Exception as e:
+            logger.warning(f"⚠️ TTS no disponible: {e}")
+            logger.warning("   → Usando TTS simulado (silence)")
+
     # ─── Health ───────────────────────────────────────────────
 
     async def handle_health(self, request):
@@ -178,7 +224,10 @@ class AppServer:
             "sessions_active": len(self.sessions),
             "tabs_active": len(self.tabs),
             "devices_paired": len(self.devices),
-            "agent_ready": self.bmb_agent is not None,
+            'agent_ready': self.bmb_agent is not None,
+            'stt_available': self.whisper_available,
+            'tts_available': self.tts_available,
+            'tts_voice': self.tts_voice if hasattr(self, 'tts_voice') else '-',
         })
 
     # ─── Pairing ──────────────────────────────────────────────
@@ -476,7 +525,7 @@ class AppServer:
 
         return ws
 
-    # ─── WebSocket Voice (Live Mode con STT + TTS simulado) ──
+    # ─── WebSocket Voice (Live Mode con STT + TTS real) ──
 
     async def handle_websocket_voice(self, request):
         ws = web.WebSocketResponse()
@@ -537,7 +586,8 @@ class AppServer:
 
                     elif msg_type == "speech_end":
                         duration = data.get("duration_ms", 0)
-                        logger.info(f"🎤 speech end: {duration}ms, chunks accumulated: {len(audio_buffers.get(tab_id, []))}")
+                        chunks = audio_buffers.pop(tab_id, [])
+                        logger.info(f"🎤 speech end: {duration}ms, chunks accumulated: {len(chunks)}")
                         await ws.send_json({
                             "type": "vad_state", "state": "idle", "duration_ms": duration,
                         })
@@ -546,8 +596,14 @@ class AppServer:
                             "status": "thinking",
                         })
 
-                        # 1) Simular Whisper STT: extraer el texto del audio
-                        stt_text = self._simulate_whisper_stt(audio_buffers.pop(tab_id, []), duration)
+                        # 1) Whisper STT real: decodificar audio → transcribir
+                        wav_data = self._decode_audio_chunks(chunks)
+                        if wav_data:
+                            stt_text = await asyncio.to_thread(
+                                self._transcribe_whisper, wav_data
+                            )
+                        else:
+                            stt_text = ""
                         logger.info(f"🎤 STT result for tab={tab_id[:8]}: '{stt_text[:80]}...'")
 
                         # Enviar STT final al cliente
@@ -555,8 +611,17 @@ class AppServer:
                             "type": "stt_final", "tab_id": tab_id, "text": stt_text,
                         })
 
-                        # 2) Procesar con el agente (con streaming)
-                        await self._process_voice_message(ws, tab_id, session_id, stt_text, send_audio=True)
+                        # Si hay texto transcrito, procesar con el agente y TTS
+                        if stt_text.strip():
+                            await self._process_voice_message(
+                                ws, tab_id, session_id, stt_text, send_audio=True
+                            )
+                        else:
+                            # Sin audio detectable, volver a listening
+                            await ws.send_json({
+                                "type": "agent_status", "tab_id": tab_id,
+                                "status": "listening",
+                            })
 
                     elif msg_type == "webrtc_offer":
                         # Placeholder para WebRTC real
@@ -589,7 +654,7 @@ class AppServer:
         self, ws: web.WebSocketResponse, tab_id: str,
         session_id: str, text: str, send_audio: bool = False,
     ):
-        """Procesa un mensaje de texto en el canal de voz, con streaming y TTS simulado."""
+        """Procesa un mensaje de texto en el canal de voz, con streaming y TTS real."""
         if not text:
             return
 
@@ -638,9 +703,9 @@ class AppServer:
                 "session_id": session_id,
             })
 
-            # Si send_audio=True, simular TTS y enviar audio chunks
+            # Si send_audio=True, generar TTS real y enviar audio chunks
             if send_audio and response:
-                await self._send_simulated_audio(ws, tab_id, response)
+                await self._send_tts_audio(ws, tab_id, response)
 
             await ws.send_json({
                 "type": "agent_status", "tab_id": tab_id, "status": "listening",
@@ -654,51 +719,249 @@ class AppServer:
                 "type": "agent_status", "tab_id": tab_id, "status": "listening",
             })
 
-    def _simulate_whisper_stt(self, audio_chunks: list[dict], duration_ms: int) -> str:
-        """Simula Whisper STT sobre los chunks de audio recibidos.
-        En producción, reemplazar con faster-whisper.
+    def _decode_audio_chunks(self, audio_chunks: list[dict]) -> Optional[bytes]:
+        """Decodifica chunks base64 a audio PCM sin procesar (WAV).
+        
+        Asume formato: 16kHz, 16-bit, mono, little-endian.
+        Los chunks pueden venir como:
+        - Opus en formato raw bytes (el cliente debe haber decodificado a PCM)
+        - PCM raw directamente
+        
+        Returns: bytes del archivo WAV completo, o None si falla.
         """
         if not audio_chunks:
-            return ""
-        # Simulación: si los chunks no están vacíos, devolvemos un placeholder
-        # En producción, aquí se decodificaría el base64, se pasaría a Whisper,
-        # y se devolvería el texto transcrito.
-        total_data_len = sum(len(c.get("data", "")) for c in audio_chunks)
-        if total_data_len < 10:
-            return ""
-        # Placeholder: "texto transcrito" simulado
-        return "(Transcripción de audio simulada — reemplazar con Whisper)"
+            return None
+
+        try:
+            # Ordenar por seq
+            sorted_chunks = sorted(audio_chunks, key=lambda c: c.get("seq", 0))
+            
+            # Decodificar todos los chunks base64 → PCM raw bytes
+            all_pcm = bytearray()
+            for chunk in sorted_chunks:
+                b64_data = chunk.get("data", "")
+                if not b64_data:
+                    continue
+                raw_bytes = base64.b64decode(b64_data)
+                all_pcm.extend(raw_bytes)
+
+            if len(all_pcm) < 44:  # Muy pequeño para ser audio
+                return None
+
+            # Crear cabecera WAV para que soundfile / Whisper lo lean
+            # Formato: 16kHz, 16-bit, mono (el estándar de WebRTC/Opus)
+            sample_rate = 16000
+            bits_per_sample = 16
+            channels = 1
+            byte_rate = sample_rate * channels * bits_per_sample // 8
+            block_align = channels * bits_per_sample // 8
+            data_size = len(all_pcm)
+            header_size = 44
+
+            wav_bytes = bytearray(header_size)
+            # RIFF header
+            wav_bytes[0:4] = b"RIFF"
+            struct.pack_into("<I", wav_bytes, 4, data_size + header_size - 8)
+            wav_bytes[8:12] = b"WAVE"
+            # fmt chunk
+            wav_bytes[12:16] = b"fmt "
+            struct.pack_into("<I", wav_bytes, 16, 16)  # chunk size
+            struct.pack_into("<H", wav_bytes, 20, 1)   # PCM format
+            struct.pack_into("<H", wav_bytes, 22, channels)
+            struct.pack_into("<I", wav_bytes, 24, sample_rate)
+            struct.pack_into("<I", wav_bytes, 28, byte_rate)
+            struct.pack_into("<H", wav_bytes, 32, block_align)
+            struct.pack_into("<H", wav_bytes, 34, bits_per_sample)
+            # data chunk
+            wav_bytes[36:40] = b"data"
+            struct.pack_into("<I", wav_bytes, 40, data_size)
+            wav_bytes.extend(all_pcm)
+
+            return bytes(wav_bytes)
+        except Exception as e:
+            logger.warning(f"⚠️ Error decodificando audio: {e}")
+            return None
+
+    def _transcribe_whisper(self, wav_bytes: bytes) -> str:
+        """Transcribe audio WAV usando faster-whisper."""
+        if not self.whisper_available or not self.whisper_model:
+            return self._fallback_stt()
+
+        try:
+            import soundfile as sf
+            import io
+
+            # Leer el WAV desde el buffer
+            data, samplerate = sf.read(io.BytesIO(wav_bytes))
+
+            if len(data) == 0:
+                return ""
+
+            # Asegurar que es mono y float32
+            if len(data.shape) > 1:
+                data = data.mean(axis=1)
+
+            # Transcribir con Whisper
+            segments, info = self.whisper_model.transcribe(
+                data,
+                language="es",
+                beam_size=3,
+                vad_filter=True,
+                vad_parameters=dict(
+                    min_silence_duration_ms=200,
+                    threshold=0.5,
+                ),
+            )
+
+            text_parts = []
+            for segment in segments:
+                text_parts.append(segment.text.strip())
+
+            result = " ".join(text_parts).strip()
+            logger.info(f"🎤 Whisper: '{result[:100]}...' (lang={info.language}, prob={info.language_probability:.2f})")
+            return result
+
+        except Exception as e:
+            logger.warning(f"⚠️ Whisper transcription error: {e}")
+            return self._fallback_stt()
+
+    def _fallback_stt(self) -> str:
+        """STT placeholder cuando Whisper no está disponible."""
+        return "(Transcripción de audio — Whisper no disponible)"
+
+    async def _generate_tts_audio(self, text: str) -> bytes:
+        """Genera audio TTS usando edge-tts.
+        Returns: bytes del archivo WAV completo (16kHz, 16-bit, mono).
+        """
+        if not self.tts_available:
+            return b""
+
+        try:
+            import edge_tts
+            import tempfile
+
+            # edge-tts devuelve MP3 por defecto. Le pedimos audio en formato
+            # que podamos convertir a WAV PCM raw para enviar en chunks.
+            # Usamos el communicator directamente para obtener bytes.
+            communicate = edge_tts.Communicate(text, self.tts_voice)
+            
+            # edge-tts produce MP3. Lo acumulamos en memoria.
+            audio_bytes = bytearray()
+            async for chunk in communicate.stream():
+                if chunk["type"] == "audio":
+                    audio_bytes.extend(chunk["data"])
+
+            if not audio_bytes:
+                return b""
+
+            # Convertir MP3 → WAV PCM 16kHz 16-bit mono
+            return self._convert_mp3_to_pcm_wav(bytes(audio_bytes))
+
+        except Exception as e:
+            logger.warning(f"⚠️ TTS generation error: {e}")
+            return b""
+
+    def _convert_mp3_to_pcm_wav(self, mp3_bytes: bytes) -> bytes:
+        """Convierte MP3 a WAV PCM 16kHz 16-bit mono usando pydub."""
+        try:
+            from pydub import AudioSegment
+
+            audio = AudioSegment.from_mp3(io.BytesIO(mp3_bytes))
+            # Convertir a 16kHz mono 16-bit
+            audio = audio.set_frame_rate(16000).set_channels(1).set_sample_width(2)
+            return audio.raw_data  # PCM raw data
+
+        except Exception as e:
+            logger.warning(f"⚠️ MP3→PCM conversion error: {e}")
+            return b""
+
+    def _pcm_to_wav_header(self, pcm_data: bytes, sample_rate: int = 16000) -> bytes:
+        """Envuelve PCM raw en cabecera WAV completa."""
+        bits_per_sample = 16
+        channels = 1
+        byte_rate = sample_rate * channels * bits_per_sample // 8
+        block_align = channels * bits_per_sample // 8
+        data_size = len(pcm_data)
+        header_size = 44
+
+        wav = bytearray(header_size)
+        wav[0:4] = b"RIFF"
+        struct.pack_into("<I", wav, 4, data_size + header_size - 8)
+        wav[8:12] = b"WAVE"
+        wav[12:16] = b"fmt "
+        struct.pack_into("<I", wav, 16, 16)
+        struct.pack_into("<H", wav, 20, 1)
+        struct.pack_into("<H", wav, 22, channels)
+        struct.pack_into("<I", wav, 24, sample_rate)
+        struct.pack_into("<I", wav, 28, byte_rate)
+        struct.pack_into("<H", wav, 32, block_align)
+        struct.pack_into("<H", wav, 34, bits_per_sample)
+        wav[36:40] = b"data"
+        struct.pack_into("<I", wav, 40, data_size)
+        wav.extend(pcm_data)
+        return bytes(wav)
+
+    def _chunk_pcm_for_streaming(self, pcm_data: bytes, chunk_duration_ms: int = 60) -> list[bytes]:
+        """Divide PCM raw en chunks de chunk_duration_ms.
+        Cada chunk se envía como base64.
+        Sample rate: 16kHz, 16-bit mono → 32 bytes/ms
+        """
+        bytes_per_ms = 32  # 16kHz * 2 bytes * 1 channel / 1000
+        chunk_size = bytes_per_ms * chunk_duration_ms
+
+        chunks = []
+        for i in range(0, len(pcm_data), chunk_size):
+            chunk = pcm_data[i:i + chunk_size]
+            # Si el último chunk es muy pequeño, lo extendemos con silencio
+            if len(chunk) < chunk_size and len(chunk) > 0:
+                chunk = chunk + b"\x00" * (chunk_size - len(chunk))
+            if chunk:
+                chunks.append(chunk)
+        return chunks
 
     async def _send_simulated_audio(self, ws: web.WebSocketResponse, tab_id: str, text: str):
-        """Simula el envío de audio TTS en chunks.
-        En producción, reemplazar con un TTS real (e.g., Edge-TTS, Kokoro, etc.).
-        """
-        import base64
+        """Método legacy — ahora redirige al TTS real."""
+        await self._send_tts_audio(ws, tab_id, text)
 
+    async def _send_tts_audio(self, ws: web.WebSocketResponse, tab_id: str, text: str):
+        """Genera TTS real y envía audio en chunks por WebSocket."""
         await ws.send_json({
             "type": "agent_status", "tab_id": tab_id, "status": "speaking",
         })
 
-        logger.info(f"🔊 Enviando audio TTS simulado para tab={tab_id[:8]} ({len(text)} chars)")
+        if not text or not text.strip():
+            logger.warning(f"🔊 TTS: texto vacío, saltando")
+            return
 
-        # Simular N chunks de audio silencioso (placeholder)
-        # En producción, aquí se llamaría al TTS y se segmentaría en opus
-        num_chunks = max(1, min(10, len(text) // 20))
-        for seq in range(1, num_chunks + 1):
-            # Placeholder: datos de audio simulados (base64 de bytes vacíos con cabecera)
-            fake_audio_bytes = b"\x00" * 320  # 20ms de silencio a 16kHz mono 16-bit
-            fake_b64 = base64.b64encode(fake_audio_bytes).decode("ascii")
+        logger.info(f"🔊 Generando TTS para tab={tab_id[:8]} ({len(text)} chars)")
 
+        # 1. Generar audio con edge-tts
+        pcm_data = await self._generate_tts_audio(text)
+
+        if not pcm_data or len(pcm_data) < 32:
+            logger.warning(f"🔊 TTS: sin datos de audio, usando silencio")
+            # Fallback: enviar un chunk de silencio para que el cliente no se cuelgue
+            pcm_data = b"\x00" * 640  # 20ms de silencio
+
+        # 2. Dividir en chunks para streaming
+        chunk_duration_ms = os.environ.get("BMB_TTS_CHUNK_MS", "60")
+        chunks = self._chunk_pcm_for_streaming(pcm_data, int(chunk_duration_ms))
+
+        logger.info(f"🔊 Enviando {len(chunks)} chunks de audio TTS")
+
+        # 3. Enviar chunks por WS
+        for seq, chunk_data in enumerate(chunks, 1):
+            b64_data = base64.b64encode(chunk_data).decode("ascii")
             await ws.send_json({
                 "type": "audio_chunk",
                 "tab_id": tab_id,
-                "data": fake_b64,
+                "data": b64_data,
                 "seq": seq,
             })
-            # Pequeña pausa para simuir latencia de streaming
-            await asyncio.sleep(0.05)
+            # Pequeña pausa para simular latencia de streaming real
+            await asyncio.sleep(0.01)
 
-        logger.info(f"🔊 Audio TTS simulado completado: {num_chunks} chunks")
+        logger.info(f"🔊 TTS completado: {len(chunks)} chunks")
 
     # ─── Arranque ─────────────────────────────────────────────
 
