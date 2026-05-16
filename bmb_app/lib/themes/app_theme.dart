@@ -105,7 +105,6 @@ class AppTheme {
       selectionColor: primaryPurple.withOpacity(0.3),
       selectionHandleColor: primaryPurple,
     ),
-    themeMode: ThemeMode.dark,
     // Custom text styles
     textTheme: const TextTheme(
       headlineLarge: TextStyle(
