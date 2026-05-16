@@ -24,14 +24,23 @@ jobs:
           pip install -e . --no-deps
           pip install -e .[pty,cli,mcp,cron,acp]
 
-      - name: Build with PyInstaller
+      - name: Build bmb (CLI)
         run: pyinstaller --clean bmb-encover.spec
 
-      - name: Upload Windows artifact
+      - name: Build bmb-app-server (App Server)
+        run: pyinstaller --clean app-server.spec
+
+      - name: Upload Windows bmb CLI
         uses: actions/upload-artifact@v4
         with:
           name: bmb-windows-x64
           path: dist/bmb.exe
+
+      - name: Upload Windows App Server
+        uses: actions/upload-artifact@v4
+        with:
+          name: bmb-app-server-windows-x64
+          path: dist/bmb-app-server.exe
 
   build-linux:
     runs-on: ubuntu-latest
