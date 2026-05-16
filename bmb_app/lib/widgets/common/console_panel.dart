@@ -220,7 +220,6 @@ class _ConsolePanelState extends State<ConsolePanel>
           left: 16,
           bottom: 16 + MediaQuery.of(context).padding.bottom,
           child: FloatingActionButton.small(
-            mini: true,
             backgroundColor: _panelVisible
                 ? const Color(0xFF8300e9)
                 : const Color(0xFF1A1A1A),
