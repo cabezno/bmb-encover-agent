@@ -108,6 +108,11 @@ jobs:
           cd bmb_app
           flutter pub get
 
+      - name: Configure Windows platform
+        run: |
+          cd bmb_app
+          flutter create --platforms windows . 2>&1 | tail -5
+
       - name: Build Windows
         run: |
           cd bmb_app
@@ -134,6 +139,11 @@ jobs:
         run: |
           cd bmb_app
           flutter pub get
+
+      - name: Configure Android platform
+        run: |
+          cd bmb_app
+          flutter create --platforms android . 2>&1 | tail -5
 
       - name: Build APK
         run: |
