@@ -173,3 +173,4 @@ jobs:
             bmb-macos-x64/bmb
             bmb-flutter-windows-x64/bmb_app.exe
             bmb-flutter-android/bmb_app.apk
+# fix flutter windows upload Sat May 16 02:41:45 -03 2026
