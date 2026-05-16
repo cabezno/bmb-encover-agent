@@ -9,6 +9,7 @@ import 'screens/chat/home_screen.dart';
 import 'screens/call/call_screen.dart';
 import 'screens/settings/settings_screen.dart';
 import 'themes/app_theme.dart';
+import 'widgets/common/console_panel.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +20,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => ChatProvider()),
         ChangeNotifierProvider(create: (_) => CallProvider()),
         ChangeNotifierProvider(create: (_) => SettingsProvider()),
+        ChangeNotifierProvider(create: (_) => ConsoleLogProvider()),
       ],
       child: const BMBApp(),
     ),
