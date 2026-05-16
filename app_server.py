@@ -100,6 +100,10 @@ class AppServer:
         self.app.router.add_get("/api/sessions", self.handle_list_sessions)
         self.app.router.add_get("/ws", self.handle_websocket_chat)
         self.app.router.add_get("/ws/voice", self.handle_websocket_voice)
+        # Endpoints para CLI
+        self.app.router.add_get("/api/pair/token", self.handle_pair_token)
+        self.app.router.add_get("/api/pair/devices", self.handle_pair_devices)
+        self.app.router.add_post("/api/pair/revoke", self.handle_pair_revoke)
 
     # ─── Auth helpers ─────────────────────────────────────────
 
@@ -224,12 +228,74 @@ class AppServer:
             "agent_name": "BMB Encover",
         })
 
-    @staticmethod
-    def generate_pairing_token() -> dict:
-        """Generar un token de pairing (para mostrar en QR)."""
+    async def handle_pair_token(self, request):
+        """GET /api/pair/token — Genera un token fresco para el CLI."""
+        info = self.get_pairing_info()
+        return web.json_response(info)
+
+    async def handle_pair_devices(self, request):
+        """GET /api/pair/devices — Lista dispositivos vinculados."""
+        devices = self.list_paired_devices()
+        return web.json_response({"devices": devices})
+
+    async def handle_pair_revoke(self, request):
+        """POST /api/pair/revoke — Revoca un dispositivo."""
+        try:
+            raw = await request.text()
+            body = json.loads(raw) if raw else {}
+        except Exception:
+            return web.json_response({"error": "JSON inválido"}, status=400)
+        device_id = body.get("device_id", "")
+        if not device_id:
+            return web.json_response({"error": "device_id requerido"}, status=400)
+        if self.revoke_device(device_id):
+            return web.json_response({"status": "revoked", "device_id": device_id})
+        return web.json_response({"error": "Dispositivo no encontrado"}, status=404)
+
+    def generate_pairing_token(self) -> dict:
+        """Generar un token de pairing (para mostrar en QR) y lo registra internamente."""
         token = secrets.token_hex(16)
         expiry = time.time() + 300  # 5 minutos
-        return {"token": token, "expires_at": expiry, "qr_data": f"bmb://pair?token={token}"}
+        self._pairing_tokens[token] = expiry
+        logger.info(f"🔑 Token de pairing generado: {token[:8]}... expira en 5 min")
+        return {
+            "token": token,
+            "expires_at": expiry,
+            "qr_data": f"bmb://pair?token={token}",
+        }
+
+    def get_pairing_info(self) -> dict:
+        """Devuelve información de pairing con un token fresco para el CLI."""
+        token_info = self.generate_pairing_token()
+        return {
+            "token": token_info["token"],
+            "expires_at": token_info["expires_at"],
+            "ip": self.host,
+            "port": self.port,
+            "qr_data": token_info["qr_data"],
+        }
+
+    def list_paired_devices(self) -> list[dict]:
+        """Devuelve lista de dispositivos vinculados."""
+        return [
+            {
+                "device_id": dev_id,
+                "name": info.get("name", "Desconocido"),
+                "type": info.get("type", "?"),
+                "paired_at": info.get("paired_at", 0),
+                "last_seen": info.get("last_seen", 0),
+            }
+            for dev_id, info in self.devices.items()
+        ]
+
+    def revoke_device(self, device_id: str) -> bool:
+        """Revoca un dispositivo vinculado."""
+        if device_id in self.devices:
+            info = self.devices.pop(device_id)
+            self._save_devices()
+            logger.info(f"📱 Dispositivo revocado: {info.get('name', device_id)} ({device_id})")
+            return True
+        return False
 
     # ─── REST Chat ────────────────────────────────────────────
 
@@ -288,7 +354,7 @@ class AppServer:
         ]
         return web.json_response({"sessions": sessions_list})
 
-    # ─── WebSocket Chat (multi-tab) ───────────────────────────
+    # ─── WebSocket Chat (multi-tab con streaming) ────────────
 
     async def handle_websocket_chat(self, request):
         ws = web.WebSocketResponse()
@@ -333,7 +399,7 @@ class AppServer:
                             "type": "status", "tab_id": tab_id, "status": "processing"
                         })
 
-                        # Procesar con el agente
+                        # Procesar con el agente (con streaming)
                         agent = self._get_agent()
                         if agent:
                             try:
@@ -341,8 +407,33 @@ class AppServer:
                                     "type": "typing", "tab_id": tab_id, "is_typing": True
                                 })
 
-                                response = await asyncio.to_thread(agent.chat, text)
+                                # Callback que envía chunks por WS a medida que se generan
+                                full_response_parts = []
 
+                                def stream_chunk_callback(chunk: str):
+                                    if chunk:
+                                        full_response_parts.append(chunk)
+                                        # Encolar en el event loop del hilo principal
+                                        asyncio.run_coroutine_threadsafe(
+                                            ws.send_json({
+                                                "type": "stream_chunk",
+                                                "tab_id": tab_id,
+                                                "text": chunk,
+                                            }),
+                                            asyncio.get_event_loop(),
+                                        )
+
+                                # Ejecutar el agente en un hilo separado, con stream_callback
+                                response = await asyncio.to_thread(
+                                    agent.chat, text, stream_callback=stream_chunk_callback
+                                )
+
+                                # Enviar fin del stream
+                                await ws.send_json({
+                                    "type": "stream_end",
+                                    "tab_id": tab_id,
+                                    "session_id": session_id,
+                                })
                                 await ws.send_json({
                                     "type": "message",
                                     "tab_id": tab_id,
@@ -385,7 +476,7 @@ class AppServer:
 
         return ws
 
-    # ─── WebSocket Voice (Live Mode) ──────────────────────────
+    # ─── WebSocket Voice (Live Mode con STT + TTS simulado) ──
 
     async def handle_websocket_voice(self, request):
         ws = web.WebSocketResponse()
@@ -394,6 +485,9 @@ class AppServer:
         device_id = self._verify_device(request)
         session_id = request.query.get("session_id", str(uuid.uuid4()))
         logger.info(f"🎤 WS voice: device={device_id or 'anon'} session={session_id[:8]}")
+
+        # Almacenar chunks de audio para procesar al recibir speech_end
+        audio_buffers: dict[str, list[dict]] = {}  # tab_id -> [chunks]
 
         # Añadir cliente también al pool de chat (para recibir mensajes de texto)
         self.clients[device_id or f"voice_{session_id}"] = ws
@@ -424,38 +518,18 @@ class AppServer:
                             continue
 
                         logger.info(f"🎤 voice text: '{text[:50]}...'")
-                        await ws.send_json({
-                            "type": "agent_status", "tab_id": tab_id,
-                            "status": "thinking",
-                        })
-
-                        agent = self._get_agent()
-                        if agent:
-                            try:
-                                response = await asyncio.to_thread(agent.chat, text)
-                                await ws.send_json({
-                                    "type": "message", "tab_id": tab_id,
-                                    "text": response, "session_id": session_id,
-                                })
-                            except Exception as e:
-                                await ws.send_json({
-                                    "type": "error", "tab_id": tab_id,
-                                    "text": f"Error: {str(e)}",
-                                })
-
-                        await ws.send_json({
-                            "type": "agent_status", "tab_id": tab_id,
-                            "status": "listening",
-                        })
+                        await self._process_voice_message(ws, tab_id, session_id, text)
 
                     elif msg_type == "audio_chunk":
-                        # Audio chunk recibido (para STT futuro)
+                        # Audio chunk recibido — acumular para STT
                         seq = data.get("seq", 0)
                         audio_data = data.get("data", "")
+                        if tab_id not in audio_buffers:
+                            audio_buffers[tab_id] = []
+                        audio_buffers[tab_id].append({"seq": seq, "data": audio_data})
                         if seq == 1:
-                            logger.info(f"🎤 audio streaming started...")
-
-                        # Response temporal: acuse de recibo
+                            logger.info(f"🎤 audio streaming started for tab={tab_id[:8]}...")
+                        # Acuse de recibo cada 10 chunks
                         if seq % 10 == 0:
                             await ws.send_json({
                                 "type": "vad_state", "state": "speaking",
@@ -463,7 +537,7 @@ class AppServer:
 
                     elif msg_type == "speech_end":
                         duration = data.get("duration_ms", 0)
-                        logger.info(f"🎤 speech end: {duration}ms")
+                        logger.info(f"🎤 speech end: {duration}ms, chunks accumulated: {len(audio_buffers.get(tab_id, []))}")
                         await ws.send_json({
                             "type": "vad_state", "state": "idle", "duration_ms": duration,
                         })
@@ -472,18 +546,30 @@ class AppServer:
                             "status": "thinking",
                         })
 
-                        # TODO: Aquí iría Whisper STT + agente + TTS
-                        # Por ahora simulamos respuesta
-                        await asyncio.sleep(1)
+                        # 1) Simular Whisper STT: extraer el texto del audio
+                        stt_text = self._simulate_whisper_stt(audio_buffers.pop(tab_id, []), duration)
+                        logger.info(f"🎤 STT result for tab={tab_id[:8]}: '{stt_text[:80]}...'")
+
+                        # Enviar STT final al cliente
                         await ws.send_json({
-                            "type": "message", "tab_id": tab_id,
-                            "text": "Escuché algo. (STT + agente próximamente)",
-                            "session_id": session_id,
+                            "type": "stt_final", "tab_id": tab_id, "text": stt_text,
                         })
+
+                        # 2) Procesar con el agente (con streaming)
+                        await self._process_voice_message(ws, tab_id, session_id, stt_text, send_audio=True)
+
+                    elif msg_type == "webrtc_offer":
+                        # Placeholder para WebRTC real
+                        sdp = data.get("sdp", "")
+                        logger.info(f"🎤 WebRTC offer received (sdp length: {len(sdp)})")
                         await ws.send_json({
-                            "type": "agent_status", "tab_id": tab_id,
-                            "status": "listening",
+                            "type": "webrtc_answer",
+                            "sdp": "placeholder_sdp_answer",
                         })
+
+                    elif msg_type == "ice_candidate":
+                        candidate = data.get("candidate", "")
+                        logger.info(f"🎤 ICE candidate received: {candidate[:50]}...")
 
                     elif msg_type == "ping":
                         await ws.send_json({"type": "pong"})
@@ -498,6 +584,121 @@ class AppServer:
             logger.info(f"🔌 WS voice desconectado")
 
         return ws
+
+    async def _process_voice_message(
+        self, ws: web.WebSocketResponse, tab_id: str,
+        session_id: str, text: str, send_audio: bool = False,
+    ):
+        """Procesa un mensaje de texto en el canal de voz, con streaming y TTS simulado."""
+        if not text:
+            return
+
+        await ws.send_json({
+            "type": "agent_status", "tab_id": tab_id, "status": "thinking",
+        })
+
+        agent = self._get_agent()
+        if not agent:
+            await ws.send_json({
+                "type": "error", "tab_id": tab_id,
+                "text": "Agente no disponible.",
+            })
+            return
+
+        try:
+            # Callback para streaming de texto
+            full_response_parts = []
+
+            def stream_chunk_callback(chunk: str):
+                if chunk:
+                    full_response_parts.append(chunk)
+                    asyncio.run_coroutine_threadsafe(
+                        ws.send_json({
+                            "type": "stream_chunk",
+                            "tab_id": tab_id,
+                            "text": chunk,
+                        }),
+                        asyncio.get_event_loop(),
+                    )
+
+            response = await asyncio.to_thread(
+                agent.chat, text, stream_callback=stream_chunk_callback
+            )
+
+            # Enviar fin del stream de texto
+            await ws.send_json({
+                "type": "stream_end",
+                "tab_id": tab_id,
+                "session_id": session_id,
+            })
+            await ws.send_json({
+                "type": "message",
+                "tab_id": tab_id,
+                "text": response,
+                "session_id": session_id,
+            })
+
+            # Si send_audio=True, simular TTS y enviar audio chunks
+            if send_audio and response:
+                await self._send_simulated_audio(ws, tab_id, response)
+
+            await ws.send_json({
+                "type": "agent_status", "tab_id": tab_id, "status": "listening",
+            })
+
+        except Exception as e:
+            await ws.send_json({
+                "type": "error", "tab_id": tab_id, "text": f"Error: {str(e)}",
+            })
+            await ws.send_json({
+                "type": "agent_status", "tab_id": tab_id, "status": "listening",
+            })
+
+    def _simulate_whisper_stt(self, audio_chunks: list[dict], duration_ms: int) -> str:
+        """Simula Whisper STT sobre los chunks de audio recibidos.
+        En producción, reemplazar con faster-whisper.
+        """
+        if not audio_chunks:
+            return ""
+        # Simulación: si los chunks no están vacíos, devolvemos un placeholder
+        # En producción, aquí se decodificaría el base64, se pasaría a Whisper,
+        # y se devolvería el texto transcrito.
+        total_data_len = sum(len(c.get("data", "")) for c in audio_chunks)
+        if total_data_len < 10:
+            return ""
+        # Placeholder: "texto transcrito" simulado
+        return "(Transcripción de audio simulada — reemplazar con Whisper)"
+
+    async def _send_simulated_audio(self, ws: web.WebSocketResponse, tab_id: str, text: str):
+        """Simula el envío de audio TTS en chunks.
+        En producción, reemplazar con un TTS real (e.g., Edge-TTS, Kokoro, etc.).
+        """
+        import base64
+
+        await ws.send_json({
+            "type": "agent_status", "tab_id": tab_id, "status": "speaking",
+        })
+
+        logger.info(f"🔊 Enviando audio TTS simulado para tab={tab_id[:8]} ({len(text)} chars)")
+
+        # Simular N chunks de audio silencioso (placeholder)
+        # En producción, aquí se llamaría al TTS y se segmentaría en opus
+        num_chunks = max(1, min(10, len(text) // 20))
+        for seq in range(1, num_chunks + 1):
+            # Placeholder: datos de audio simulados (base64 de bytes vacíos con cabecera)
+            fake_audio_bytes = b"\x00" * 320  # 20ms de silencio a 16kHz mono 16-bit
+            fake_b64 = base64.b64encode(fake_audio_bytes).decode("ascii")
+
+            await ws.send_json({
+                "type": "audio_chunk",
+                "tab_id": tab_id,
+                "data": fake_b64,
+                "seq": seq,
+            })
+            # Pequeña pausa para simuir latencia de streaming
+            await asyncio.sleep(0.05)
+
+        logger.info(f"🔊 Audio TTS simulado completado: {num_chunks} chunks")
 
     # ─── Arranque ─────────────────────────────────────────────
 
