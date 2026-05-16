@@ -65,7 +65,7 @@ class CallStatusIndicator extends StatelessWidget {
       case CallScreenState.speaking:
         // Sound wave animation
         for (int i = 0; i < 3; i++) {
-          final waveOffset = (pulseValue * 2 * 3.14159 * (i + 1) * 0.5).sin();
+          final waveOffset = (pulseValue * 2 * 3.14159 * (i + 1) * 0.5);
           final scale = 1.0 + (waveOffset.abs() * 0.15);
           rings.add(_buildRing(
             scale: scale,

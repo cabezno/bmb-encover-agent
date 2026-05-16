@@ -100,11 +100,12 @@ class AppTheme {
       valueIndicatorTextStyle: const TextStyle(color: Colors.white),
     ),
     dividerColor: Colors.white.withOpacity(0.05),
-    textSelectionTheme: const TextSelectionThemeData(
+    textSelectionTheme: TextSelectionThemeData(
       cursorColor: primaryPurple,
       selectionColor: primaryPurple.withOpacity(0.3),
       selectionHandleColor: primaryPurple,
     ),
+    themeMode: ThemeMode.dark,
     // Custom text styles
     textTheme: const TextTheme(
       headlineLarge: TextStyle(

@@ -124,7 +124,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 style: TextStyle(color: Colors.red),
               ),
               style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: Colors.red26),
+                side: const BorderSide(color: Color(0xFFE53935)),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
