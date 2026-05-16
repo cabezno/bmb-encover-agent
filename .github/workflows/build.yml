@@ -117,12 +117,16 @@ jobs:
         run: |
           cd bmb_app
           flutter build windows --release
+          echo "Contenido de Release:"
+          dir build\windows\runner\Release\ /b 2>nul || ls build/windows/runner/Release/
 
       - name: Upload Flutter Windows
         uses: actions/upload-artifact@v4
         with:
           name: bmb-flutter-windows-x64
-          path: bmb_app/build/windows/runner/Release/bmb_app.exe
+          path: |
+            bmb_app/build/windows/runner/Release/*.exe
+            bmb_app/build/windows/runner/Release/*.dll
 
   build-flutter-android:
     runs-on: ubuntu-latest
@@ -171,6 +175,7 @@ jobs:
             bmb-windows-x64/bmb.exe
             bmb-linux-x64/bmb
             bmb-macos-x64/bmb
-            bmb-flutter-windows-x64/bmb_app.exe
+            bmb-flutter-windows-x64/*.exe
+            bmb-flutter-windows-x64/*.dll
             bmb-flutter-android/bmb_app.apk
 # fix flutter windows upload Sat May 16 02:41:45 -03 2026
