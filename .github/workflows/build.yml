@@ -122,7 +122,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: bmb-flutter-windows-x64
-          path: bmb_app/build/windows/x64/runner/Release/*.exe
+          path: bmb_app/build/windows/x64/runner/Release/
 
   build-flutter-android:
     runs-on: ubuntu-latest
