@@ -14,7 +14,6 @@ dependencies:
   shared_preferences: ^2.2.2
   path_provider: ^2.1.1
   uuid: ^4.2.1
-  flutter_ringtone_player: ^3.2.0
   cupertino_icons: ^1.0.6
 
 dev_dependencies:
