@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
 import '../../models/message_model.dart';
 import '../../models/tab_model.dart';
@@ -12,9 +13,12 @@ class ChatService {
       StreamController<MessageModel>.broadcast();
   final StreamController<bool> _typingController =
       StreamController<bool>.broadcast();
+  final StreamController<String> _errorController =
+      StreamController<String>.broadcast();
 
   Stream<MessageModel> get newMessageStream => _newMessageController.stream;
   Stream<bool> get typingStream => _typingController.stream;
+  Stream<String> get errorStream => _errorController.stream;
 
   ChatService(this._connectionService) {
     _connectionService.messageStream.listen(_handleIncomingMessage);
@@ -56,6 +60,12 @@ class ChatService {
         _finalizeStreamChunk(tabId, message);
         _typingController.add(false);
         break;
+      case 'error':
+        final errorText =
+            message['message'] as String? ?? 'Error desconocido';
+        _errorController.add(errorText);
+        _typingController.add(false);
+        break;
     }
   }
 
@@ -72,7 +82,8 @@ class ChatService {
   }
 
   void _finalizeStreamChunk(String tabId, Map<String, dynamic> metadata) {
-    if (_currentStreamTabId == tabId && _currentStreamBuffer != null &&
+    if (_currentStreamTabId == tabId &&
+        _currentStreamBuffer != null &&
         _currentStreamBuffer!.isNotEmpty) {
       final msg = MessageModel(
         text: _currentStreamBuffer!,
@@ -91,6 +102,8 @@ class ChatService {
     _messageHistory[tabId]!.add(message);
   }
 
+  /// Send a chat message via WebSocket (streaming path).
+  /// For a more reliable non-streaming path, use sendViaHttp() instead.
   void sendMessage({
     required String tabId,
     required String text,
@@ -112,6 +125,98 @@ class ChatService {
       'timestamp': DateTime.now().toIso8601String(),
       'message_id': userMessage.id,
     });
+  }
+
+  /// Send a chat message via HTTP POST /api/chat (functional REST path).
+  /// This is the reliable path that works even when WS streaming has issues.
+  Future<bool> sendViaHttp({
+    required String tabId,
+    required String text,
+    String? sessionId,
+  }) async {
+    final ip = _connectionService.connectedIp;
+    final port = _connectionService.connectedPort;
+    if (ip == null || port == null) return false;
+
+    final userMessage = MessageModel(
+      text: text,
+      sender: MessageSender.user,
+    );
+    _addMessageToHistory(tabId, userMessage);
+    _newMessageController.add(userMessage);
+
+    try {
+      final uri = Uri.parse('http://$ip:$port/api/chat');
+      final body = {
+        'message': text,
+        if (sessionId != null && sessionId.isNotEmpty)
+          'session_id': sessionId,
+      };
+
+      _typingController.add(true);
+
+      final response = await http
+          .post(
+            uri,
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode(body),
+          )
+          .timeout(const Duration(seconds: 60));
+
+      _typingController.add(false);
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        final responseText = data['response'] as String? ??
+            data['message'] as String? ??
+            data['text'] as String? ??
+            '';
+
+        if (responseText.isNotEmpty) {
+          final agentMessage = MessageModel(
+            text: responseText,
+            sender: MessageSender.agent,
+            metadata: {'source': 'http_api'},
+          );
+          _addMessageToHistory(tabId, agentMessage);
+          _newMessageController.add(agentMessage);
+        }
+        return true;
+      } else if (response.statusCode == 401 || response.statusCode == 403) {
+        _errorController.add(
+            'Error de autenticación (${response.statusCode}). '
+            'Verifica el Access Token en Configuración.');
+        return false;
+      } else if (response.statusCode == 503) {
+        _errorController.add(
+            'Agente no disponible (503). El servidor está ocupado o '
+            'reiniciando.');
+        return false;
+      } else {
+        _errorController.add(
+            'Error del servidor (${response.statusCode}): '
+            '${response.body}');
+        return false;
+      }
+    } on TimeoutException {
+      _typingController.add(false);
+      _errorController.add(
+          'La solicitud tardó demasiado. El servidor podría estar '
+          'sobrecargado.');
+      return false;
+    } catch (e) {
+      _typingController.add(false);
+      final errorStr = e.toString();
+      if (errorStr.contains('Connection refused') ||
+          errorStr.contains('SocketException')) {
+        _errorController.add(
+            'No se pudo conectar al servidor (${ip}:$port). '
+            '¿Está en ejecución?');
+      } else {
+        _errorController.add('Error de conexión: $errorStr');
+      }
+      return false;
+    }
   }
 
   void sendVoiceMessage({
@@ -151,5 +256,6 @@ class ChatService {
   void dispose() {
     _newMessageController.close();
     _typingController.close();
+    _errorController.close();
   }
 }

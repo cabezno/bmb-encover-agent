@@ -10,15 +10,19 @@ class ChatProvider extends ChangeNotifier {
   int _activeTabIndex = 0;
   late ChatService _chatService;
   bool _isConnected = false;
+  bool _useHttpApi = false;
+  String? _lastError;
 
   List<TabModel> get tabs => List.unmodifiable(_tabs);
   int get activeTabIndex => _activeTabIndex;
-  TabModel get activeTab => _tabs.isNotEmpty ? _tabs[_activeTabIndex] : _createDefaultTab();
+  TabModel get activeTab =>
+      _tabs.isNotEmpty ? _tabs[_activeTabIndex] : _createDefaultTab();
   int get tabCount => _tabs.length;
   bool get hasTabs => _tabs.isNotEmpty;
+  bool get useHttpApi => _useHttpApi;
+  String? get lastError => _lastError;
 
   ChatProvider() {
-    // Initialize with a default chat tab
     _tabs.add(_createDefaultTab());
   }
 
@@ -32,10 +36,21 @@ class ChatProvider extends ChangeNotifier {
 
   void initialize(svc.ConnectionService connectionService) {
     _chatService = ChatService(connectionService);
+
+    // Listen for errors from the chat service
+    _chatService.errorStream.listen((error) {
+      _lastError = error;
+      notifyListeners();
+    });
   }
 
   void setConnectionState(bool connected) {
     _isConnected = connected;
+    notifyListeners();
+  }
+
+  void toggleHttpApi(bool value) {
+    _useHttpApi = value;
     notifyListeners();
   }
 
@@ -79,8 +94,28 @@ class ChatProvider extends ChangeNotifier {
   void sendMessage(String text) {
     if (!_isConnected || text.trim().isEmpty) return;
     final tab = activeTab;
-    _chatService.sendMessage(tabId: tab.id, text: text);
+    _lastError = null;
+    tab.status = TabStatus.processing;
     notifyListeners();
+
+    if (_useHttpApi) {
+      // Use HTTP POST /api/chat for reliable communication
+      _chatService.sendViaHttp(
+        tabId: tab.id,
+        text: text,
+      ).then((success) {
+        tab.status = success ? TabStatus.idle : TabStatus.error;
+        if (!success) {
+          _lastError = 'Error al enviar el mensaje por HTTP';
+        }
+        notifyListeners();
+      });
+    } else {
+      // Use WebSocket for streaming
+      _chatService.sendMessage(tabId: tab.id, text: text);
+      tab.status = TabStatus.idle;
+      notifyListeners();
+    }
   }
 
   void addMessageToTab(String tabId, MessageModel message) {
@@ -111,13 +146,11 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Auto-evolution: detect when a research tab should become code or live
   void detectTabEvolution(int index) {
     if (index < 0 || index >= _tabs.length) return;
     final tab = _tabs[index];
     if (tab.type != TabType.research) return;
 
-    // Heuristic: if last few messages contain code blocks, evolve to code tab
     final recentMessages = tab.messages
         .where((m) => m.sender == MessageSender.agent)
         .takeLast(3);
@@ -137,6 +170,11 @@ class ChatProvider extends ChangeNotifier {
     final tab = activeTab;
     tab.messages.clear();
     tab.taskQueue.clear();
+    notifyListeners();
+  }
+
+  void clearError() {
+    _lastError = null;
     notifyListeners();
   }
 
