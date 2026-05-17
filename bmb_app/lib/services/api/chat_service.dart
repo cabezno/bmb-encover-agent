@@ -28,6 +28,9 @@ class ChatService {
     final type = message['type'] as String?;
 
     switch (type) {
+      case 'connected':
+        _typingController.add(false);
+        break;
       case 'chat_response':
       case 'message':
         final tabId = message['tab_id'] as String? ?? 'default';
@@ -105,12 +108,10 @@ class ChatService {
 
     // Send through WebSocket
     _connectionService.sendMessage({
-      'type': 'chat_message',
+      'type': 'message',
       'tab_id': tabId,
       'text': text,
       'session_id': sessionId ?? '',
-      'timestamp': DateTime.now().toIso8601String(),
-      'message_id': userMessage.id,
     });
   }
 
