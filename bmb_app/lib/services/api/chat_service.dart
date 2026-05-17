@@ -99,13 +99,6 @@ class ChatService {
     required String text,
     String? sessionId,
   }) {
-    final userMessage = MessageModel(
-      text: text,
-      sender: MessageSender.user,
-    );
-    _addMessageToHistory(tabId, userMessage);
-    _newMessageController.add(userMessage);
-
     // Send through WebSocket
     _connectionService.sendMessage({
       'type': 'message',
