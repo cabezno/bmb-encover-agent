@@ -46,12 +46,6 @@ class ChatProvider extends ChangeNotifier {
     _chatService.newMessageStream.listen(_onNewMessage);
   }
 
-  void _onNewMessage(MessageModel msg) {
-    final tab = activeTab;
-    tab.addMessage(msg);
-    notifyListeners();
-  }
-
   void setConnectionState(bool connected) {
     _isConnected = connected;
     notifyListeners();
