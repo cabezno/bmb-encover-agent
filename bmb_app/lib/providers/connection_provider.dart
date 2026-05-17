@@ -11,8 +11,6 @@ class ConnectionProvider extends ChangeNotifier {
   ConnectionStatus _status = ConnectionStatus.disconnected;
   ConnectionModel _connection = ConnectionModel();
   String _errorMessage = '';
-  // DeepSeek API key (for the agent, not the server)
-  String _deepSeekApiKey = '';
 
   ConnectionStatus get status => _status;
   ConnectionModel get connection => _connection;
@@ -20,8 +18,6 @@ class ConnectionProvider extends ChangeNotifier {
   svc.ConnectionService get service => _connectionService;
   bool get isConnected => _status == ConnectionStatus.connected;
   bool get isPaired => _connection.apiKey.isNotEmpty;
-  String get deepSeekApiKey => _deepSeekApiKey;
-  String get accessToken => _connection.accessToken;
 
   ConnectionProvider() {
     _connectionService.stateStream.listen((state) {
@@ -37,7 +33,7 @@ class ConnectionProvider extends ChangeNotifier {
           break;
         case svc.ConnectionState.error:
           _status = ConnectionStatus.error;
-          _errorMessage = _connectionService.lastAuthError ?? 'Connection failed';
+          _errorMessage = 'Connection failed';
           break;
       }
       notifyListeners();
@@ -51,78 +47,17 @@ class ConnectionProvider extends ChangeNotifier {
     final port = prefs.getInt('paired_port') ?? 8765;
     final deviceName = prefs.getString('device_name') ?? '';
     final deviceId = prefs.getString('device_id') ?? '';
-    final accessToken = prefs.getString('access_token') ?? '';
-    _deepSeekApiKey = prefs.getString('deepseek_api_key') ?? '';
 
     if (apiKey.isNotEmpty && ip.isNotEmpty) {
       _connection = ConnectionModel(
         tailscaleIp: ip,
         port: port,
         apiKey: apiKey,
-        accessToken: accessToken,
         deviceName: deviceName,
         deviceId: deviceId,
       );
       notifyListeners();
     }
-  }
-
-  /// Save DeepSeek API key to SharedPreferences
-  Future<void> setDeepSeekApiKey(String key) async {
-    _deepSeekApiKey = key;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('deepseek_api_key', key);
-    notifyListeners();
-  }
-
-  /// Save Access Token to SharedPreferences and connection model
-  Future<void> setAccessToken(String token) async {
-    _connection = _connection.copyWith(accessToken: token);
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('access_token', token);
-    notifyListeners();
-  }
-
-  /// Pair via scanned QR data (bmb:// URI parsed already)
-  Future<bool> pairWithQRData({
-    required String ip,
-    required int port,
-    required String pairToken,
-    required String deviceName,
-    String? accessToken,
-  }) async {
-    _status = ConnectionStatus.connecting;
-    _errorMessage = '';
-    notifyListeners();
-
-    final qrService = QRService();
-    final apiKey = await qrService.pairWithServer(
-      ip: ip,
-      port: port,
-      token: pairToken,
-      deviceName: deviceName,
-      accessToken: accessToken,
-    );
-
-    if (apiKey == null) {
-      _status = ConnectionStatus.error;
-      _errorMessage = 'No se pudo establecer el pairing con el servidor. '
-          'Verifica que el servidor esté en ejecución y el QR sea válido.';
-      notifyListeners();
-      return false;
-    }
-
-    _connection = ConnectionModel(
-      tailscaleIp: ip,
-      port: port,
-      apiKey: apiKey,
-      accessToken: accessToken ?? '',
-      deviceName: deviceName,
-    );
-
-    // Auto-connect after pairing
-    final connected = await connect();
-    return connected;
   }
 
   Future<bool> pairViaQR({
@@ -138,7 +73,6 @@ class ConnectionProvider extends ChangeNotifier {
     final apiKey = await qrService.pairWithServer(
       ip: ip,
       port: port,
-      token: '',  // legacy fallback — will fail gracefully
       deviceName: deviceName,
     );
 
@@ -156,6 +90,7 @@ class ConnectionProvider extends ChangeNotifier {
       deviceName: deviceName,
     );
 
+    // Auto-connect after pairing
     final connected = await connect();
     return connected;
   }
@@ -170,17 +105,13 @@ class ConnectionProvider extends ChangeNotifier {
       _connection.tailscaleIp,
       _connection.port,
       _connection.apiKey,
-      accessToken: _connection.accessToken.isNotEmpty
-          ? _connection.accessToken
-          : null,
     );
 
     if (success) {
       _connection = _connection.copyWith(isConnected: true);
       _status = ConnectionStatus.connected;
     } else {
-      _errorMessage =
-          _connectionService.lastAuthError ?? 'No se pudo conectar al servidor';
+      _errorMessage = 'No se pudo conectar al servidor';
       _status = ConnectionStatus.error;
     }
     notifyListeners();
@@ -199,7 +130,6 @@ class ConnectionProvider extends ChangeNotifier {
     await QRService.clearCredentials();
     _connection = ConnectionModel();
     _status = ConnectionStatus.disconnected;
-    _errorMessage = '';
     notifyListeners();
   }
 

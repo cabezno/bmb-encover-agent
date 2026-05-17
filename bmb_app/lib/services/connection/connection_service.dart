@@ -10,13 +10,11 @@ class ConnectionService {
   String? _ip;
   int? _port;
   String? _apiKey;
-  String? _accessToken;
   ConnectionState _state = ConnectionState.disconnected;
   int _reconnectAttempts = 0;
-  int _maxReconnectAttempts = 10;
+  static const int _maxReconnectAttempts = 3;
   Timer? _keepAliveTimer;
   Timer? _reconnectTimer;
-  String? _lastAuthError;
 
   final StreamController<ConnectionState> _stateController =
       StreamController<ConnectionState>.broadcast();
@@ -30,26 +28,20 @@ class ConnectionService {
   bool get isConnected => _state == ConnectionState.connected;
   String? get connectedIp => _ip;
   int? get connectedPort => _port;
-  String? get lastAuthError => _lastAuthError;
 
   String get wsUrl {
     if (_ip == null || _port == null) return '';
-    final base = 'ws://$_ip:$_port/ws';
-    // Send access_token as ?token= query param
-    if (_accessToken != null && _accessToken!.isNotEmpty) {
-      return '$base?token=${Uri.encodeComponent(_accessToken!)}';
+    if (_apiKey != null && _apiKey!.isNotEmpty) {
+      return 'ws://$_ip:$_port/ws?api_key=$_apiKey';
     }
-    return base;
+    return 'ws://$_ip:$_port/ws';
   }
 
-  Future<bool> connect(String ip, int port, String apiKey,
-      {String? accessToken}) async {
+  Future<bool> connect(String ip, int port, String apiKey) async {
     _ip = ip;
     _port = port;
     _apiKey = apiKey;
-    _accessToken = accessToken;
     _reconnectAttempts = 0;
-    _lastAuthError = null;
 
     return _establishConnection();
   }
@@ -65,7 +57,6 @@ class ConnectionService {
       await _channel!.ready;
       _setState(ConnectionState.connected);
       _reconnectAttempts = 0;
-      _lastAuthError = null;
       _startKeepAlive();
 
       _channel!.stream.listen(
@@ -88,18 +79,6 @@ class ConnectionService {
 
       return true;
     } catch (e) {
-      final errorMsg = e.toString();
-      // Detect auth errors
-      if (errorMsg.contains('401') ||
-          errorMsg.contains('403') ||
-          errorMsg.contains('auth') ||
-          errorMsg.contains('token')) {
-        _lastAuthError =
-            'Error de autenticación: token inválido o faltante. '
-            'Verifica el Access Token en Configuración.';
-      } else {
-        _lastAuthError = 'No se pudo conectar al servidor: $errorMsg';
-      }
       _setState(ConnectionState.error);
       _scheduleReconnect();
       return false;
@@ -112,19 +91,6 @@ class ConnectionService {
       sendMessage({'type': 'pong'});
       return;
     }
-    // Handle auth errors from server
-    if (message['type'] == 'error') {
-      final errorText = message['message'] as String? ?? '';
-      if (errorText.contains('auth') ||
-          errorText.contains('token') ||
-          message['code'] == 401) {
-        _lastAuthError =
-            'El servidor rechazó la conexión: $errorText. '
-            'Verifica el Access Token en Configuración.';
-        _setState(ConnectionState.error);
-        return;
-      }
-    }
     _messageController.add(message);
   }
 
@@ -135,20 +101,13 @@ class ConnectionService {
   }
 
   void _scheduleReconnect() {
-    if (_reconnectAttempts >= _maxReconnectAttempts) {
-      _lastAuthError =
-          'No se pudo reconectar después de $_maxReconnectAttempts intentos.';
-      return;
-    }
+    if (_reconnectAttempts >= _maxReconnectAttempts) return;
     if (_reconnectTimer?.isActive ?? false) return;
 
     _reconnectAttempts++;
-    // Exponential backoff: 1s, 2s, 4s, 8s, 16s, max 30s
-    final delaySeconds = min(pow(2, _reconnectAttempts - 1).toInt(), 30);
-    final delay = Duration(seconds: delaySeconds);
-
+    final delay = Duration(seconds: min(2 * _reconnectAttempts, 10));
     _reconnectTimer = Timer(delay, () {
-      if (_ip != null && _port != null) {
+      if (_ip != null && _port != null && _apiKey != null) {
         _establishConnection();
       }
     });

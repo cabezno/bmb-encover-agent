@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/connection_provider.dart';
 import '../../themes/app_theme.dart';
-import '../../services/connection/qr_service.dart';
-import '../qr/qr_scanner_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -55,80 +53,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     super.dispose();
   }
 
-  /// Open QR scanner and parse result
-  Future<void> _openQRScanner() async {
-    final result = await Navigator.of(context).push<String>(
-      MaterialPageRoute(
-        builder: (context) => const QRScannerScreen(),
-      ),
-    );
-
-    if (result == null || !mounted) return;
-
-    // Parse the bmb:// URI from the QR code
-    final parsed = QRService.parseQRUri(result);
-
-    if (parsed == null) {
-      setState(() {
-        _errorMessage =
-            'QR inválido. El código debe tener formato:\n'
-            'bmb://ip:port/pair?token=xxx&access=yyy';
-      });
-      return;
-    }
-
-    // Pre-fill manual entry fields from QR data
-    setState(() {
-      _showManualEntry = true;
-      _ipController.text = parsed.ip;
-      _portController.text = parsed.port.toString();
-      _tokenController.text = parsed.pairToken;
-      _errorMessage = null;
-    });
-
-    // Auto-connect with QR data
-    await _handlePairWithQRData(parsed);
-  }
-
-  /// Handle pairing with parsed QR data
-  Future<void> _handlePairWithQRData(QRParseResult parsed) async {
-    if (!mounted) return;
-
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
-
-    final connProv = Provider.of<ConnectionProvider>(context, listen: false);
-    final deviceName = _deviceNameController.text.trim().isNotEmpty
-        ? _deviceNameController.text.trim()
-        : 'BMB App ${DateTime.now().millisecondsSinceEpoch}';
-
-    final success = await connProv.pairWithQRData(
-      ip: parsed.ip,
-      port: parsed.port,
-      pairToken: parsed.pairToken,
-      deviceName: deviceName,
-      accessToken: parsed.accessToken.isNotEmpty ? parsed.accessToken : null,
-    );
-
-    if (!mounted) return;
-
-    setState(() {
-      _isLoading = false;
-    });
-
-    if (success) {
-      Navigator.of(context).pushReplacementNamed('/home');
-    } else {
-      setState(() {
-        _errorMessage = connProv.errorMessage.isNotEmpty
-            ? connProv.errorMessage
-            : 'No se pudo conectar. Verifica que el servidor esté en ejecución.';
-      });
-    }
-  }
-
   Future<void> _handlePair() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -140,52 +64,10 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     final connProv = Provider.of<ConnectionProvider>(context, listen: false);
     final ip = _ipController.text.trim();
     final port = int.tryParse(_portController.text.trim()) ?? 8765;
-    final token = _tokenController.text.trim();
     final deviceName = _deviceNameController.text.trim().isNotEmpty
         ? _deviceNameController.text.trim()
         : 'BMB Agent ${DateTime.now().millisecondsSinceEpoch}';
 
-    // If user entered a bmb:// URI, parse it
-    QRParseResult? parsed;
-    if (token.startsWith('bmb://')) {
-      parsed = QRService.parseQRUri(token);
-    } else if (token.isNotEmpty) {
-      // Use user-entered token as pair token
-      parsed = QRParseResult(
-        ip: ip,
-        port: port,
-        pairToken: token,
-        accessToken: '',
-      );
-    }
-
-    if (parsed != null) {
-      final success = await connProv.pairWithQRData(
-        ip: parsed.ip,
-        port: parsed.port,
-        pairToken: parsed.pairToken,
-        deviceName: deviceName,
-        accessToken: parsed.accessToken.isNotEmpty ? parsed.accessToken : null,
-      );
-
-      if (!mounted) return;
-      setState(() {
-        _isLoading = false;
-      });
-
-      if (success) {
-        Navigator.of(context).pushReplacementNamed('/home');
-      } else {
-        setState(() {
-          _errorMessage = connProv.errorMessage.isNotEmpty
-              ? connProv.errorMessage
-              : 'No se pudo conectar. Verifica la IP y el puerto.';
-        });
-      }
-      return;
-    }
-
-    // Legacy path: try simple IP-based pairing
     final success = await connProv.pairViaQR(
       ip: ip,
       port: port,
@@ -285,7 +167,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                           ),
                         ),
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Icon(Icons.error_outline,
                                 color: Colors.red, size: 20),
@@ -307,7 +188,13 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                         icon: Icons.qr_code_scanner,
                         label: 'Escanear Código QR',
                         subtitle: 'Apunta la cámara al QR del servidor',
-                        onTap: _isLoading ? null : _openQRScanner,
+                        onTap: () {
+                          // QR scanning would use a camera plugin
+                          // For now, fall through to manual entry
+                          setState(() {
+                            _showManualEntry = true;
+                          });
+                        },
                       ),
                       const SizedBox(height: 16),
                       // Manual entry button
@@ -372,13 +259,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 16),
-                            _buildTextField(
-                              controller: _tokenController,
-                              label: 'Token de pairing (o bmb:// URI)',
-                              hint: 'Pega aquí el token o la URI completa',
-                              icon: Icons.vpn_key,
-                            ),
                             const SizedBox(height: 24),
                             SizedBox(
                               width: double.infinity,
@@ -431,7 +311,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     required IconData icon,
     required String label,
     required String subtitle,
-    required VoidCallback? onTap,
+    required VoidCallback onTap,
   }) {
     return InkWell(
       onTap: onTap,
