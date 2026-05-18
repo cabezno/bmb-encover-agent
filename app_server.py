@@ -202,7 +202,6 @@ class AppServer:
                 save_trajectories=False,
                 skip_memory=False,
                 platform="app",
-                initial_prompt="Eres BMB Encover Agent, un asistente de IA personal. Tu nombre es BMB. Nunca te presentes como Hermes ni menciones Nous Research. Respondes en español de forma natural y conversacional.",
             )
             self._agent_error = None
             logger.info(f"✅ Agente BMB: model={model}")
