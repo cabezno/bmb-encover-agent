@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:io';
 import 'package:provider/provider.dart';
 import '../../providers/chat_provider.dart';
 import '../../providers/call_provider.dart';
@@ -156,6 +158,83 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  void _showQRCode() async {
+    final connProv = Provider.of<ConnectionProvider>(context, listen: false);
+    if (!connProv.isConnected) return;
+
+    try {
+      final client = HttpClient();
+      client.connectionTimeout = const Duration(seconds: 5);
+      final request = await client.getUrl(
+        Uri.parse('http://${connProv.ip}:${connProv.port}/api/pair/token'),
+      );
+      final response = await request.close();
+      final body = await response.transform(utf8.decoder).join();
+      final data = jsonDecode(body) as Map<String, dynamic>;
+      final qrUrl = data['qr_data'] as String? ?? '';
+      client.close();
+
+      if (!mounted) return;
+
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          backgroundColor: const Color(0xFF1A1A2E),
+          title: const Text('QR de Conexión',
+              style: TextStyle(color: Colors.white)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Escanea este código con la app Android\no copiá la URL manualmente:',
+                style: TextStyle(color: Colors.white70, fontSize: 13),
+              ),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.black26,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: SelectableText(
+                  qrUrl,
+                  style: const TextStyle(
+                    color: Color(0xFF00E676),
+                    fontSize: 12,
+                    fontFamily: 'monospace',
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Toca la URL para seleccionarla y copiarla',
+                style: TextStyle(color: Colors.white38, fontSize: 11),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('Cerrar'),
+            ),
+          ],
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Error'),
+          content: Text('No se pudo obtener el QR: $e'),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('OK')),
+          ],
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer2<ChatProvider, ConnectionProvider>(
@@ -190,6 +269,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             actions: [
+              IconButton(
+                icon: const Icon(Icons.qr_code, color: Color(0xFF8300e9)),
+                onPressed: connProv.isConnected ? _showQRCode : null,
+                tooltip: 'Mostrar QR de conexión',
+              ),
               IconButton(
                 icon: const Icon(Icons.call, color: Color(0xFF8300e9)),
                 onPressed: connProv.isConnected ? _openCall : null,
