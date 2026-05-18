@@ -188,7 +188,7 @@ class AppServer:
             config = load_config()
             provider_cfg = config.get("provider", {})
             base_url = provider_cfg.get("base_url", _get_env("DEEPSEEK_API_URL", "https://api.deepseek.com/v1"))
-            model = provider_cfg.get("model", "deepseek-chat")
+            model = provider_cfg.get("model", "deepseek-v4-pro")
 
             from run_agent import AIAgent
             self.bmb_agent = AIAgent(
