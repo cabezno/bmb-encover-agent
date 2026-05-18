@@ -162,77 +162,85 @@ class _HomeScreenState extends State<HomeScreen> {
     final connProv = Provider.of<ConnectionProvider>(context, listen: false);
     if (!connProv.isConnected) return;
 
-    try {
-      final client = HttpClient();
-      client.connectionTimeout = const Duration(seconds: 5);
-      final request = await client.getUrl(
-        Uri.parse('http://${connProv.ip}:${connProv.port}/api/pair/token'),
-      );
-      final response = await request.close();
-      final body = await response.transform(utf8.decoder).join();
-      final data = jsonDecode(body) as Map<String, dynamic>;
-      final qrUrl = data['qr_data'] as String? ?? '';
-      client.close();
+    // Obtener URL del QR como imagen
+    final imageUrl = 'http://${connProv.ip}:${connProv.port}/api/pair/token?format=png';
 
-      if (!mounted) return;
+    if (!mounted) return;
 
-      showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          backgroundColor: const Color(0xFF1A1A2E),
-          title: const Text('QR de Conexión',
-              style: TextStyle(color: Colors.white)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Escanea este código con la app Android\no copiá la URL manualmente:',
-                style: TextStyle(color: Colors.white70, fontSize: 13),
-              ),
-              const SizedBox(height: 16),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: const Color(0xFF1A1A2E),
+        title: const Text('Escanea este QR',
+            style: TextStyle(color: Colors.white)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Escanea con la app Android:',
+              style: TextStyle(color: Colors.white70, fontSize: 13),
+            ),
+            const SizedBox(height: 16),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.network(
+                imageUrl,
+                width: 220,
+                height: 220,
+                fit: BoxFit.contain,
+                errorBuilder: (_, __, ___) => Container(
+                  width: 220,
+                  height: 220,
                   color: Colors.black26,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: SelectableText(
-                  qrUrl,
-                  style: const TextStyle(
-                    color: Color(0xFF00E676),
-                    fontSize: 12,
-                    fontFamily: 'monospace',
+                  child: const Center(
+                    child: Text('Error al cargar QR',
+                        style: TextStyle(color: Colors.white38)),
                   ),
                 ),
+                loadingBuilder: (_, child, progress) {
+                  if (progress == null) return child;
+                  return Container(
+                    width: 220,
+                    height: 220,
+                    color: Colors.black26,
+                    child: const Center(
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  );
+                },
               ),
-              const SizedBox(height: 8),
-              const Text(
-                'Toca la URL para seleccionarla y copiarla',
-                style: TextStyle(color: Colors.white38, fontSize: 11),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'O copiá la URL manualmente:',
+              style: TextStyle(color: Colors.white38, fontSize: 11),
+            ),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.black26,
+                borderRadius: BorderRadius.circular(8),
               ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: const Text('Cerrar'),
+              child: SelectableText(
+                imageUrl,
+                style: const TextStyle(
+                  color: Color(0xFF00E676),
+                  fontSize: 10,
+                  fontFamily: 'monospace',
+                ),
+              ),
             ),
           ],
         ),
-      );
-    } catch (e) {
-      if (!mounted) return;
-      showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: const Text('Error'),
-          content: Text('No se pudo obtener el QR: $e'),
-          actions: [
-            TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('OK')),
-          ],
-        ),
-      );
-    }
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cerrar'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
