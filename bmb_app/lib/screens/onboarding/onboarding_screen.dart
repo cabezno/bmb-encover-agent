@@ -17,11 +17,13 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   late Animation<Offset> _slideAnim;
 
   bool _showManualEntry = false;
+  bool _showPasteQR = false;
   bool _isLoading = false;
   String? _errorMessage;
 
   final _ipController = TextEditingController();
-  final _portController = TextEditingController(text: '8765');
+  final _portController = TextEditingController(text: '8643');
+  final _qrController = TextEditingController();
   final _tokenController = TextEditingController();
   final _deviceNameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -63,7 +65,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
 
     final connProv = Provider.of<ConnectionProvider>(context, listen: false);
     final ip = _ipController.text.trim();
-    final port = int.tryParse(_portController.text.trim()) ?? 8765;
+    final port = int.tryParse(_portController.text.trim()) ?? 8643;
     final deviceName = _deviceNameController.text.trim().isNotEmpty
         ? _deviceNameController.text.trim()
         : 'BMB Agent ${DateTime.now().millisecondsSinceEpoch}';
@@ -79,6 +81,71 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     setState(() {
       _isLoading = false;
     });
+
+    if (success) {
+      Navigator.of(context).pushReplacementNamed('/home');
+    } else {
+      setState(() {
+        _errorMessage = connProv.errorMessage.isNotEmpty
+            ? connProv.errorMessage
+            : 'No se pudo conectar. Verifica la IP y el puerto.';
+      });
+    }
+  }
+
+  Future<void> _handlePasteQR() async {
+    final qrText = _qrController.text.trim();
+    if (qrText.isEmpty) {
+      setState(() => _errorMessage = 'Pega la URL del QR primero');
+      return;
+    }
+
+    // Parsear formato: bmb://ip:port/pair?token=xxx&access=yyy
+    Uri? uri;
+    try {
+      uri = Uri.parse(qrText);
+    } catch (_) {}
+
+    if (uri == null || !qrText.startsWith('bmb://')) {
+      setState(() => _errorMessage = 'Formato inválido. Debe empezar con bmb://');
+      return;
+    }
+
+    final ip = uri.host;
+    final port = uri.port > 0 ? uri.port : 8643;
+    final token = uri.queryParameters['token'] ?? '';
+    final accessToken = uri.queryParameters['access'] ?? '';
+
+    if (ip.isEmpty) {
+      setState(() => _errorMessage = 'No se pudo extraer la IP del QR');
+      return;
+    }
+
+    // Pre-llenar campos manuales
+    _ipController.text = ip;
+    _portController.text = port.toString();
+    if (token.isNotEmpty) _tokenController.text = token;
+
+    setState(() {
+      _errorMessage = null;
+    });
+
+    // Conectar automáticamente
+    final connProv = Provider.of<ConnectionProvider>(context, listen: false);
+    final deviceName = _deviceNameController.text.trim().isNotEmpty
+        ? _deviceNameController.text.trim()
+        : 'Android ${DateTime.now().millisecondsSinceEpoch}';
+
+    setState(() => _isLoading = true);
+
+    final success = await connProv.pairViaQR(
+      ip: ip,
+      port: port,
+      deviceName: deviceName,
+    );
+
+    if (!mounted) return;
+    setState(() => _isLoading = false);
 
     if (success) {
       Navigator.of(context).pushReplacementNamed('/home');
@@ -187,12 +254,22 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                       _buildActionButton(
                         icon: Icons.qr_code_scanner,
                         label: 'Escanear Código QR',
-                        subtitle: 'Apunta la cámara al QR del servidor',
+                        subtitle: 'Escanea el QR de la app de escritorio',
                         onTap: () {
-                          // QR scanning would use a camera plugin
-                          // For now, fall through to manual entry
                           setState(() {
                             _showManualEntry = true;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      // O pegar QR manualmente
+                      _buildActionButton(
+                        icon: Icons.content_paste,
+                        label: 'Pegar código QR',
+                        subtitle: 'Pega la URL bmb:// del servidor',
+                        onTap: () {
+                          setState(() {
+                            _showPasteQR = true;
                           });
                         },
                       ),
@@ -217,10 +294,42 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                         key: _formKey,
                         child: Column(
                           children: [
+                            if (_showPasteQR) ...[
+                              _buildTextField(
+                                controller: _qrController,
+                                label: 'Código QR (bmb://...)',
+                                hint: 'bmb://192.168.1.22:8643/...',
+                                icon: Icons.link,
+                              ),
+                              const SizedBox(height: 8),
+                              SizedBox(
+                                width: double.infinity,
+                                height: 44,
+                                child: ElevatedButton(
+                                  onPressed: _isLoading ? null : _handlePasteQR,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFF8300e9),
+                                    foregroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
+                                  child: const Text('Parsear y conectar'),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              const Divider(color: Colors.white12),
+                              const SizedBox(height: 8),
+                              const Text(
+                                'O ingresá los datos manualmente:',
+                                style: TextStyle(color: Colors.white38, fontSize: 12),
+                              ),
+                              const SizedBox(height: 16),
+                            ],
                             _buildTextField(
                               controller: _ipController,
-                              label: 'Dirección IP (Tailscale)',
-                              hint: '100.x.x.x',
+                              label: 'Dirección IP',
+                              hint: '192.168.1.22 o 100.x.x.x',
                               icon: Icons.language,
                               validator: (v) {
                                 if (v == null || v.trim().isEmpty) {
