@@ -89,20 +89,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const SizedBox(height: 8),
           _buildInfoRow(
             'IP',
-            connProv.connection.tailscaleIp.isNotEmpty
-                ? connProv.connection.tailscaleIp
+            connProv.ip.isNotEmpty
+                ? connProv.ip
                 : '—',
           ),
           const SizedBox(height: 8),
           _buildInfoRow(
             'Puerto',
-            connProv.connection.port.toString(),
+            connProv.port.toString(),
           ),
           const SizedBox(height: 8),
           _buildInfoRow(
             'Dispositivo',
-            connProv.connection.deviceName.isNotEmpty
-                ? connProv.connection.deviceName
+            connProv.deviceName.isNotEmpty
+                ? connProv.deviceName
                 : '—',
           ),
           const SizedBox(height: 16),

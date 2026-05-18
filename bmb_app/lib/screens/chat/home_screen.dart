@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ConsoleLogger.state(
         'Estado de conexión: ${connProv.isConnected ? "Conectado" : "Desconectado"}',
         details: connProv.isConnected
-            ? 'IP: ${connProv.connection.tailscaleIp}:${connProv.connection.port}'
+            ? 'IP: ${connProv.ip}:${connProv.port}'
             : 'Sin conexión activa',
       );
 
@@ -58,13 +58,13 @@ class _HomeScreenState extends State<HomeScreen> {
             if (success) {
               ConsoleLogger.state(
                 'Conectado al servidor',
-                details: '${connProv.connection.tailscaleIp}:${connProv.connection.port}',
+                details: '${connProv.ip}:${connProv.port}',
               );
             } else {
               ConsoleLogger.error(
                 'No se pudo conectar al servidor',
                 details: 'Verifica que el servidor esté en ejecución en '
-                    '${connProv.connection.tailscaleIp}:${connProv.connection.port}',
+                    '${connProv.ip}:${connProv.port}',
               );
             }
           }
@@ -82,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (connProv.isConnected) {
       ConsoleLogger.state(
         'Conectado al servidor',
-        details: '${connProv.connection.tailscaleIp}:${connProv.connection.port}',
+        details: '${connProv.ip}:${connProv.port}',
       );
     } else {
       ConsoleLogger.state('Desconectado del servidor');
@@ -135,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ConsoleLogger.info('Conectando al servidor...');
     ConsoleLogger.state(
       'Conectando',
-      details: '${connProv.connection.tailscaleIp}:${connProv.connection.port}',
+      details: '${connProv.ip}:${connProv.port}',
     );
     final success = await connProv.connect();
     if (mounted) {
@@ -144,8 +144,8 @@ class _HomeScreenState extends State<HomeScreen> {
       } else {
         ConsoleLogger.error(
           'Error de conexión',
-          details: 'No se pudo conectar a ${connProv.connection.tailscaleIp}:'
-              '${connProv.connection.port}\n'
+          details: 'No se pudo conectar a ${connProv.ip}:'
+              '${connProv.port}\n'
               'Error: ${connProv.errorMessage}\n\n'
               'Posibles causas:\n'
               '• El servidor no está en ejecución\n'
@@ -180,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(width: 8),
                 Text(
                   connProv.isConnected
-                      ? '${connProv.connection.tailscaleIp}:${connProv.connection.port}'
+                      ? '${connProv.ip}:${connProv.port}'
                       : 'Desconectado',
                   style: const TextStyle(
                     fontSize: 14,
@@ -323,15 +323,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   children: [
                     _buildInfoRow('Servidor',
-                        connProv.connection.tailscaleIp.isNotEmpty
-                            ? connProv.connection.tailscaleIp
+                        connProv.ip.isNotEmpty
+                            ? connProv.ip
                             : '—'),
                     const SizedBox(height: 6),
                     _buildInfoRow(
-                        'Puerto', connProv.connection.port.toString()),
+                        'Puerto', connProv.port.toString()),
                     const SizedBox(height: 6),
                     _buildInfoRow(
-                        'Dispositivo', connProv.connection.deviceName),
+                        'Dispositivo', connProv.deviceName),
                   ],
                 ),
               ),

@@ -22,17 +22,6 @@ class ChatProvider extends ChangeNotifier {
     _tabs.add(_createDefaultTab());
   }
 
-  void init(ChatService chatService) {
-    _chatService = chatService;
-    _chatService.newMessageStream.listen(_onNewMessage);
-  }
-
-  void _onNewMessage(MessageModel msg) {
-    final tab = activeTab;
-    tab.addMessage(msg);
-    notifyListeners();
-  }
-
   TabModel _createDefaultTab() {
     return TabModel(
       title: 'Chat',
@@ -44,6 +33,12 @@ class ChatProvider extends ChangeNotifier {
   void initialize(svc.ConnectionService connectionService) {
     _chatService = ChatService(connectionService);
     _chatService.newMessageStream.listen(_onNewMessage);
+  }
+
+  void _onNewMessage(MessageModel msg) {
+    final tab = activeTab;
+    tab.addMessage(msg);
+    notifyListeners();
   }
 
   void setConnectionState(bool connected) {

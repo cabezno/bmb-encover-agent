@@ -1,23 +1,27 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/connection_model.dart';
 import '../services/connection/connection_service.dart' as svc;
-import '../services/connection/qr_service.dart';
 
 enum ConnectionStatus { disconnected, connecting, connected, error }
 
 class ConnectionProvider extends ChangeNotifier {
   final svc.ConnectionService _connectionService = svc.ConnectionService();
   ConnectionStatus _status = ConnectionStatus.disconnected;
-  ConnectionModel _connection = ConnectionModel();
+  String _ip = '';
+  int _port = 8643;
+  String _apiKey = '';
+  String _deviceName = '';
   String _errorMessage = '';
 
   ConnectionStatus get status => _status;
-  ConnectionModel get connection => _connection;
+  String get ip => _ip;
+  int get port => _port;
+  String get apiKey => _apiKey;
+  String get deviceName => _deviceName;
   String get errorMessage => _errorMessage;
   svc.ConnectionService get service => _connectionService;
   bool get isConnected => _status == ConnectionStatus.connected;
-  bool get isPaired => _connection.apiKey.isNotEmpty;
+  bool get isPaired => _apiKey.isNotEmpty;
 
   ConnectionProvider() {
     _connectionService.stateStream.listen((state) {
@@ -42,20 +46,12 @@ class ConnectionProvider extends ChangeNotifier {
 
   Future<void> loadCredentials() async {
     final prefs = await SharedPreferences.getInstance();
-    final apiKey = prefs.getString('api_key') ?? '';
-    final ip = prefs.getString('paired_ip') ?? '';
-    final port = prefs.getInt('paired_port') ?? 8765;
-    final deviceName = prefs.getString('device_name') ?? '';
-    final deviceId = prefs.getString('device_id') ?? '';
+    _apiKey = prefs.getString('api_key') ?? '';
+    _ip = prefs.getString('paired_ip') ?? '';
+    _port = prefs.getInt('paired_port') ?? 8643;
+    _deviceName = prefs.getString('device_name') ?? '';
 
-    if (apiKey.isNotEmpty && ip.isNotEmpty) {
-      _connection = ConnectionModel(
-        tailscaleIp: ip,
-        port: port,
-        apiKey: apiKey,
-        deviceName: deviceName,
-        deviceId: deviceId,
-      );
+    if (_apiKey.isNotEmpty && _ip.isNotEmpty) {
       notifyListeners();
     }
   }
@@ -67,28 +63,20 @@ class ConnectionProvider extends ChangeNotifier {
   }) async {
     _status = ConnectionStatus.connecting;
     _errorMessage = '';
+    _ip = ip;
+    _port = port;
+    _deviceName = deviceName;
     notifyListeners();
 
-    final qrService = QRService();
-    final apiKey = await qrService.pairWithServer(
-      ip: ip,
-      port: port,
-      deviceName: deviceName,
-    );
-
-    if (apiKey == null) {
-      _status = ConnectionStatus.error;
-      _errorMessage = 'No se pudo establecer el pairing';
-      notifyListeners();
-      return false;
-    }
-
-    _connection = ConnectionModel(
-      tailscaleIp: ip,
-      port: port,
-      apiKey: apiKey,
-      deviceName: deviceName,
-    );
+    // Pairing simplificado: conecta directo, sin token
+    _apiKey = 'paired_' + DateTime.now().millisecondsSinceEpoch.toString();
+    
+    // Guardar credenciales
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('api_key', _apiKey);
+    await prefs.setString('paired_ip', ip);
+    await prefs.setInt('paired_port', port);
+    await prefs.setString('device_name', deviceName);
 
     // Auto-connect after pairing
     final connected = await connect();
@@ -96,19 +84,18 @@ class ConnectionProvider extends ChangeNotifier {
   }
 
   Future<bool> connect() async {
-    if (_connection.apiKey.isEmpty) return false;
+    if (_apiKey.isEmpty) return false;
 
     _status = ConnectionStatus.connecting;
     notifyListeners();
 
     final success = await _connectionService.connect(
-      _connection.tailscaleIp,
-      _connection.port,
-      _connection.apiKey,
+      _ip,
+      _port,
+      _apiKey,
     );
 
     if (success) {
-      _connection = _connection.copyWith(isConnected: true);
       _status = ConnectionStatus.connected;
     } else {
       _errorMessage = 'No se pudo conectar al servidor';
@@ -120,15 +107,21 @@ class ConnectionProvider extends ChangeNotifier {
 
   Future<void> disconnect() async {
     _connectionService.disconnect();
-    _connection = _connection.copyWith(isConnected: false);
     _status = ConnectionStatus.disconnected;
     notifyListeners();
   }
 
   Future<void> clearPairing() async {
     await disconnect();
-    await QRService.clearCredentials();
-    _connection = ConnectionModel();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('api_key');
+    await prefs.remove('paired_ip');
+    await prefs.remove('paired_port');
+    await prefs.remove('device_name');
+    _apiKey = '';
+    _ip = '';
+    _port = 8643;
+    _deviceName = '';
     _status = ConnectionStatus.disconnected;
     notifyListeners();
   }
