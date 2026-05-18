@@ -227,14 +227,16 @@ class AppServer:
         try:
             from faster_whisper import WhisperModel
             model_size = _get_env("BMB_WHISPER_MODEL", "tiny")
+            # Descargar modelo si no existe
             logger.info(f"🎤 Cargando Whisper model={model_size}...")
-            self.whisper_model = WhisperModel(model_size, device="cpu", compute_type="int8")
+            self.whisper_model = WhisperModel(model_size, device="cpu", compute_type="int8", download_root=None)
             self.whisper_available = True
             logger.info("✅ Whisper STT listo")
         except ImportError:
             logger.warning("⚠️  Whisper STT no disponible: faster-whisper no instalado")
+            logger.info("   Para instalarlo: pip install faster-whisper")
         except Exception as e:
-            logger.warning(f"⚠️  Whisper STT no disponible: {e}")
+            logger.warning(f"⚠️  Whisper STT error: {e}")
 
     def _init_tts(self):
         self.tts_available = False
@@ -245,6 +247,7 @@ class AppServer:
             logger.info(f"✅ Edge-TTS listo: voice={self.tts_voice}")
         except ImportError:
             logger.warning("⚠️  TTS no disponible: edge-tts no instalado")
+            logger.info("   Para instalarlo: pip install edge-tts")
 
     # ─── Handlers ───────────────────────────────────────────────
 
