@@ -432,6 +432,10 @@ class AppServer:
         if access_token:
             qr_data += f"&access={access_token}"
 
+        # Si pide .png, devolver imagen QR
+        if request.query.get("format", "") == "png":
+            return await self._serve_qr_png(qr_data)
+
         return web.json_response({
             "token": token,
             "expires_at": self._pairing_tokens[token],
@@ -440,6 +444,19 @@ class AppServer:
             "access_token": bool(access_token),
             "qr_data": qr_data,
         })
+
+    async def _serve_qr_png(self, data: str):
+        """Generar y servir imagen QR PNG."""
+        try:
+            import qrcode
+            from io import BytesIO
+            img = qrcode.make(data, box_size=8, border=2)
+            buf = BytesIO()
+            img.save(buf, format="PNG")
+            buf.seek(0)
+            return web.Response(body=buf.read(), content_type="image/png")
+        except ImportError:
+            return web.json_response({"error": "qrcode no instalado. pip install qrcode[pil]"}, status=500)
 
     async def handle_pair_devices(self, request):
         devices_list = []
