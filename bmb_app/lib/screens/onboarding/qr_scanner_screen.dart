@@ -101,6 +101,8 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
       ip: ip,
       port: port,
       deviceName: deviceName,
+      tunnelUrl: parsedData['tunnel_url'],
+      localIp: parsedData['local_ip'],
     ).then((success) {
       if (!mounted) return;
       if (success) {

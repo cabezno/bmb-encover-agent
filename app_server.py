@@ -147,6 +147,7 @@ class AppServer:
         self.app.router.add_post("/api/call/start", self.handle_call_start)
         self.app.router.add_post("/api/call/audio", self.handle_call_audio)
         self.app.router.add_get("/pair", self.handle_pair_page)
+        self.app.router.add_get("/api/tunnel/refresh", self.handle_tunnel_refresh)
         self.app.router.add_static("/uploads", path=str(_BMB_DIR / "uploads"), name="uploads")
         self.app.router.add_get("/", self.handle_index)
         self.app.router.add_get("/qr", self.handle_qr_page)
@@ -446,11 +447,14 @@ class AppServer:
 
         # QR data en formato JSON que espera la app Android
         import json as jsonlib
+        local_ip = _get_env('BMB_ADVERTISE_IP', '192.168.1.22')
         qr_data = jsonlib.dumps({
             "type": "pairing_request",
-            "ip": self.tunnel_url or _get_env('BMB_ADVERTISE_IP', '192.168.1.22'),
+            "ip": self.tunnel_url or local_ip,
             "port": self.port,
             "deviceId": token[:8],
+            "tunnel_url": self.tunnel_url or "",
+            "local_ip": local_ip,
         })
 
         # Si pide .png, devolver imagen QR
@@ -903,18 +907,29 @@ class AppServer:
 
     def _update_qr(self):
         """Generar QR data con formato JSON que espera la app Android"""
-        base_url = self.tunnel_url or f"http://{_get_env('BMB_ADVERTISE_IP', '192.168.1.22')}:{self.port}"
         import json as jsonlib
+        local_ip = _get_env('BMB_ADVERTISE_IP', '192.168.1.22')
         self._qr_data = jsonlib.dumps({
             "type": "pairing_request",
-            "ip": self.tunnel_url or _get_env('BMB_ADVERTISE_IP', '192.168.1.22'),
+            "ip": self.tunnel_url or local_ip,
             "port": self.port,
             "deviceId": "",
+            "tunnel_url": self.tunnel_url or "",
+            "local_ip": local_ip,
         })
         # Guardar en archivo para depuracion
         qr_file = _BMB_DIR / "qr_data.txt"
         qr_file.write_text(self._qr_data)
         logger.info(f"📱 QR actualizado (JSON): {self._qr_data[:80]}...")
+
+    async def handle_tunnel_refresh(self, request):
+        """Devuelve la URL actual del tunnel. La app Android consulta esto cuando pierde conexion."""
+        return web.json_response({
+            "tunnel_url": self.tunnel_url or "",
+            "local_url": f"http://{_get_env('BMB_ADVERTISE_IP', '192.168.1.22')}:{self.port}",
+            "port": self.port,
+            "token": self._access_token or "",
+        })
 
     # ─── Pagina de emparejamiento (para app Android) ──────
 

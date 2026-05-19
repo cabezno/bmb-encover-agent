@@ -27,6 +27,8 @@ class QRService {
         'ip': decoded['ip'] as String? ?? '',
         'port': decoded['port'] as int? ?? 8765,
         'deviceId': decoded['deviceId'] as String? ?? '',
+        'tunnel_url': decoded['tunnel_url'] as String? ?? '',
+        'local_ip': decoded['local_ip'] as String? ?? '',
       };
     } catch (_) {
       return null;
