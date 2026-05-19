@@ -75,6 +75,8 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
       ip: parsed['ip'] as String? ?? '',
       port: parsed['port'] as int? ?? 8643,
       deviceId: parsed['deviceId'] as String? ?? '',
+      tunnelUrl: parsed['tunnel_url'] as String? ?? '',
+      localIp: parsed['local_ip'] as String? ?? '',
       rawValue: rawValue,
     );
   }
@@ -83,6 +85,8 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     required String ip,
     required int port,
     required String deviceId,
+    String tunnelUrl = '',
+    String localIp = '',
     required String rawValue,
   }) {
     if (ip.isEmpty) {
@@ -101,8 +105,8 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
       ip: ip,
       port: port,
       deviceName: deviceName,
-      tunnelUrl: parsedData['tunnel_url'],
-      localIp: parsedData['local_ip'],
+      tunnelUrl: tunnelUrl,
+      localIp: localIp,
     ).then((success) {
       if (!mounted) return;
       if (success) {
