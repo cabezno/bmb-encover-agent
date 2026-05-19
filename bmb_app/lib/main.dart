@@ -1,9 +1,11 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/connection_provider.dart';
 import 'providers/chat_provider.dart';
 import 'providers/call_provider.dart';
 import 'providers/settings_provider.dart';
+import 'services/server_launcher.dart';
 import 'screens/onboarding/onboarding_screen.dart';
 import 'screens/onboarding/qr_scanner_screen.dart';
 import 'screens/pair/qr_display_screen.dart';
@@ -12,6 +14,8 @@ import 'screens/call/call_screen.dart';
 import 'screens/settings/settings_screen.dart';
 import 'themes/app_theme.dart';
 import 'widgets/common/console_panel.dart';
+
+final ServerLauncher serverLauncher = ServerLauncher();
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,7 +44,19 @@ class _BMBAppState extends State<BMBApp> {
   @override
   void initState() {
     super.initState();
+    _initServer();
     _checkPairing();
+  }
+
+  Future<void> _initServer() async {
+    if (Platform.isWindows) {
+      final started = await serverLauncher.start();
+      if (started) {
+        debugPrint('✅ Servidor BMB iniciado en segundo plano');
+      } else {
+        debugPrint('⚠️  No se pudo iniciar servidor automáticamente');
+      }
+    }
   }
 
   Future<void> _checkPairing() async {
@@ -92,6 +108,14 @@ class _SplashScreenState extends State<_SplashScreen> {
   }
 
   Future<void> _initAndRoute() async {
+    // Esperar a que el servidor arranque (si es Windows)
+    if (Platform.isWindows) {
+      for (int i = 0; i < 10; i++) {
+        if (serverLauncher.isRunning) break;
+        await Future.delayed(const Duration(seconds: 1));
+      }
+    }
+
     final connProv = Provider.of<ConnectionProvider>(context, listen: false);
     await connProv.loadCredentials();
     if (!mounted) return;
