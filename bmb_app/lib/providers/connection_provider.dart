@@ -144,13 +144,28 @@ class ConnectionProvider extends ChangeNotifier {
     _status = ConnectionStatus.connecting;
     notifyListeners();
 
+    // Primero intentar con IP local (mas rapido en misma WiFi)
+    if (_localIp.isNotEmpty && _ip != _localIp) {
+      final localSuccess = await _connectionService.connect(
+        _localIp, _port, _apiKey,
+      );
+      if (localSuccess) {
+        _ip = _localIp;
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('paired_ip', _ip);
+        _status = ConnectionStatus.connected;
+        notifyListeners();
+        return true;
+      }
+    }
+
     // Si perdio conexion y tenemos IP local, refrescar tunnel
     if (forceTunnelRefresh && _localIp.isNotEmpty) {
       try {
         final client = http.Client();
         final refreshUrl = 'http://$_localIp:$_port/api/tunnel/refresh';
         final response = await client.get(Uri.parse(refreshUrl)).timeout(
-          const Duration(seconds: 5),
+          const Duration(seconds: 3),
         );
         if (response.statusCode == 200) {
           final data = jsonDecode(response.body) as Map<String, dynamic>;
@@ -161,16 +176,10 @@ class ConnectionProvider extends ChangeNotifier {
           await prefs.setString('paired_ip', _ip);
         }
         client.close();
-      } catch (_) {
-        // Si falla, seguir con la IP que tenemos
-      }
+      } catch (_) {}
     }
 
-    final success = await _connectionService.connect(
-      _ip,
-      _port,
-      _apiKey,
-    );
+    final success = await _connectionService.connect(_ip, _port, _apiKey);
 
     if (success) {
       _status = ConnectionStatus.connected;
