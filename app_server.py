@@ -146,6 +146,12 @@ class AppServer:
         self.app.router.add_get("/api/tts", self.handle_tts_get)
         self.app.router.add_post("/api/call/start", self.handle_call_start)
         self.app.router.add_post("/api/call/audio", self.handle_call_audio)
+        # ─── File transfer endpoints ──────────────
+        self.app.router.add_post("/api/upload", self.handle_upload)
+        self.app.router.add_get("/api/files", self.handle_list_files)
+        self.app.router.add_get("/api/files/{filename}", self.handle_get_file)
+        self.app.router.add_delete("/api/files/{filename}", self.handle_delete_file)
+        self.app.router.add_post("/api/forward", self.handle_forward_file)
         self.app.router.add_get("/pair", self.handle_pair_page)
         self.app.router.add_get("/api/tunnel/refresh", self.handle_tunnel_refresh)
         self.app.router.add_static("/uploads", path=str(_BMB_DIR / "uploads"), name="uploads")
@@ -886,6 +892,108 @@ class AppServer:
             logger.error(f"❌ Call error: {e}")
             return web.json_response({"error": str(e)}, status=500)
 
+    # ─── File transfer: upload ───────────────────────────
+
+    async def handle_upload(self, request):
+        if not self._check_access(request):
+            return web.json_response({"error": "Token requerido"}, status=401)
+        try:
+            reader = await request.multipart()
+            field = await reader.next()
+            if not field:
+                return web.json_response({"error": "No se recibió archivo"}, status=400)
+            filename = field.filename or f"file_{int(time.time())}"
+            filedata = await field.read()
+            safe_name = f"{int(time.time())}_{filename.replace(' ', '_')}"
+            filepath = _BMB_DIR / "uploads" / safe_name
+            filepath.parent.mkdir(parents=True, exist_ok=True)
+            filepath.write_bytes(filedata)
+            logger.info(f"📁 Archivo recibido: {safe_name} ({len(filedata)} bytes) type={field.content_type}")
+            return web.json_response({
+                "status": "ok",
+                "filename": safe_name,
+                "original_name": filename,
+                "size": len(filedata),
+                "type": field.content_type or "unknown",
+                "url": f"/uploads/{safe_name}",
+            })
+        except Exception as e:
+            logger.error(f"❌ Upload error: {e}")
+            return web.json_response({"error": str(e)}, status=500)
+
+    # ─── File transfer: list files ───────────────────────
+
+    async def handle_list_files(self, request):
+        from pathlib import Path
+        uploads_dir = _BMB_DIR / "uploads"
+        if not uploads_dir.exists():
+            return web.json_response({"files": []})
+        files = []
+        for f in sorted(uploads_dir.iterdir(), key=lambda p: p.stat().st_mtime, reverse=True):
+            if f.is_file():
+                files.append({
+                    "name": f.name,
+                    "size": f.stat().st_size,
+                    "modified": f.stat().st_mtime,
+                    "url": f"/uploads/{f.name}",
+                })
+        return web.json_response({"files": files})
+
+    # ─── File transfer: get file ─────────────────────────
+
+    async def handle_get_file(self, request):
+        filename = request.match_info.get("filename", "")
+        filepath = _BMB_DIR / "uploads" / filename
+        if not filepath.exists() or not filepath.is_file():
+            return web.json_response({"error": "Archivo no encontrado"}, status=404)
+        return web.FileResponse(filepath)
+
+    # ─── File transfer: delete file ──────────────────────
+
+    async def handle_delete_file(self, request):
+        if not self._check_access(request):
+            return web.json_response({"error": "Token requerido"}, status=401)
+        filename = request.match_info.get("filename", "")
+        filepath = _BMB_DIR / "uploads" / filename
+        if not filepath.exists():
+            return web.json_response({"error": "Archivo no encontrado"}, status=404)
+        filepath.unlink()
+        logger.info(f"🗑️ Archivo eliminado: {filename}")
+        return web.json_response({"status": "deleted", "filename": filename})
+
+    # ─── File transfer: forward a file to another client ──
+
+    async def handle_forward_file(self, request):
+        if not self._check_access(request):
+            return web.json_response({"error": "Token requerido"}, status=401)
+        try:
+            body = await request.json()
+            filename = body.get("filename", "")
+            target = body.get("target", "")  # "android", "windows", o session_id
+            filepath = _BMB_DIR / "uploads" / filename
+            if not filepath.exists():
+                return web.json_response({"error": "Archivo no encontrado"}, status=404)
+            # Notificar a todos los WS conectados
+            notification = json.dumps({
+                "type": "file_received",
+                "filename": filename,
+                "size": filepath.stat().st_size,
+                "url": f"/uploads/{filename}",
+                "from": target,
+            })
+            for cid, ws in list(self.clients.items()):
+                try:
+                    await ws.send_str(notification)
+                except Exception:
+                    pass
+            return web.json_response({
+                "status": "forwarded",
+                "filename": filename,
+                "clients_notified": len(self.clients),
+            })
+        except Exception as e:
+            return web.json_response({"error": str(e)}, status=500)
+
     # ─── Tunnel URL detection ──────────────────────────────
 
     async def _check_tunnel_url(self):
@@ -1036,6 +1144,8 @@ setInterval(function() {{
         logger.info(f"║  🎤 Aud: http://{self.host}:{self.port}/api/audio ║")
         logger.info(f"║  🔊 TTS: http://{self.host}:{self.port}/api/tts   ║")
         logger.info(f"║  📞 Call:http://{self.host}:{self.port}/api/call  ║")
+        logger.info(f"║  📁 Upld:http://{self.host}:{self.port}/api/upload║")
+        logger.info(f"║  📂 Files:http://{self.host}:{self.port}/api/files║")
         logger.info(f"║  Pair: http://{self.host}:{self.port}/api/pair    ║")
         logger.info(f"║  QR:   http://{self.host}:{self.port}/qr          ║")
         logger.info(f"║  Auth: {'ON' if self._access_token else 'OFF'} ({len(self.devices)} devices)     ║")
