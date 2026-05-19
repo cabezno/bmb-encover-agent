@@ -105,6 +105,10 @@ class AppServer:
         self._agent_error: Optional[str] = None
         self._pairing_tokens: dict[str, float] = {}
         self._access_token: str = _get_env("BMB_ACCESS_TOKEN", "")
+        self.tunnel_url: str = ""
+        self._tunnel_check_task = None
+        self._tunnel_log_file = _BMB_DIR / "tunnel_url.txt"
+        self._qr_data: str = ""
 
         _load_env()
         self.setup_routes()
@@ -136,6 +140,16 @@ class AppServer:
         self.app.router.add_post("/api/pair/revoke", self.handle_pair_revoke)
         self.app.router.add_get("/ws", self.handle_websocket_chat)
         self.app.router.add_get("/ws/voice", self.handle_websocket_voice)
+        # ─── Android endpoints ───────────────────
+        self.app.router.add_post("/api/image", self.handle_image)
+        self.app.router.add_post("/api/audio", self.handle_audio)
+        self.app.router.add_get("/api/tts", self.handle_tts_get)
+        self.app.router.add_post("/api/call/start", self.handle_call_start)
+        self.app.router.add_post("/api/call/audio", self.handle_call_audio)
+        self.app.router.add_get("/pair", self.handle_pair_page)
+        self.app.router.add_static("/uploads", path=str(_BMB_DIR / "uploads"), name="uploads")
+        self.app.router.add_get("/", self.handle_index)
+        self.app.router.add_get("/qr", self.handle_qr_page)
 
     # ─── Auth ───────────────────────────────────────────────────
 
@@ -258,7 +272,7 @@ class AppServer:
 
         return web.json_response({
             "status": "ok",
-            "version": "0.4.0",
+            "version": "0.5.0",
             "name": "BMB Encover App Server",
             "agent": agent_status,
             "stt": self.whisper_available,
@@ -427,13 +441,17 @@ class AppServer:
 
     async def handle_pair_token(self, request):
         token = self.generate_pairing_token()
-        ip = _get_env("BMB_ADVERTISE_IP", self.host)
-        port = self.port
+        base_url = self.tunnel_url or f"http://{_get_env('BMB_ADVERTISE_IP', '192.168.1.22')}:{self.port}"
         access_token = self._access_token
 
-        qr_data = f"bmb://{ip}:{port}/pair?token={token}"
-        if access_token:
-            qr_data += f"&access={access_token}"
+        # QR data en formato JSON que espera la app Android
+        import json as jsonlib
+        qr_data = jsonlib.dumps({
+            "type": "pairing_request",
+            "ip": self.tunnel_url or _get_env('BMB_ADVERTISE_IP', '192.168.1.22'),
+            "port": self.port,
+            "deviceId": token[:8],
+        })
 
         # Si pide .png, devolver imagen QR
         if request.query.get("format", "") == "png":
@@ -442,8 +460,9 @@ class AppServer:
         return web.json_response({
             "token": token,
             "expires_at": self._pairing_tokens[token],
-            "ip": ip,
-            "port": port,
+            "tunnel_url": self.tunnel_url or "no_tunnel",
+            "ip": base_url,
+            "port": self.port,
             "access_token": bool(access_token),
             "qr_data": qr_data,
         })
@@ -607,21 +626,59 @@ class AppServer:
                         duration = data.get("duration_ms", 0)
                         logger.info(f"🎤 Speech end: tab={tab_id[:8]} duration={duration}ms")
 
+                        # 1) STT: transcribir chunks de audio
                         chunks = audio_buffers.pop(tab_id, [])
-                        stt_text = self._simulate_stt(chunks) if not self.whisper_available else await self._transcribe(chunks)
+                        stt_text = await self._transcribe(chunks)
 
+                        # Enviar transcripción al cliente
                         await ws.send_json({"type": "stt_final", "tab_id": tab_id, "text": stt_text})
 
                         if stt_text and self.bmb_agent:
                             await ws.send_json({"type": "agent_status", "tab_id": tab_id, "status": "thinking"})
                             try:
+                                # 2) Enviar texto al agente BMB
                                 response = await asyncio.to_thread(self.bmb_agent.chat, stt_text)
+
+                                # Enviar respuesta como texto
                                 await ws.send_json({
                                     "type": "message",
                                     "tab_id": tab_id,
                                     "text": response,
                                     "session_id": session_id,
                                 })
+
+                                # 3) Convertir respuesta a audio con Edge TTS
+                                if response and self.tts_available:
+                                    try:
+                                        import edge_tts
+                                        communicate = edge_tts.Communicate(response, self.tts_voice)
+                                        # edge-tts save() necesita una ruta de archivo, usamos un tempfile
+                                        import tempfile
+                                        with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as tmp:
+                                            tmp_path = tmp.name
+                                        try:
+                                            await communicate.save(tmp_path)
+                                            with open(tmp_path, "rb") as f:
+                                                audio_bytes = f.read()
+                                        finally:
+                                            if os.path.exists(tmp_path):
+                                                os.unlink(tmp_path)
+
+                                        audio_b64 = base64.b64encode(audio_bytes).decode("utf-8")
+                                        # 4) Enviar audio al WS
+                                        await ws.send_json({
+                                            "type": "audio_response",
+                                            "tab_id": tab_id,
+                                            "audio": audio_b64,
+                                            "session_id": session_id,
+                                        })
+                                    except Exception as tts_e:
+                                        logger.error(f"❌ TTS error: {tts_e}")
+                                        await ws.send_json({
+                                            "type": "error",
+                                            "tab_id": tab_id,
+                                            "text": f"Error generando audio: {tts_e}",
+                                        })
                             except Exception as e:
                                 await ws.send_json({"type": "error", "tab_id": tab_id, "text": str(e)})
 
@@ -638,11 +695,10 @@ class AppServer:
 
         return ws
 
-    def _simulate_stt(self, chunks: list) -> str:
-        return ""
-
     async def _transcribe(self, chunks: list) -> str:
         """Transcribir chunks de audio con Whisper."""
+        if not self.whisper_available or self.whisper_model is None:
+            return ""
         try:
             pcm_data = bytearray()
             for chunk in sorted(chunks, key=lambda c: c.get("seq", 0)):
@@ -667,19 +723,311 @@ class AppServer:
             logger.error(f"❌ Whisper error: {e}")
             return ""
 
-    # ─── Arranque ───────────────────────────────────────────────
+    # ─── Android: Imagen ─────────────────────────────────────
+
+    async def handle_image(self, request):
+        if not self._check_access(request):
+            return web.json_response({"error": "Token requerido"}, status=401)
+        try:
+            reader = await request.multipart()
+            field = await reader.next()
+            if not field:
+                return web.json_response({"error": "No se recibió archivo"}, status=400)
+            filename = field.filename or "image.jpg"
+            img_data = await field.read()
+            img_path = _BMB_DIR / "uploads" / f"img_{int(time.time())}_{filename}"
+            img_path.parent.mkdir(parents=True, exist_ok=True)
+            img_path.write_bytes(img_data)
+            logger.info(f"📷 Imagen recibida: {img_path.name} ({len(img_data)} bytes)")
+            # Describir imagen con BMB
+            agent = self._get_agent()
+            if agent:
+                desc = await asyncio.to_thread(agent.chat, f"Describí esta imagen en español: {img_path}")
+            else:
+                desc = f"Imagen recibida: {filename}"
+            return web.json_response({"status": "ok", "filename": filename, "description": desc})
+        except Exception as e:
+            logger.error(f"❌ Image error: {e}")
+            return web.json_response({"error": str(e)}, status=500)
+
+    # ─── Android: Audio grabado ──────────────────────────────
+
+    async def handle_audio(self, request):
+        if not self._check_access(request):
+            return web.json_response({"error": "Token requerido"}, status=401)
+        try:
+            reader = await request.multipart()
+            field = await reader.next()
+            if not field:
+                return web.json_response({"error": "No se recibió audio"}, status=400)
+            audio_data = await field.read()
+            audio_path = _BMB_DIR / "uploads" / f"audio_{int(time.time())}.wav"
+            audio_path.parent.mkdir(parents=True, exist_ok=True)
+            audio_path.write_bytes(audio_data)
+            logger.info(f"🎤 Audio recibido: {audio_path.name} ({len(audio_data)} bytes)")
+            # STT
+            texto = ""
+            if self.whisper_available:
+                import soundfile as sf
+                import numpy as np
+                wav_io = io.BytesIO(audio_data)
+                segments, _ = self.whisper_model.transcribe(wav_io, language="es", beam_size=3, vad_filter=True)
+                texto = " ".join(seg.text for seg in segments)
+            else:
+                texto = "(STT no disponible)"
+            logger.info(f"📝 Transcripción: {texto[:100]}")
+            # BMB response
+            respuesta = ""
+            agent = self._get_agent()
+            if agent and texto:
+                respuesta = await asyncio.to_thread(agent.chat, texto)
+            # TTS
+            audio_respuesta = ""
+            if respuesta and self.tts_available:
+                import edge_tts
+                tts_path = _BMB_DIR / "uploads" / f"tts_{int(time.time())}.mp3"
+                communicate = edge_tts.Communicate(respuesta, self.tts_voice)
+                await communicate.save(str(tts_path))
+                audio_respuesta = tts_path.name
+            return web.json_response({
+                "status": "ok",
+                "transcripcion": texto,
+                "respuesta": respuesta,
+                "audio_respuesta": audio_respuesta,
+            })
+        except Exception as e:
+            logger.error(f"❌ Audio error: {e}")
+            return web.json_response({"error": str(e)}, status=500)
+
+    # ─── TTS directo GET ─────────────────────────────────────
+
+    async def handle_tts_get(self, request):
+        if not self._check_access(request):
+            return web.json_response({"error": "Token requerido"}, status=401)
+        texto = request.query.get("text", "").strip()
+        if not texto:
+            return web.json_response({"error": "Parámetro 'text' requerido"}, status=400)
+        if not self.tts_available:
+            return web.json_response({"error": "TTS no disponible"}, status=503)
+        try:
+            import edge_tts
+            tts_path = _BMB_DIR / "uploads" / f"tts_{int(time.time())}.mp3"
+            tts_path.parent.mkdir(parents=True, exist_ok=True)
+            communicate = edge_tts.Communicate(texto, self.tts_voice)
+            await communicate.save(str(tts_path))
+            return web.FileResponse(tts_path)
+        except Exception as e:
+            return web.json_response({"error": str(e)}, status=500)
+
+    # ─── Llamada: inicio ─────────────────────────────────────
+
+    async def handle_call_start(self, request):
+        if not self._check_access(request):
+            return web.json_response({"error": "Token requerido"}, status=401)
+        try:
+            body = await request.json()
+            numero = body.get("numero", "")
+            logger.info(f"📞 Llamada iniciada desde: {numero}")
+            return web.json_response({
+                "status": "connected",
+                "mensaje": "Llamada conectada. Enviá audio por /api/call/audio",
+                "session_id": str(uuid.uuid4()),
+            })
+        except Exception as e:
+            return web.json_response({"error": str(e)}, status=500)
+
+    # ─── Llamada: audio ──────────────────────────────────────
+
+    async def handle_call_audio(self, request):
+        if not self._check_access(request):
+            return web.json_response({"error": "Token requerido"}, status=401)
+        try:
+            reader = await request.multipart()
+            field = await reader.next()
+            if not field:
+                return web.json_response({"error": "No se recibió audio"}, status=400)
+            audio_data = await field.read()
+            audio_path = _BMB_DIR / "uploads" / f"call_{int(time.time())}.wav"
+            audio_path.parent.mkdir(parents=True, exist_ok=True)
+            audio_path.write_bytes(audio_data)
+            # STT
+            texto = ""
+            if self.whisper_available:
+                import soundfile as sf
+                import numpy as np
+                wav_io = io.BytesIO(audio_data)
+                segments, _ = self.whisper_model.transcribe(wav_io, language="es", beam_size=3, vad_filter=True)
+                texto = " ".join(seg.text for seg in segments)
+            # BMB response
+            respuesta = ""
+            agent = self._get_agent()
+            if agent and texto:
+                respuesta = await asyncio.to_thread(agent.chat, texto)
+            # TTS
+            audio_respuesta = ""
+            if respuesta and self.tts_available:
+                import edge_tts
+                tts_path = _BMB_DIR / "uploads" / f"call_tts_{int(time.time())}.mp3"
+                communicate = edge_tts.Communicate(respuesta, self.tts_voice)
+                await communicate.save(str(tts_path))
+                audio_respuesta = tts_path.name
+            return web.json_response({
+                "status": "ok",
+                "transcripcion": texto,
+                "respuesta": respuesta,
+                "audio_respuesta": audio_respuesta,
+                "upload_url": f"http://localhost:8643/uploads/{audio_respuesta}" if audio_respuesta else "",
+            })
+        except Exception as e:
+            logger.error(f"❌ Call error: {e}")
+            return web.json_response({"error": str(e)}, status=500)
+
+    # ─── Tunnel URL detection ──────────────────────────────
+
+    async def _check_tunnel_url(self):
+        """Leer tunnel_url.txt si existe (cloudflared escribe ahi)"""
+        while True:
+            await asyncio.sleep(5)
+            if self._tunnel_log_file.exists():
+                url = self._tunnel_log_file.read_text().strip()
+                if url and url != self.tunnel_url:
+                    self.tunnel_url = url
+                    self._update_qr()
+                    logger.info(f"🌐 Tunnel URL actualizada: {url}")
+            # Tambien buscar en variables de entorno
+            env_url = _get_env("BMB_TUNNEL_URL", "")
+            if env_url and env_url != self.tunnel_url:
+                self.tunnel_url = env_url
+                self._update_qr()
+                logger.info(f"🌐 Tunnel URL desde env: {env_url}")
+
+    def _update_qr(self):
+        """Generar QR data con formato JSON que espera la app Android"""
+        base_url = self.tunnel_url or f"http://{_get_env('BMB_ADVERTISE_IP', '192.168.1.22')}:{self.port}"
+        import json as jsonlib
+        self._qr_data = jsonlib.dumps({
+            "type": "pairing_request",
+            "ip": self.tunnel_url or _get_env('BMB_ADVERTISE_IP', '192.168.1.22'),
+            "port": self.port,
+            "deviceId": "",
+        })
+        # Guardar en archivo para depuracion
+        qr_file = _BMB_DIR / "qr_data.txt"
+        qr_file.write_text(self._qr_data)
+        logger.info(f"📱 QR actualizado (JSON): {self._qr_data[:80]}...")
+
+    # ─── Pagina de emparejamiento (para app Android) ──────
+
+    async def handle_pair_page(self, request):
+        return web.Response(
+            content_type="text/html",
+            text="""<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>BMB Emparejado</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body { font-family: system-ui; max-width: 400px; margin: 40px auto; padding: 20px; text-align: center;
+       background: #0f0f0f; color: white; }
+.card { background: #1a1a2e; border-radius: 16px; padding: 24px; }
+.success { color: #22c55e; }
+</style></head><body>
+<div class="card">
+<h1>🕵️ BMB Encover</h1>
+<p class="success">✅ Emparejado</p>
+<p>App conectada al servidor</p>
+</div>
+</body></html>"""
+        )
+
+    # ─── Pagina principal ───────────────────────────────────
+
+    async def handle_index(self, request):
+        return web.Response(
+            content_type="text/html",
+            text=f"""<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>BMB Encover Server</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {{ font-family: system-ui; max-width: 600px; margin: 40px auto; padding: 20px; text-align: center; }}
+.card {{ background: #f5f5f5; border-radius: 16px; padding: 24px; margin: 16px 0; }}
+.btn {{ display: inline-block; background: #5865F2; color: white; padding: 14px 28px; border-radius: 12px;
+        text-decoration: none; font-size: 18px; margin: 8px; }}
+.qr-img {{ width: 280px; height: 280px; border-radius: 12px; }}
+.status {{ color: #22c55e; font-weight: bold; }}
+</style></head><body>
+<h1>🕵️ BMB Encover</h1>
+<p>Servidor v0.5.0 funcionando</p>
+<div class="card">
+<p class="status">✅ Server activo</p>
+<p>🌐 Tunnel: {'<b>' + self.tunnel_url + '</b>' if self.tunnel_url else '⏳ Esperando tunnel...'}</p>
+<p>📱 Dispositivos: {len(self.devices)}</p>
+</div>
+<a class="btn" href="/qr" target="_blank">📱 Escanear QR</a>
+<a class="btn" href="/api/pair/token?format=png" target="_blank">🔲 QR PNG</a>
+<a class="btn" href="/health" target="_blank">💚 Health</a>
+</body></html>"""
+        )
+
+    async def handle_qr_page(self, request):
+        self._update_qr()
+        qr_api_url = f"/api/pair/token?format=png&t={int(time.time())}"
+        return web.Response(
+            content_type="text/html",
+            text=f"""<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>BMB QR - Escanear</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {{ font-family: system-ui; max-width: 500px; margin: 40px auto; padding: 20px; text-align: center;
+       background: #0f0f0f; color: white; }}
+h1 {{ color: #5865F2; }}
+.qr-box {{ background: white; padding: 20px; border-radius: 20px; display: inline-block; margin: 20px 0; }}
+.qr-img {{ width: 300px; height: 300px; }}
+.info {{ background: #1a1a2e; padding: 16px; border-radius: 12px; margin: 16px 0; word-break: break-all; }}
+.token {{ color: #22c55e; font-size: 14px; }}
+.refresh {{ color: #888; font-size: 13px; margin-top: 20px; }}
+</style></head><body>
+<h1>📱 Escanea con BMB</h1>
+<div class="qr-box">
+<img class="qr-img" src="{qr_api_url}" alt="QR">
+</div>
+<div class="info">
+<p>🌐 <b id="tunnelUrl">{self.tunnel_url or 'Cargando...'}</b></p>
+<p class="token">🔑 Token: bmb2026</p>
+<p id="qrData" style="font-size:12px;color:#666;">{self._qr_data[:80]}...</p>
+</div>
+<p>Abrí la app BMB Android y escaneá este código</p>
+<p class="refresh">🔄 La página se actualiza cada 10 segundos</p>
+<script>
+setInterval(function() {{
+    fetch('/api/pair/token').then(r=>r.json()).then(d => {{
+        document.getElementById('tunnelUrl').textContent = d.tunnel_url || 'Cargando...';
+        document.getElementById('qrData').textContent = d.qr_data || '';
+        document.querySelector('.qr-img').src = '/api/pair/token?format=png&t=' + Date.now();
+    }});
+}}, 10000);
+</script>
+</body></html>"""
+        )
+
+    # ─── Arranque con tunnel check ─────────────────────────
 
     def run(self):
         logger.info("╔══════════════════════════════════════════════╗")
-        logger.info("║     BMB Encover — App API Server v0.4.0     ║")
+        logger.info("║     BMB Encover — App API Server v0.5.0     ║")
         logger.info("╠══════════════════════════════════════════════╣")
         logger.info(f"║  REST: http://{self.host}:{self.port}/api/chat     ║")
         logger.info(f"║  WS:   ws://{self.host}:{self.port}/ws            ║")
         logger.info(f"║  Voice:ws://{self.host}:{self.port}/ws/voice      ║")
+        logger.info(f"║  📷 Img: http://{self.host}:{self.port}/api/image ║")
+        logger.info(f"║  🎤 Aud: http://{self.host}:{self.port}/api/audio ║")
+        logger.info(f"║  🔊 TTS: http://{self.host}:{self.port}/api/tts   ║")
+        logger.info(f"║  📞 Call:http://{self.host}:{self.port}/api/call  ║")
         logger.info(f"║  Pair: http://{self.host}:{self.port}/api/pair    ║")
+        logger.info(f"║  QR:   http://{self.host}:{self.port}/qr          ║")
         logger.info(f"║  Auth: {'ON' if self._access_token else 'OFF'} ({len(self.devices)} devices)     ║")
         logger.info(f"║  Agent: {'✅' if self.bmb_agent else '❌'} STT:{'✅' if self.whisper_available else '❌'} TTS:{'✅' if self.tts_available else '❌'} ║")
         logger.info("╚══════════════════════════════════════════════╝")
+        self._tunnel_check_task = asyncio.get_event_loop().create_task(self._check_tunnel_url())
+        self._update_qr()
         if self._agent_error:
             logger.warning(f"⚠️  {self._agent_error}")
         web.run_app(self.app, host=self.host, port=self.port, print=lambda *a: None)

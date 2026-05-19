@@ -5,6 +5,8 @@ import 'providers/chat_provider.dart';
 import 'providers/call_provider.dart';
 import 'providers/settings_provider.dart';
 import 'screens/onboarding/onboarding_screen.dart';
+import 'screens/onboarding/qr_scanner_screen.dart';
+import 'screens/pair/qr_display_screen.dart';
 import 'screens/chat/home_screen.dart';
 import 'screens/call/call_screen.dart';
 import 'screens/settings/settings_screen.dart';
@@ -65,6 +67,8 @@ class _BMBAppState extends State<BMBApp> {
       routes: {
         '/splash': (context) => const _SplashScreen(),
         '/onboarding': (context) => const OnboardingScreen(),
+        '/qr-scanner': (context) => const QRScannerScreen(),
+        '/qr-display': (context) => const QRDisplayScreen(),
         '/home': (context) => const HomeScreen(),
         '/call': (context) => const CallScreen(),
         '/settings': (context) => const SettingsScreen(),

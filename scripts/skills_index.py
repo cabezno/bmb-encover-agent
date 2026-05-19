@@ -1,410 +1,281 @@
-"""
-BMB Skills Index — Catálogo agéntico de skills
+#!/usr/bin/env python3
+"""BMB Encover Skills Index — Catálogo combinado de skills built-in e instalados.
 
-Genera un index.json con todos los skills disponibles,
-parseable por agentes (BMB, Claude Code, Cursor, etc.)
+Escanea:
+  1) /opt/bmb-encover/skills/   (built-in)
+  2) /root/.hermes/skills/       (instaladas)
 
-Formato:
-  skills/
-  ├── index.json          ← Catálogo completo
-  ├── index.embeddings    ← Embeddings para búsqueda semántica
-  └── <category>/
-      └── <skill-name>/
-          └── SKILL.md    ← Skill individual
+Para cada skill lee SKILL.md, extrae name, description, tags del frontmatter YAML,
+y genera /opt/bmb-encover/skills/index.json con una lista ordenada de objetos
+{name, description, tags, path, source}.
 
 Uso:
-  python3 skills_index.py --scan /opt/bmb-encover/skills --output /opt/bmb-encover/skills/index.json
+  python3 scripts/skills_index.py
 """
 
-import os
 import json
-import hashlib
+import os
 import re
+import sys
 from pathlib import Path
-from datetime import datetime
 
 
-def scan_skills(skills_dir: str) -> list[dict]:
-    """Escanear directorio de skills y generar índice."""
+# ── Rutas fijas ──────────────────────────────────────────────────────
+BUILTIN_DIR = Path("/opt/bmb-encover/skills")
+INSTALLED_DIR = Path("/root/.hermes/skills")
+OUTPUT_PATH = BUILTIN_DIR / "index.json"
+
+
+# ── Parser de frontmatter YAML (sin dependencias) ───────────────────
+
+def parse_frontmatter(content: str) -> dict:
+    """Parse minimal YAML frontmatter (--- delimitado) sin dependencias.
+
+    Soporta:
+      - key: scalar
+      - key: [inline, list]
+      - key:                    (multiline list)
+          - item1
+          - item2
+      - nested:
+          key: value
+      - nested:
+          inner:
+            tags: [a, b]
+    """
+    match = re.match(r"^---\n(.*?)\n(?:---|\.\.\.)", content, re.DOTALL)
+    if not match:
+        return {}
+
+    lines = match.group(1).split("\n")
+
+    # Primera pasada: normalizar indentación, filtrar vacías
+    cleaned = []
+    for line in lines:
+        if line.strip() == "":
+            continue
+        # Reemplazar indent tabs por espacios
+        cleaned.append(line.expandtabs(2))
+
+    if not cleaned:
+        return {}
+
+    # Construcción recursiva basada en indentación
+    return _parse_yaml_block(cleaned)
+
+
+def _get_indent(line: str) -> int:
+    """Obtener nivel de indentación (espacios al inicio)."""
+    return len(line) - len(line.lstrip())
+
+
+def _parse_yaml_block(lines: list, base_indent: int = 0) -> dict:
+    """Parsear un bloque YAML a partir de líneas con indentación >= base_indent."""
+    result = {}
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        indent = _get_indent(line)
+        if indent < base_indent:
+            # Regresar al caller (fin del bloque anidado)
+            break
+        stripped = line.strip()
+
+        # Saltar líneas que no son key: value
+        m = re.match(r"^(\S[\w\-/.]*)\s*:\s*(.*)", stripped)
+        if not m:
+            i += 1
+            continue
+
+        key = m.group(1).strip()
+        value = m.group(2).strip()
+
+        # ── Si el valor es un inline list: [a, b, c] ──
+        if value.startswith("[") and value.endswith("]"):
+            items = [x.strip().strip("\"'") for x in value[1:-1].split(",") if x.strip()]
+            result[key] = items
+            i += 1
+            continue
+
+        # ── Si el valor es un scalar (no vacío) ──
+        if value and value != "|":
+            value = value.strip("\"'")
+            if value.lower() == "null":
+                result[key] = None
+            elif value.lower() == "true":
+                result[key] = True
+            elif value.lower() == "false":
+                result[key] = False
+            else:
+                result[key] = value
+            i += 1
+            continue
+
+        # ── Si value está vacío → esperar bloque anidado o lista ──
+        # Mirar la siguiente línea para determinar si es lista o dict
+        if i + 1 >= len(lines):
+            result[key] = None
+            i += 1
+            break
+
+        next_indent = _get_indent(lines[i + 1])
+        next_stripped = lines[i + 1].strip()
+
+        if next_indent > indent and next_stripped.startswith("- "):
+            # ── Lista multilinea ──
+            items = []
+            j = i + 1
+            while j < len(lines) and _get_indent(lines[j]) > indent:
+                lstripped = lines[j].strip()
+                if lstripped.startswith("- "):
+                    items.append(lstripped[2:].strip().strip("\"'"))
+                j += 1
+            result[key] = items
+            i = j
+            continue
+
+        elif next_indent > indent:
+            # ── Dict anidado ──
+            sub_lines = lines[i + 1:]
+            sub_result = _parse_yaml_block(sub_lines, base_indent=next_indent)
+            result[key] = sub_result
+            # Avanzar i por las líneas consumidas
+            consumed = len(lines) - len(sub_lines) + len(sub_result)  # aproximación
+            # Mejor: contar cuántas líneas consumió _parse_yaml_block
+            consumed_count = 1  # la línea actual
+            j = i + 1
+            while j < len(lines) and _get_indent(lines[j]) >= next_indent:
+                consumed_count += 1
+                j += 1
+            i += consumed_count
+            continue
+
+        else:
+            # Valor vacío, nada debajo
+            result[key] = None
+            i += 1
+            continue
+
+    return result
+
+
+def extract_tags(frontmatter: dict) -> list:
+    """Extraer tags desde frontmatter, soportando múltiples formatos."""
+    # 1) Top-level tags como lista (solo si no está vacío — "tags" podría no existir)
+    tags = frontmatter.get("tags", None)
+    if isinstance(tags, list) and len(tags) > 0:
+        return tags
+
+    # 2) Top-level tags como string (raro)
+    if isinstance(tags, str) and tags:
+        return [tags]
+
+    # 3) metadata.hermes.tags
+    metadata = frontmatter.get("metadata", {})
+    if isinstance(metadata, dict):
+        hermes = metadata.get("hermes", {})
+        if isinstance(hermes, dict):
+            htags = hermes.get("tags", [])
+            if isinstance(htags, list) and len(htags) > 0:
+                return htags
+            if isinstance(htags, str) and htags:
+                return [htags]
+
+    return []
+
+
+def extract_description(frontmatter: dict) -> str:
+    """Extraer description del frontmatter."""
+    desc = frontmatter.get("description", "")
+    return desc.strip() if isinstance(desc, str) else str(desc) if desc else ""
+
+
+def extract_name(frontmatter: dict, fallback: str) -> str:
+    """Extraer name del frontmatter, fallback al nombre del directorio."""
+    name = frontmatter.get("name", fallback)
+    return name.strip() if isinstance(name, str) else str(name) if name else fallback
+
+
+# ── Escaneo de skills ───────────────────────────────────────────────
+
+def scan_skills(skills_dir: Path, source: str) -> list[dict]:
+    """Escanear skills/ → SKILL.md recursivo, extraer metadatos."""
+    if not skills_dir.is_dir():
+        print(f"  ⚠️  Directorio no encontrado: {skills_dir}", file=sys.stderr)
+        return []
+
     skills = []
-    skills_path = Path(skills_dir)
-
-    for skill_md in skills_path.rglob("SKILL.md"):
+    paths_seen = set()
+    for skill_md in sorted(skills_dir.rglob("SKILL.md")):
         try:
-            # Parsear frontmatter YAML manualmente (sin dependencias)
             content = skill_md.read_text(encoding="utf-8")
             frontmatter = parse_frontmatter(content)
-            body = extract_body(content)
+            name = extract_name(frontmatter, skill_md.parent.name)
+            description = extract_description(frontmatter)
+            tags = extract_tags(frontmatter)
 
-            # Metadatos
-            name = frontmatter.get("name", skill_md.parent.name)
-            description = frontmatter.get("description", "")
-            tags = frontmatter.get("tags", [])
-            version = frontmatter.get("version", "0.0.0")
-            author = frontmatter.get("author", "")
-            related = frontmatter.get("related_skills", [])
+            # Ruta relativa al directorio base de skills
+            try:
+                rel_path = skill_md.relative_to(skills_dir)
+            except ValueError:
+                rel_path = Path(source) / skill_md.parent.name / "SKILL.md"
 
-            # Categoría (basada en la ruta del directorio)
-            rel_path = skill_md.relative_to(skills_path)
-            category = str(rel_path.parent.parent.name)  # skills/<category>/<name>/SKILL.md
-
-            # Detectar tipo de skill por contenido
-            skill_type = detect_skill_type(body, tags)
-
-            # Detectar herramientas necesarias
-            required_tools = detect_required_tools(body)
-
-            # Hash del contenido para versioning
-            content_hash = hashlib.sha256(content.encode()).hexdigest()[:12]
-
-            skill_entry = {
-                "id": f"{category}/{name}",
+            entry = {
                 "name": name,
-                "description": description[:200],
-                "version": version,
-                "author": author,
-                "category": category,
-                "tags": tags if isinstance(tags, list) else [tags],
-                "related_skills": related if isinstance(related, list) else [],
-                "type": skill_type,
-                "required_tools": required_tools,
-                "content_hash": content_hash,
+                "description": description,
+                "tags": tags,
                 "path": str(rel_path),
-                "updated": datetime.fromtimestamp(skill_md.stat().st_mtime).isoformat(),
-                "lines": len(content.split("\n")),
-                "has_ascii_art": "```\n" in body and ("╔" in body or "┌" in body),
-                "has_examples": "## Example" in body or "## Uso" in body or "## Usage" in body,
+                "source": source,
             }
 
-            skills.append(skill_entry)
+            # Evitar duplicados (mismo path relativo dentro de mismo source)
+            path_key = str(rel_path)
+            if path_key in paths_seen:
+                continue
+            paths_seen.add(path_key)
 
+            skills.append(entry)
         except Exception as e:
-            print(f"  ⚠️  Error parsing {skill_md}: {e}")
+            print(f"  ⚠️  Error parsing {skill_md}: {e}", file=sys.stderr)
 
     return skills
 
 
-def parse_frontmatter(content: str) -> dict:
-    """Parsear frontmatter YAML (formato: ---\nkey: value\n---)."""
-    meta = {}
-    match = re.match(r"^---\n(.*?)\n---", content, re.DOTALL)
-    if not match:
-        return meta
-
-    yaml_text = match.group(1)
-    current_key = None
-    current_list = []
-
-    for line in yaml_text.split("\n"):
-        # List item
-        if line.startswith("  - ") or line.startswith("  -"):
-            item = line.strip().lstrip("- ").strip("\"'")
-            if current_key:
-                if current_key not in meta:
-                    meta[current_key] = []
-                meta[current_key].append(item)
-            continue
-
-        # Key: value
-        if ":" in line:
-            key, _, value = line.partition(":")
-            key = key.strip()
-            value = value.strip().strip("\"'")
-
-            if not value:  # podría ser una lista multilinea
-                current_key = key
-                meta[key] = []
-            else:
-                meta[key] = value
-                current_key = None
-
-    return meta
-
-
-def extract_body(content: str) -> str:
-    """Extraer el body después del frontmatter."""
-    match = re.match(r"^---\n.*?\n---\n(.*)", content, re.DOTALL)
-    return match.group(1) if match else content
-
-
-def detect_skill_type(body: str, tags: list) -> str:
-    """Detectar tipo de skill basado en contenido y tags."""
-    tags_lower = [t.lower() for t in (tags if isinstance(tags, list) else [tags])]
-
-    if any(t in tags_lower for t in ["api", "rest", "integration"]):
-        return "integration"
-    if any(t in tags_lower for t in ["cli", "terminal", "shell"]):
-        return "cli"
-    if any(t in tags_lower for t in ["web", "browser", "automation"]):
-        return "automation"
-    if any(t in tags_lower for t in ["data", "analysis", "analytics"]):
-        return "data"
-    if "creative" in tags_lower or "design" in tags_lower:
-        return "creative"
-    if "research" in tags_lower:
-        return "research"
-    if any(t in tags_lower for t in ["devops", "deploy", "ci/cd"]):
-        return "devops"
-    if any(t in tags_lower for t in ["ml", "ai", "llm", "model"]):
-        return "ml"
-    if any(t in tags_lower for t in ["security", "pentest", "auth"]):
-        return "security"
-
-    return "general"
-
-
-def detect_required_tools(body: str) -> list[str]:
-    """Detectar herramientas necesarias por el skill."""
-    tools = set()
-    patterns = {
-        "curl": r"curl\s+",
-        "git": r"\bgit\s+",
-        "docker": r"\bdocker\b",
-        "python": r"\bpython3?\b",
-        "node": r"\bnode\b|\bnpm\b",
-        "aws": r"\baws\s+",
-        "gcloud": r"\bgcloud\b",
-        "kubectl": r"\bkubectl\b",
-        "gh": r"\bgh\s+",
-        "jq": r"\bjq\b",
-        "psql": r"\bpsql\b",
-        "ffmpeg": r"\bffmpeg\b",
-        "pip": r"\bpip\s+",
-        "npx": r"\bnpx\b",
-    }
-
-    for tool, pattern in patterns.items():
-        if re.search(pattern, body, re.IGNORECASE):
-            tools.add(tool)
-
-    return sorted(tools)
-
-
-def build_embeddings_index(skills: list[dict], output_path: str):
-    """Generar archivo de embeddings a partir de descripciones + tags."""
-    entries = []
-    for skill in skills:
-        text = f"{skill['name']}: {skill['description']} {' '.join(skill['tags'])}"
-        entries.append({
-            "id": skill["id"],
-            "text": text,
-            "name": skill["name"],
-        })
-
-    # Embeddings simulados (placeholder para integración real con modelo)
-    # En producción, reemplazar con vectores reales de un modelo de embeddings
-    index = {
-        "version": "1.0",
-        "model": "text-embedding-3-small (simulado)",
-        "total_skills": len(entries),
-        "entries": entries,
-    }
-
-    with open(output_path, "w") as f:
-        json.dump(index, f, indent=2, ensure_ascii=False)
-
-    print(f"  📊 Embeddings index: {len(entries)} skills")
-
-
-def build_skill_tree(skills: list[dict], output_path: str):
-    """Generar árbol de categorías para navegación."""
-    tree = {}
-    for skill in skills:
-        cat = skill["category"]
-        if cat not in tree:
-            tree[cat] = {
-                "name": cat,
-                "count": 0,
-                "skills": [],
-            }
-        tree[cat]["count"] += 1
-        tree[cat]["skills"].append({
-            "id": skill["id"],
-            "name": skill["name"],
-            "description": skill["description"][:100],
-            "type": skill["type"],
-        })
-
-    # Ordenar skills dentro de cada categoría
-    for cat in tree:
-        tree[cat]["skills"].sort(key=lambda s: s["name"])
-
-    with open(output_path, "w") as f:
-        json.dump({
-            "version": "1.0",
-            "total_categories": len(tree),
-            "total_skills": len(skills),
-            "categories": tree,
-        }, f, indent=2, ensure_ascii=False)
-
-    print(f"  🌳 Skill tree: {len(tree)} categorías, {len(skills)} skills")
-
-
-def build_mcp_manifest(skills: list[dict], output_path: str):
-    """
-    Generar manifest compatible con MCP (Model Context Protocol)
-    para que los skills sean descubribles por clientes MCP.
-    """
-    tools = []
-    for skill in skills:
-        tools.append({
-            "name": skill["id"].replace("/", "."),
-            "description": skill["description"],
-            "inputSchema": {
-                "type": "object",
-                "properties": {
-                    "query": {
-                        "type": "string",
-                        "description": f"Query for {skill['name']}"
-                    }
-                },
-                "required": ["query"]
-            },
-            "tags": skill["tags"],
-            "category": skill["category"],
-        })
-
-    manifest = {
-        "schemaVersion": "1.0",
-        "name": "BMB Skills Hub",
-        "description": "Catálogo de skills agénticos para BMB Encover Agent",
-        "version": "1.0.0",
-        "tools": tools,
-        "totalTools": len(tools),
-    }
-
-    with open(output_path, "w") as f:
-        json.dump(manifest, f, indent=2, ensure_ascii=False)
-
-    print(f"  🔧 MCP manifest: {len(tools)} tools registradas")
-
-
-def generate_hub_readme(skills: list[dict], output_path: str):
-    """Generar README.md del skills hub."""
-    by_category = {}
-    for skill in skills:
-        cat = skill["category"]
-        if cat not in by_category:
-            by_category[cat] = []
-        by_category[cat].append(skill)
-
-    lines = [
-        "# BMB Skills Hub",
-        "",
-        "Catálogo de skills agénticos para BMB Encover Agent.",
-        "",
-        f"**Total: {len(skills)} skills** | **Categorías: {len(by_category)}**",
-        "",
-        "## 📋 Índice",
-        "",
-    ]
-
-    for cat in sorted(by_category.keys()):
-        cat_skills = by_category[cat]
-        lines.append(f"- **{cat}** ({len(cat_skills)} skills)")
-        for s in cat_skills:
-            tags = " ".join(f"`{t}`" for t in s["tags"][:3])
-            lines.append(f"  - [{s['name']}]({s['path']}) — {s['description'][:100]} {tags}")
-        lines.append("")
-
-    lines.extend([
-        "---",
-        "",
-        "## 🤖 Para usar con BMB",
-        "",
-        "Cargar un skill específico:",
-        "```",
-        "skill_view(name='<skill-id>')",
-        "```",
-        "",
-        "Buscar skills por categoría:",
-        "```",
-        "skills_list(category='<category>')",
-        "```",
-        "",
-        "## 📦 Formato",
-        "",
-        "Cada skill es un `SKILL.md` con frontmatter YAML:",
-        "```yaml",
-        "---",
-        "name: nombre-del-skill",
-        "description: Breve descripción",
-        "version: 1.0.0",
-        "tags: [tag1, tag2]",
-        "---",
-        "```",
-        "",
-        "## 🔌 MCP Compatible",
-        "",
-        "Skills expuestos como MCP tools en `mcp-manifest.json`.",
-        "",
-        "---",
-        f"*Generado automáticamente el {datetime.now().strftime('%Y-%m-%d %H:%M')}*",
-    ])
-
-    with open(output_path, "w") as f:
-        f.write("\n".join(lines))
-
-    print(f"  📖 README: {output_path}")
-
+# ── Main ────────────────────────────────────────────────────────────
 
 def main():
-    import argparse
-
-    parser = argparse.ArgumentParser(description="BMB Skills Index")
-    parser.add_argument("--scan", default="/opt/bmb-encover/skills", help="Directorio de skills")
-    parser.add_argument("--output", default="/opt/bmb-encover/skills/index.json", help="Archivo de salida")
-    args = parser.parse_args()
-
-    skills_dir = args.scan
-    output_path = Path(args.output)
-    output_dir = output_path.parent
-
-    print(f"🔍 Escaneando: {skills_dir}")
+    print("🔍 Escaneando skills...")
+    print("")
+    print(f"  📂 Built-in:  {BUILTIN_DIR}")
+    print(f"  📂 Installed: {INSTALLED_DIR}")
     print("")
 
-    skills = scan_skills(skills_dir)
-    skills.sort(key=lambda s: s["id"])
+    all_skills = []
 
-    print(f"📦 Skills encontrados: {len(skills)}")
-    print("")
+    # 1) Built-in skills
+    builtin = scan_skills(BUILTIN_DIR, "built-in")
+    print(f"  ✅ Built-in:  {len(builtin)} skills encontrados")
+    all_skills.extend(builtin)
 
-    # Mostrar resumen por categoría
-    by_cat = {}
-    for s in skills:
-        by_cat.setdefault(s["category"], []).append(s)
-    for cat in sorted(by_cat.keys()):
-        print(f"  📁 {cat}: {len(by_cat[cat])} skills")
+    # 2) Installed skills
+    installed = scan_skills(INSTALLED_DIR, "installed")
+    print(f"  ✅ Installed: {len(installed)} skills encontrados")
+    all_skills.extend(installed)
 
-    print("")
-
-    # Generar archivos
-    os.makedirs(output_dir, exist_ok=True)
-
-    # 1. Index principal
-    with open(output_path, "w") as f:
-        json.dump({
-            "version": "2.0",
-            "generated": datetime.now().isoformat(),
-            "total": len(skills),
-            "skills": skills,
-        }, f, indent=2, ensure_ascii=False)
-    print(f"  ✅ Index: {output_path}")
-
-    # 2. Embeddings
-    build_embeddings_index(skills, str(output_dir / "index.embeddings.json"))
-
-    # 3. Skill tree
-    build_skill_tree(skills, str(output_dir / "skill-tree.json"))
-
-    # 4. MCP manifest
-    build_mcp_manifest(skills, str(output_dir / "mcp-manifest.json"))
-
-    # 5. README
-    generate_hub_readme(skills, str(output_dir / "README.md"))
+    # 3) Ordenar alfabéticamente por name
+    all_skills.sort(key=lambda s: s["name"].lower())
 
     print("")
-    print("🎉 Skills index generado!")
+    print(f"  📊 Total: {len(all_skills)} skills combinados")
+
+    # 4) Escribir index.json
+    os.makedirs(OUTPUT_PATH.parent, exist_ok=True)
+    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
+        json.dump(all_skills, f, indent=2, ensure_ascii=False)
+
+    print(f"  ✅ Index escrito: {OUTPUT_PATH}")
+    print("")
+    print("🎉 Done!")
 
 
 if __name__ == "__main__":

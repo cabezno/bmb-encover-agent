@@ -1,2034 +1,2835 @@
-{
-  "version": "2.0",
-  "generated": "2026-05-15T14:54:13.172080",
-  "total": 88,
-  "skills": [
-    {
-      "id": "/dogfood",
-      "name": "dogfood",
-      "description": "Exploratory QA of web apps: find bugs, evidence, reports.",
-      "version": "1.0.0",
-      "author": "",
-      "category": "",
-      "tags": [
-        "[qa, testing, browser, web, dogfood]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [],
-      "content_hash": "07142daa2ae1",
-      "path": "dogfood/SKILL.md",
-      "updated": "2026-05-04T11:57:14.864347",
-      "lines": 162,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "apple/apple-notes",
-      "name": "apple-notes",
-      "description": "Manage Apple Notes via memo CLI: create, search, edit.",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "apple",
-      "tags": [
-        "[Notes, Apple, macOS, note-taking]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [],
-      "content_hash": "8ce0d76051d9",
-      "path": "apple/apple-notes/SKILL.md",
-      "updated": "2026-05-15T13:35:50.920467",
-      "lines": 91,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "apple/apple-reminders",
-      "name": "apple-reminders",
-      "description": "Apple Reminders via remindctl: add, list, complete.",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "apple",
-      "tags": [
-        "[Reminders, tasks, todo, macOS, Apple]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [],
-      "content_hash": "3ad614e74d0f",
-      "path": "apple/apple-reminders/SKILL.md",
-      "updated": "2026-05-15T13:35:50.912862",
-      "lines": 99,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "apple/findmy",
-      "name": "findmy",
-      "description": "Track Apple devices/AirTags via FindMy.app on macOS.",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "apple",
-      "tags": [
-        "[FindMy, AirTag, location, tracking, macOS, Apple]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [],
-      "content_hash": "2150d2b9e667",
-      "path": "apple/findmy/SKILL.md",
-      "updated": "2026-05-15T13:35:50.909059",
-      "lines": 132,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "apple/imessage",
-      "name": "imessage",
-      "description": "Send and receive iMessages/SMS via the imsg CLI on macOS.",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "apple",
-      "tags": [
-        "[iMessage, SMS, messaging, macOS, Apple]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "jq"
-      ],
-      "content_hash": "cc288b5f37a8",
-      "path": "apple/imessage/SKILL.md",
-      "updated": "2026-05-15T13:35:50.912862",
-      "lines": 103,
-      "has_ascii_art": false,
-      "has_examples": true
-    },
-    {
-      "id": "autonomous-ai-agents/bmb-encover",
-      "name": "bmb-encover",
-      "description": "Configure, extend, or contribute to BlackMagicBox Encover Agent.",
-      "version": "2.0.0",
-      "author": "BlackMagicBox Encover Agent + Teknium",
-      "category": "autonomous-ai-agents",
-      "tags": [
-        "[hermes, setup, configuration, multi-agent, spawning, cli, gateway, development]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl",
-        "docker",
-        "gh",
-        "git",
-        "pip",
-        "python"
-      ],
-      "content_hash": "c3aef74eab02",
-      "path": "autonomous-ai-agents/bmb-agent/SKILL.md",
-      "updated": "2026-05-15T13:37:11.007213",
-      "lines": 761,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "autonomous-ai-agents/claude-code",
-      "name": "claude-code",
-      "description": "Delegate coding to Claude Code CLI (features, PRs).",
-      "version": "2.2.0",
-      "author": "BlackMagicBox Encover Agent + Teknium",
-      "category": "autonomous-ai-agents",
-      "tags": [
-        "[Coding-Agent, Claude, Anthropic, Code-Review, Refactoring, PTY, Automation]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "docker",
-        "git",
-        "jq",
-        "node",
-        "npx",
-        "python"
-      ],
-      "content_hash": "d638b2f1736d",
-      "path": "autonomous-ai-agents/claude-code/SKILL.md",
-      "updated": "2026-05-15T13:35:50.950888",
-      "lines": 745,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "autonomous-ai-agents/codex",
-      "name": "codex",
-      "description": "Delegate coding to OpenAI Codex CLI (features, PRs).",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "autonomous-ai-agents",
-      "tags": [
-        "[Coding-Agent, Codex, OpenAI, Code-Review, Refactoring]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "gh",
-        "git",
-        "node",
-        "python"
-      ],
-      "content_hash": "af5781339fd8",
-      "path": "autonomous-ai-agents/codex/SKILL.md",
-      "updated": "2026-05-15T13:35:50.947085",
-      "lines": 123,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "autonomous-ai-agents/opencode",
-      "name": "opencode",
-      "description": "Delegate coding to OpenCode CLI (features, PR review).",
-      "version": "1.2.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "autonomous-ai-agents",
-      "tags": [
-        "[Coding-Agent, OpenCode, Autonomous, Refactoring, Code-Review]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "git",
-        "node"
-      ],
-      "content_hash": "47091f0b791d",
-      "path": "autonomous-ai-agents/opencode/SKILL.md",
-      "updated": "2026-05-15T13:35:50.950888",
-      "lines": 219,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "creative/architecture-diagram",
-      "name": "architecture-diagram",
-      "description": "Dark-themed SVG architecture/cloud/infra diagrams as HTML.",
-      "version": "1.0.0",
-      "author": "Cocoon AI (hello@cocoon-ai.com), ported by BlackMagicBox Encover Agent",
-      "category": "creative",
-      "tags": [
-        "[architecture, diagrams, SVG, HTML, visualization, infrastructure, cloud]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [],
-      "content_hash": "b0561ca1c2cc",
-      "path": "creative/architecture-diagram/SKILL.md",
-      "updated": "2026-05-15T13:35:51.217072",
-      "lines": 148,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "creative/ascii-art",
-      "name": "ascii-art",
-      "description": "ASCII art: pyfiglet, cowsay, boxes, image-to-ascii.",
-      "version": "4.0.0",
-      "author": "0xbyt4, BlackMagicBox Encover Agent",
-      "category": "creative",
-      "tags": [
-        "[ASCII, Art, Banners, Creative, Unicode, Text-Art, pyfiglet, figlet, cowsay, boxes]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl",
-        "pip",
-        "python"
-      ],
-      "content_hash": "9b9bae251cb9",
-      "path": "creative/ascii-art/SKILL.md",
-      "updated": "2026-05-15T13:35:51.053559",
-      "lines": 322,
-      "has_ascii_art": true,
-      "has_examples": true
-    },
-    {
-      "id": "creative/ascii-video",
-      "name": "ascii-video",
-      "description": "ASCII video: convert video/audio to colored ASCII MP4/GIF.",
-      "version": "0.0.0",
-      "author": "",
-      "category": "creative",
-      "tags": [],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "ffmpeg",
-        "python"
-      ],
-      "content_hash": "a330b1d35a56",
-      "path": "creative/ascii-video/SKILL.md",
-      "updated": "2026-05-04T11:57:14.835974",
-      "lines": 241,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "creative/baoyu-comic",
-      "name": "baoyu-comic",
-      "description": "Knowledge comics (知识漫画): educational, biography, tutorial.",
-      "version": "1.56.1",
-      "author": "宝玉 (JimLiu)",
-      "category": "creative",
-      "tags": [
-        "[comic, knowledge-comic, creative, image-generation]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl"
-      ],
-      "content_hash": "35bb514c20f9",
-      "path": "creative/baoyu-comic/SKILL.md",
-      "updated": "2026-05-15T13:35:51.190453",
-      "lines": 247,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "creative/baoyu-infographic",
-      "name": "baoyu-infographic",
-      "description": "Infographics: 21 layouts x 21 styles (信息图, 可视化).",
-      "version": "1.56.1",
-      "author": "宝玉 (JimLiu)",
-      "category": "creative",
-      "tags": [
-        "[infographic, visual-summary, creative, image-generation]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [],
-      "content_hash": "5281f5eafb31",
-      "path": "creative/baoyu-infographic/SKILL.md",
-      "updated": "2026-05-15T13:35:51.057361",
-      "lines": 237,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "creative/claude-design",
-      "name": "claude-design",
-      "description": "Design one-off HTML artifacts (landing, deck, prototype).",
-      "version": "1.0.0",
-      "author": "BadTechBandit",
-      "category": "creative",
-      "tags": [
-        "[design, html, prototype, ux, ui, creative, artifact, deck, motion, design-system]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [],
-      "content_hash": "aa54aac52369",
-      "path": "creative/claude-design/SKILL.md",
-      "updated": "2026-05-04T11:57:14.844081",
-      "lines": 591,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "creative/comfyui",
-      "name": "comfyui",
-      "description": "Generate images, video, and audio with ComfyUI — install, launch, manage nodes/models, run workflows with parameter injection. Uses the official comfy-cli for lifecycle and direct REST/WebSocket API f",
-      "version": "5.0.0",
-      "author": "[kshitijk4poor, alt-glitch]",
-      "category": "creative",
-      "tags": [],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl",
-        "git",
-        "node",
-        "pip",
-        "python"
-      ],
-      "content_hash": "dc23dc22f1d9",
-      "path": "creative/comfyui/SKILL.md",
-      "updated": "2026-05-04T11:57:14.844081",
-      "lines": 607,
-      "has_ascii_art": true,
-      "has_examples": false
-    },
-    {
-      "id": "creative/design-md",
-      "name": "design-md",
-      "description": "Author/validate/export Google's DESIGN.md token spec files.",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "creative",
-      "tags": [
-        "[design, design-system, tokens, ui, accessibility, wcag, tailwind, dtcg, google]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "node",
-        "npx"
-      ],
-      "content_hash": "f4498b28d9ae",
-      "path": "creative/design-md/SKILL.md",
-      "updated": "2026-05-15T13:35:51.186651",
-      "lines": 199,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "creative/excalidraw",
-      "name": "excalidraw",
-      "description": "Hand-drawn Excalidraw JSON diagrams (arch, flow, seq).",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "creative",
-      "tags": [
-        "[Excalidraw, Diagrams, Flowcharts, Architecture, Visualization, JSON]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "pip",
-        "python"
-      ],
-      "content_hash": "a5ae12e68def",
-      "path": "creative/excalidraw/SKILL.md",
-      "updated": "2026-05-15T13:35:51.205664",
-      "lines": 199,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "creative/humanizer",
-      "name": "humanizer",
-      "description": "Humanize text: strip AI-isms and add real voice.",
-      "version": "2.5.1",
-      "author": "Siqi Chen (@blader, https://github.com/blader/humanizer), ported by BlackMagicBox Encover Agent",
-      "category": "creative",
-      "tags": [
-        "[writing, editing, humanize, anti-ai-slop, voice, prose, text]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [],
-      "content_hash": "12a70f070606",
-      "path": "creative/humanizer/SKILL.md",
-      "updated": "2026-05-15T13:35:51.064966",
-      "lines": 578,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "creative/ideation",
-      "name": "ideation",
-      "description": "Generate project ideas via creative constraints.",
-      "version": "1.0.0",
-      "author": "SHL0MS",
-      "category": "creative",
-      "tags": [
-        "[Creative, Ideation, Projects, Brainstorming, Inspiration]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "docker",
-        "git",
-        "node",
-        "python"
-      ],
-      "content_hash": "3fad5810e5c4",
-      "path": "creative/creative-ideation/SKILL.md",
-      "updated": "2026-05-04T11:57:14.848134",
-      "lines": 152,
-      "has_ascii_art": false,
-      "has_examples": true
-    },
-    {
-      "id": "creative/manim-video",
-      "name": "manim-video",
-      "description": "Manim CE animations: 3Blue1Brown math/algo videos.",
-      "version": "1.0.0",
-      "author": "",
-      "category": "creative",
-      "tags": [],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "ffmpeg",
-        "node",
-        "pip",
-        "python"
-      ],
-      "content_hash": "5b9c3c14c490",
-      "path": "creative/manim-video/SKILL.md",
-      "updated": "2026-05-04T11:57:14.848134",
-      "lines": 269,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "creative/p5js",
-      "name": "p5js",
-      "description": "p5.js sketches: gen art, shaders, interactive, 3D.",
-      "version": "1.0.0",
-      "author": "",
-      "category": "creative",
-      "tags": [
-        "[creative-coding, generative-art, p5js, canvas, interactive, visualization, webgl, shaders, animation]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl",
-        "ffmpeg",
-        "node",
-        "python"
-      ],
-      "content_hash": "201fcdbf0fd1",
-      "path": "creative/p5js/SKILL.md",
-      "updated": "2026-05-04T11:57:14.848134",
-      "lines": 556,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "creative/pixel-art",
-      "name": "pixel-art",
-      "description": "Pixel art w/ era palettes (NES, Game Boy, PICO-8).",
-      "version": "2.0.0",
-      "author": "dodo-reach",
-      "category": "creative",
-      "tags": [
-        "[creative, pixel-art, arcade, snes, nes, gameboy, retro, image, video]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "ffmpeg",
-        "pip",
-        "python"
-      ],
-      "content_hash": "5b29d4a615ec",
-      "path": "creative/pixel-art/SKILL.md",
-      "updated": "2026-05-04T11:57:14.852187",
-      "lines": 218,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "creative/popular-web-designs",
-      "name": "popular-web-designs",
-      "description": "54 real design systems (Stripe, Linear, Vercel) as HTML/CSS.",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent + Teknium (design systems sourced from VoltAgent/awesome-design-md)",
-      "category": "creative",
-      "tags": [
-        "[design, css, html, ui, web-development, design-systems, templates]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [],
-      "content_hash": "d22314b39e77",
-      "path": "creative/popular-web-designs/SKILL.md",
-      "updated": "2026-05-15T13:35:51.095387",
-      "lines": 213,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "creative/pretext",
-      "name": "pretext",
-      "description": "Use when building creative browser demos with @chenglou/pretext — DOM-free text layout for ASCII art, typographic flow around obstacles, text-as-geometry games, kinetic typography, and text-powered ge",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "creative",
-      "tags": [
-        "[creative-coding, typography, pretext, ascii-art, canvas, generative, text-layout, kinetic-typography]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "node",
-        "python"
-      ],
-      "content_hash": "bb6c4bc1d7c6",
-      "path": "creative/pretext/SKILL.md",
-      "updated": "2026-05-15T13:35:51.087782",
-      "lines": 220,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "creative/sketch",
-      "name": "sketch",
-      "description": "Throwaway HTML mockups: 2-3 design variants to compare.",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent (adapted from gsd-build/get-shit-done)",
-      "category": "creative",
-      "tags": [
-        "[sketch, mockup, design, ui, prototype, html, variants, exploration, wireframe, comparison]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "npx"
-      ],
-      "content_hash": "1f80c9e62606",
-      "path": "creative/sketch/SKILL.md",
-      "updated": "2026-05-15T13:35:51.220874",
-      "lines": 218,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "creative/songwriting-and-ai-music",
-      "name": "songwriting-and-ai-music",
-      "description": "Songwriting craft and Suno AI music prompts.",
-      "version": "0.0.0",
-      "author": "",
-      "category": "creative",
-      "tags": [
-        "[songwriting, music, suno, parody, lyrics, creative]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [],
-      "content_hash": "9f752ea5d522",
-      "path": "creative/songwriting-and-ai-music/SKILL.md",
-      "updated": "2026-05-04T11:57:14.860294",
-      "lines": 287,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "creative/touchdesigner-mcp",
-      "name": "touchdesigner-mcp",
-      "description": "Control a running TouchDesigner instance via twozero MCP — create operators, set parameters, wire connections, execute Python, build real-time visuals. 36 native tools.",
-      "version": "1.1.0",
-      "author": "kshitijk4poor",
-      "category": "creative",
-      "tags": [
-        "[TouchDesigner, MCP, twozero, creative-coding, real-time-visuals, generative-art, audio-reactive, VJ, installation, GLSL]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "ffmpeg",
-        "node",
-        "python"
-      ],
-      "content_hash": "0223c618df8d",
-      "path": "creative/touchdesigner-mcp/SKILL.md",
-      "updated": "2026-05-15T13:35:51.076375",
-      "lines": 356,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "data-science/jupyter-live-kernel",
-      "name": "jupyter-live-kernel",
-      "description": "Iterative Python via live Jupyter kernel (hamelnb).",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "data-science",
-      "tags": [
-        "[jupyter, notebook, repl, data-science, exploration, iterative]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl",
-        "git",
-        "python"
-      ],
-      "content_hash": "37e349fcf374",
-      "path": "data-science/jupyter-live-kernel/SKILL.md",
-      "updated": "2026-05-15T13:35:51.038348",
-      "lines": 167,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "devops/kanban-orchestrator",
-      "name": "kanban-orchestrator",
-      "description": "Decomposition playbook + specialist-roster conventions + anti-temptation rules for an orchestrator profile routing work through Kanban. The \"don't do the work yourself\" rule and the basic lifecycle ar",
-      "version": "2.0.0",
-      "author": "",
-      "category": "devops",
-      "tags": [
-        "[kanban, multi-agent, orchestration, routing]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "python"
-      ],
-      "content_hash": "23aa04ec2418",
-      "path": "devops/kanban-orchestrator/SKILL.md",
-      "updated": "2026-05-15T13:37:11.007213",
-      "lines": 153,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "devops/kanban-worker",
-      "name": "kanban-worker",
-      "description": "Pitfalls, examples, and edge cases for Hermes Kanban workers. The lifecycle itself is auto-injected into every worker's system prompt as KANBAN_GUIDANCE (from agent/prompt_builder.py); this skill is w",
-      "version": "2.0.0",
-      "author": "",
-      "category": "devops",
-      "tags": [
-        "[kanban, multi-agent, collaboration, workflow, pitfalls]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "docker",
-        "git",
-        "python"
-      ],
-      "content_hash": "7fc681a28e60",
-      "path": "devops/kanban-worker/SKILL.md",
-      "updated": "2026-05-15T13:37:11.007213",
-      "lines": 135,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "devops/webhook-subscriptions",
-      "name": "webhook-subscriptions",
-      "description": "Webhook subscriptions: event-driven agent runs.",
-      "version": "1.1.0",
-      "author": "",
-      "category": "devops",
-      "tags": [
-        "[webhook, events, automation, integrations, notifications, push]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl"
-      ],
-      "content_hash": "a39425f48830",
-      "path": "devops/webhook-subscriptions/SKILL.md",
-      "updated": "2026-05-15T13:35:50.954690",
-      "lines": 204,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "email/himalaya",
-      "name": "himalaya",
-      "description": "Himalaya CLI: IMAP/SMTP email from terminal.",
-      "version": "1.1.0",
-      "author": "community",
-      "category": "email",
-      "tags": [
-        "[Email, IMAP, SMTP, CLI, Communication]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl"
-      ],
-      "content_hash": "975f7bbeaf67",
-      "path": "email/himalaya/SKILL.md",
-      "updated": "2026-05-04T20:30:38.273430",
-      "lines": 299,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "evaluation/evaluating-llms-harness",
-      "name": "evaluating-llms-harness",
-      "description": "lm-eval-harness: benchmark LLMs (MMLU, GSM8K, etc.).",
-      "version": "1.0.0",
-      "author": "Orchestra Research",
-      "category": "evaluation",
-      "tags": [
-        "[Evaluation, LM Evaluation Harness, Benchmarking, MMLU, HumanEval, GSM8K, EleutherAI, Model Quality, Academic Benchmarks, Industry Standard]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "pip",
-        "python"
-      ],
-      "content_hash": "83fb318d855e",
-      "path": "mlops/evaluation/lm-evaluation-harness/SKILL.md",
-      "updated": "2026-05-04T11:57:14.872454",
-      "lines": 498,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "evaluation/weights-and-biases",
-      "name": "weights-and-biases",
-      "description": "W&B: log ML experiments, sweeps, model registry, dashboards.",
-      "version": "1.0.0",
-      "author": "Orchestra Research",
-      "category": "evaluation",
-      "tags": [
-        "[MLOps, Weights And Biases, WandB, Experiment Tracking, Hyperparameter Tuning, Model Registry, Collaboration, Real-Time Visualization, PyTorch, TensorFlow, HuggingFace]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "pip",
-        "python"
-      ],
-      "content_hash": "45f107b4a4c0",
-      "path": "mlops/evaluation/weights-and-biases/SKILL.md",
-      "updated": "2026-05-04T11:57:14.872454",
-      "lines": 594,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "gaming/minecraft-modpack-server",
-      "name": "minecraft-modpack-server",
-      "description": "Host modded Minecraft servers (CurseForge, Modrinth).",
-      "version": "0.0.0",
-      "author": "",
-      "category": "gaming",
-      "tags": [
-        "[minecraft, gaming, server, neoforge, forge, modpack]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [],
-      "content_hash": "92c7233cc54b",
-      "path": "gaming/minecraft-modpack-server/SKILL.md",
-      "updated": "2026-05-04T11:57:14.864347",
-      "lines": 187,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "gaming/pokemon-player",
-      "name": "pokemon-player",
-      "description": "Play Pokemon via headless emulator + RAM reads.",
-      "version": "0.0.0",
-      "author": "",
-      "category": "gaming",
-      "tags": [
-        "[gaming, pokemon, emulator, pyboy, gameplay, gameboy]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "python"
-      ],
-      "content_hash": "b07826e1f2c5",
-      "path": "gaming/pokemon-player/SKILL.md",
-      "updated": "2026-05-15T13:35:51.236085",
-      "lines": 216,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "github/codebase-inspection",
-      "name": "codebase-inspection",
-      "description": "Inspect codebases w/ pygount: LOC, languages, ratios.",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "github",
-      "tags": [
-        "[LOC, Code Analysis, pygount, Codebase, Metrics, Repository]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "pip",
-        "python"
-      ],
-      "content_hash": "4f1aa7d98aed",
-      "path": "github/codebase-inspection/SKILL.md",
-      "updated": "2026-05-15T13:35:50.897651",
-      "lines": 116,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "github/github-auth",
-      "name": "github-auth",
-      "description": "GitHub auth setup: HTTPS tokens, SSH keys, gh CLI login.",
-      "version": "1.1.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "github",
-      "tags": [
-        "[GitHub, Authentication, Git, gh-cli, SSH, Setup]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl",
-        "gh",
-        "git"
-      ],
-      "content_hash": "c3c79f747af7",
-      "path": "github/github-auth/SKILL.md",
-      "updated": "2026-05-15T13:35:50.890046",
-      "lines": 247,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "github/github-code-review",
-      "name": "github-code-review",
-      "description": "Review PRs: diffs, inline comments via gh or REST.",
-      "version": "1.1.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "github",
-      "tags": [
-        "[GitHub, Code-Review, Pull-Requests, Git, Quality]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl",
-        "gh",
-        "git",
-        "jq",
-        "node",
-        "python"
-      ],
-      "content_hash": "07af9119cf30",
-      "path": "github/github-code-review/SKILL.md",
-      "updated": "2026-05-15T13:35:50.890046",
-      "lines": 481,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "github/github-issues",
-      "name": "github-issues",
-      "description": "Create, triage, label, assign GitHub issues via gh or REST.",
-      "version": "1.1.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "github",
-      "tags": [
-        "[GitHub, Issues, Project-Management, Bug-Tracking, Triage]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl",
-        "gh",
-        "git",
-        "jq",
-        "python"
-      ],
-      "content_hash": "3918ee5167a4",
-      "path": "github/github-issues/SKILL.md",
-      "updated": "2026-05-15T13:35:50.897651",
-      "lines": 370,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "github/github-pr-workflow",
-      "name": "github-pr-workflow",
-      "description": "GitHub PR lifecycle: branch, commit, open, CI, merge.",
-      "version": "1.1.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "github",
-      "tags": [
-        "[GitHub, Pull-Requests, CI/CD, Git, Automation, Merge]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl",
-        "gh",
-        "git",
-        "python"
-      ],
-      "content_hash": "2b1ec0ff28ba",
-      "path": "github/github-pr-workflow/SKILL.md",
-      "updated": "2026-05-15T13:35:50.886243",
-      "lines": 367,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "github/github-repo-management",
-      "name": "github-repo-management",
-      "description": "Clone/create/fork repos; manage remotes, releases.",
-      "version": "1.1.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "github",
-      "tags": [
-        "[GitHub, Repositories, Git, Releases, Secrets, Configuration]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl",
-        "gh",
-        "git",
-        "jq",
-        "python"
-      ],
-      "content_hash": "08b70bef4dae",
-      "path": "github/github-repo-management/SKILL.md",
-      "updated": "2026-05-15T13:35:50.882441",
-      "lines": 516,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "inference/llama-cpp",
-      "name": "llama-cpp",
-      "description": "llama.cpp local GGUF inference + HF Hub model discovery.",
-      "version": "2.1.2",
-      "author": "Orchestra Research",
-      "category": "inference",
-      "tags": [
-        "[llama.cpp, GGUF, Quantization, Hugging Face Hub, CPU Inference, Apple Silicon, Edge Deployment, AMD GPUs, Intel GPUs, NVIDIA, URL-first]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl",
-        "docker",
-        "git",
-        "pip",
-        "python"
-      ],
-      "content_hash": "06b21e4aadcf",
-      "path": "mlops/inference/llama-cpp/SKILL.md",
-      "updated": "2026-05-04T11:57:14.872454",
-      "lines": 249,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "inference/obliteratus",
-      "name": "obliteratus",
-      "description": "OBLITERATUS: abliterate LLM refusals (diff-in-means).",
-      "version": "2.0.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "inference",
-      "tags": [
-        "[Abliteration, Uncensoring, Refusal-Removal, LLM, Weight-Projection, SVD, Mechanistic-Interpretability, HuggingFace, Model-Surgery]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "git",
-        "pip",
-        "python"
-      ],
-      "content_hash": "de512485af2a",
-      "path": "mlops/inference/obliteratus/SKILL.md",
-      "updated": "2026-05-15T13:35:50.966098",
-      "lines": 342,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "inference/outlines",
-      "name": "outlines",
-      "description": "Outlines: structured JSON/regex/Pydantic LLM generation.",
-      "version": "1.0.0",
-      "author": "Orchestra Research",
-      "category": "inference",
-      "tags": [
-        "[Prompt Engineering, Outlines, Structured Generation, JSON Schema, Pydantic, Local Models, Grammar-Based Generation, vLLM, Transformers, Type Safety]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "pip",
-        "python"
-      ],
-      "content_hash": "bfcee60c50d4",
-      "path": "mlops/inference/outlines/SKILL.md",
-      "updated": "2026-05-04T11:57:14.876507",
-      "lines": 656,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "inference/serving-llms-vllm",
-      "name": "serving-llms-vllm",
-      "description": "vLLM: high-throughput LLM serving, OpenAI API, quantization.",
-      "version": "1.0.0",
-      "author": "Orchestra Research",
-      "category": "inference",
-      "tags": [
-        "[vLLM, Inference Serving, PagedAttention, Continuous Batching, High Throughput, Production, OpenAI API, Quantization, Tensor Parallelism]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl",
-        "docker",
-        "pip",
-        "python"
-      ],
-      "content_hash": "dbc02611b59f",
-      "path": "mlops/inference/vllm/SKILL.md",
-      "updated": "2026-05-04T11:57:14.876507",
-      "lines": 372,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "mcp/native-mcp",
-      "name": "native-mcp",
-      "description": "MCP client: connect servers, register tools (stdio/HTTP).",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "mcp",
-      "tags": [
-        "[MCP, Tools, Integrations]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "node",
-        "npx",
-        "pip",
-        "python"
-      ],
-      "content_hash": "d1a55369b7c0",
-      "path": "mcp/native-mcp/SKILL.md",
-      "updated": "2026-05-15T13:37:11.007213",
-      "lines": 357,
-      "has_ascii_art": false,
-      "has_examples": true
-    },
-    {
-      "id": "media/gif-search",
-      "name": "gif-search",
-      "description": "Search/download GIFs from Tenor via curl + jq.",
-      "version": "1.1.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "media",
-      "tags": [
-        "[GIF, Media, Search, Tenor, API]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl",
-        "jq"
-      ],
-      "content_hash": "d0cd94eefb49",
-      "path": "media/gif-search/SKILL.md",
-      "updated": "2026-05-15T13:35:50.958493",
-      "lines": 91,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "media/heartmula",
-      "name": "heartmula",
-      "description": "HeartMuLa: Suno-like song generation from lyrics + tags.",
-      "version": "1.0.0",
-      "author": "",
-      "category": "media",
-      "tags": [
-        "[music, audio, generation, ai, heartmula, heartcodec, lyrics, songs]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "git",
-        "pip",
-        "python"
-      ],
-      "content_hash": "0c62d3c104a7",
-      "path": "media/heartmula/SKILL.md",
-      "updated": "2026-05-04T11:57:14.868401",
-      "lines": 171,
-      "has_ascii_art": false,
-      "has_examples": true
-    },
-    {
-      "id": "media/songsee",
-      "name": "songsee",
-      "description": "Audio spectrograms/features (mel, chroma, MFCC) via CLI.",
-      "version": "1.0.0",
-      "author": "community",
-      "category": "media",
-      "tags": [
-        "[Audio, Visualization, Spectrogram, Music, Analysis]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "ffmpeg"
-      ],
-      "content_hash": "d5c0f9355154",
-      "path": "media/songsee/SKILL.md",
-      "updated": "2026-05-04T11:57:14.868401",
-      "lines": 83,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "media/spotify",
-      "name": "spotify",
-      "description": "Spotify: play, search, queue, manage playlists and devices.",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "media",
-      "tags": [
-        "[spotify, music, playback, playlists, media]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [],
-      "content_hash": "e92daa7f57ab",
-      "path": "media/spotify/SKILL.md",
-      "updated": "2026-05-15T13:37:11.011009",
-      "lines": 135,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "media/youtube-content",
-      "name": "youtube-content",
-      "description": "YouTube transcripts to summaries, threads, blogs.",
-      "version": "0.0.0",
-      "author": "",
-      "category": "media",
-      "tags": [],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "pip",
-        "python"
-      ],
-      "content_hash": "590f7358445e",
-      "path": "media/youtube-content/SKILL.md",
-      "updated": "2026-05-04T11:57:14.872454",
-      "lines": 73,
-      "has_ascii_art": false,
-      "has_examples": true
-    },
-    {
-      "id": "meta/bmb-skills-hub",
-      "name": "bmb-skills-hub",
-      "description": "Skills Hub agéntico para BMB Encover — index.json, skill-tree, MCP manifest, embeddings index, README auto-generado. Inspirado en clawhub-skills (hanabi-jpn).",
-      "version": "1.0.0",
-      "author": "",
-      "category": "meta",
-      "tags": [
-        "skills",
-        "index",
-        "mcp",
-        "catalog",
-        "agentic",
-        "discovery"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "python"
-      ],
-      "content_hash": "001bb099a3e6",
-      "path": "meta/bmb-skills-hub/SKILL.md",
-      "updated": "2026-05-15T14:54:07.823384",
-      "lines": 101,
-      "has_ascii_art": false,
-      "has_examples": true
-    },
-    {
-      "id": "mlops/huggingface-hub",
-      "name": "huggingface-hub",
-      "description": "HuggingFace hf CLI: search/download/upload models, datasets.",
-      "version": "1.0.0",
-      "author": "Hugging Face",
-      "category": "mlops",
-      "tags": [
-        "[huggingface, hf, models, datasets, hub, mlops]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl",
-        "python"
-      ],
-      "content_hash": "d33563a7e777",
-      "path": "mlops/huggingface-hub/SKILL.md",
-      "updated": "2026-05-04T11:57:14.872454",
-      "lines": 81,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "models/audiocraft-audio-generation",
-      "name": "audiocraft-audio-generation",
-      "description": "AudioCraft: MusicGen text-to-music, AudioGen text-to-sound.",
-      "version": "1.0.0",
-      "author": "Orchestra Research",
-      "category": "models",
-      "tags": [
-        "[Multimodal, Audio Generation, Text-to-Music, Text-to-Audio, MusicGen]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "git",
-        "pip",
-        "python"
-      ],
-      "content_hash": "7a9e4e55ad62",
-      "path": "mlops/models/audiocraft/SKILL.md",
-      "updated": "2026-05-04T11:57:14.876507",
-      "lines": 568,
-      "has_ascii_art": true,
-      "has_examples": false
-    },
-    {
-      "id": "models/segment-anything-model",
-      "name": "segment-anything-model",
-      "description": "SAM: zero-shot image segmentation via points, boxes, masks.",
-      "version": "1.0.0",
-      "author": "Orchestra Research",
-      "category": "models",
-      "tags": [
-        "[Multimodal, Image Segmentation, Computer Vision, SAM, Zero-Shot]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "git",
-        "pip",
-        "python"
-      ],
-      "content_hash": "a98e8a7c281e",
-      "path": "mlops/models/segment-anything/SKILL.md",
-      "updated": "2026-05-04T11:57:14.876507",
-      "lines": 506,
-      "has_ascii_art": true,
-      "has_examples": false
-    },
-    {
-      "id": "note-taking/obsidian",
-      "name": "obsidian",
-      "description": "Read, search, and create notes in the Obsidian vault.",
-      "version": "0.0.0",
-      "author": "",
-      "category": "note-taking",
-      "tags": [],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [],
-      "content_hash": "a666662889c5",
-      "path": "note-taking/obsidian/SKILL.md",
-      "updated": "2026-05-15T13:35:50.844414",
-      "lines": 67,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "productivity/airtable",
-      "name": "airtable",
-      "description": "Airtable REST API via curl. Records CRUD, filters, upserts.",
-      "version": "1.1.0",
-      "author": "community",
-      "category": "productivity",
-      "tags": [
-        "[Airtable, Productivity, Database, API]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl",
-        "jq",
-        "python"
-      ],
-      "content_hash": "e097bc66afd6",
-      "path": "productivity/airtable/SKILL.md",
-      "updated": "2026-05-15T13:35:50.882441",
-      "lines": 229,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "productivity/google-workspace",
-      "name": "google-workspace",
-      "description": "Google OAuth2 client credentials (downloaded from Google Cloud Console)",
-      "version": "1.0.1",
-      "author": "Encover",
-      "category": "productivity",
-      "tags": [
-        "[Google, Gmail, Calendar, Drive, Sheets, Docs, Contacts, Email, OAuth]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "jq",
-        "python"
-      ],
-      "content_hash": "3ca9d66facaf",
-      "path": "productivity/google-workspace/SKILL.md",
-      "updated": "2026-05-15T13:35:50.871032",
-      "lines": 285,
-      "has_ascii_art": false,
-      "has_examples": true
-    },
-    {
-      "id": "productivity/linear",
-      "name": "linear",
-      "description": "Linear: manage issues, projects, teams via GraphQL + curl.",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "productivity",
-      "tags": [
-        "[Linear, Project Management, Issues, GraphQL, API, Productivity]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl",
-        "jq",
-        "python"
-      ],
-      "content_hash": "808663efa171",
-      "path": "productivity/linear/SKILL.md",
-      "updated": "2026-05-15T13:35:50.867230",
-      "lines": 298,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "productivity/maps",
-      "name": "maps",
-      "description": "Geocode, POIs, routes, timezones via OpenStreetMap/OSRM.",
-      "version": "1.2.0",
-      "author": "Mibayy",
-      "category": "productivity",
-      "tags": [
-        "[maps, geocoding, places, routing, distance, directions, nearby, location, openstreetmap, nominatim, overpass, osrm]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "pip",
-        "python"
-      ],
-      "content_hash": "4ebb41d2f9b4",
-      "path": "productivity/maps/SKILL.md",
-      "updated": "2026-05-15T13:35:50.863427",
-      "lines": 195,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "productivity/nano-pdf",
-      "name": "nano-pdf",
-      "description": "Edit PDF text/typos/titles via nano-pdf CLI (NL prompts).",
-      "version": "1.0.0",
-      "author": "community",
-      "category": "productivity",
-      "tags": [
-        "[PDF, Documents, Editing, NLP, Productivity]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "pip"
-      ],
-      "content_hash": "4eedb649dcf4",
-      "path": "productivity/nano-pdf/SKILL.md",
-      "updated": "2026-05-04T11:57:14.888667",
-      "lines": 52,
-      "has_ascii_art": false,
-      "has_examples": true
-    },
-    {
-      "id": "productivity/notion",
-      "name": "notion",
-      "description": "Notion API via curl: pages, databases, blocks, search.",
-      "version": "1.0.0",
-      "author": "community",
-      "category": "productivity",
-      "tags": [
-        "[Notion, Productivity, Notes, Database, API]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl",
-        "jq"
-      ],
-      "content_hash": "8200fb2f48ad",
-      "path": "productivity/notion/SKILL.md",
-      "updated": "2026-05-15T13:35:50.867230",
-      "lines": 172,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "productivity/ocr-and-documents",
-      "name": "ocr-and-documents",
-      "description": "Extract text from PDFs/scans (pymupdf, marker-pdf).",
-      "version": "2.3.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "productivity",
-      "tags": [
-        "[PDF, Documents, Research, Arxiv, Text-Extraction, OCR]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "pip",
-        "python"
-      ],
-      "content_hash": "85b2ac4b0bd0",
-      "path": "productivity/ocr-and-documents/SKILL.md",
-      "updated": "2026-05-15T13:35:50.878638",
-      "lines": 172,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "productivity/powerpoint",
-      "name": "powerpoint",
-      "description": "Create, read, edit .pptx decks, slides, notes, templates.",
-      "version": "0.0.0",
-      "author": "",
-      "category": "productivity",
-      "tags": [],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "node",
-        "pip",
-        "python"
-      ],
-      "content_hash": "5d80c56d140e",
-      "path": "productivity/powerpoint/SKILL.md",
-      "updated": "2026-05-04T11:57:14.892720",
-      "lines": 237,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "research/arxiv",
-      "name": "arxiv",
-      "description": "Search arXiv papers by keyword, author, category, or ID.",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "research",
-      "tags": [
-        "[Research, Arxiv, Papers, Academic, Science, API]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl",
-        "python"
-      ],
-      "content_hash": "ac012a98911e",
-      "path": "research/arxiv/SKILL.md",
-      "updated": "2026-05-15T13:35:50.935677",
-      "lines": 282,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "research/blogwatcher",
-      "name": "blogwatcher",
-      "description": "Monitor blogs and RSS/Atom feeds via blogwatcher-cli tool.",
-      "version": "2.0.0",
-      "author": "JulienTant (fork of Hyaxia/blogwatcher)",
-      "category": "research",
-      "tags": [
-        "[RSS, Blogs, Feed-Reader, Monitoring]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl",
-        "docker"
-      ],
-      "content_hash": "2fa4ea3866b1",
-      "path": "research/blogwatcher/SKILL.md",
-      "updated": "2026-05-04T11:57:14.900827",
-      "lines": 137,
-      "has_ascii_art": false,
-      "has_examples": true
-    },
-    {
-      "id": "research/dspy",
-      "name": "dspy",
-      "description": "DSPy: declarative LM programs, auto-optimize prompts, RAG.",
-      "version": "1.0.0",
-      "author": "Orchestra Research",
-      "category": "research",
-      "tags": [
-        "[Prompt Engineering, DSPy, Declarative Programming, RAG, Agents, Prompt Optimization, LM Programming, Stanford NLP, Automatic Optimization, Modular AI]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "git",
-        "pip",
-        "python"
-      ],
-      "content_hash": "c02732551c78",
-      "path": "mlops/research/dspy/SKILL.md",
-      "updated": "2026-05-04T11:57:14.876507",
-      "lines": 594,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "research/llm-wiki",
-      "name": "llm-wiki",
-      "description": "Karpathy's LLM Wiki: build/query interlinked markdown KB.",
-      "version": "2.1.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "research",
-      "tags": [
-        "[wiki, knowledge-base, research, notes, markdown, rag-alternative]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "node",
-        "python"
-      ],
-      "content_hash": "fd3eb2438406",
-      "path": "research/llm-wiki/SKILL.md",
-      "updated": "2026-05-15T13:35:50.935677",
-      "lines": 507,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "research/polymarket",
-      "name": "polymarket",
-      "description": "Query Polymarket: markets, prices, orderbooks, history.",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent + Teknium",
-      "category": "research",
-      "tags": [
-        "[polymarket, prediction-markets, market-data, trading]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl",
-        "python"
-      ],
-      "content_hash": "8748a56adc92",
-      "path": "research/polymarket/SKILL.md",
-      "updated": "2026-05-15T13:35:50.939480",
-      "lines": 77,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "research/research-paper-writing",
-      "name": "research-paper-writing",
-      "description": "Write ML papers for NeurIPS/ICML/ICLR: design→submit.",
-      "version": "1.1.0",
-      "author": "Orchestra Research",
-      "category": "research",
-      "tags": [
-        "[Research, Paper Writing, Experiments, ML, AI, NeurIPS, ICML, ICLR, ACL, AAAI, COLM, LaTeX, Citations, Statistical Analysis]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "docker",
-        "git",
-        "node",
-        "npx",
-        "pip",
-        "python"
-      ],
-      "content_hash": "0509bd4fb0ea",
-      "path": "research/research-paper-writing/SKILL.md",
-      "updated": "2026-05-15T13:35:50.924269",
-      "lines": 2378,
-      "has_ascii_art": true,
-      "has_examples": false
-    },
-    {
-      "id": "smart-home/openhue",
-      "name": "openhue",
-      "description": "Control Philips Hue lights, scenes, rooms via OpenHue CLI.",
-      "version": "1.0.0",
-      "author": "community",
-      "category": "smart-home",
-      "tags": [
-        "[Smart-Home, Hue, Lights, IoT, Automation]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl"
-      ],
-      "content_hash": "6e0387e6aafc",
-      "path": "smart-home/openhue/SKILL.md",
-      "updated": "2026-05-04T11:57:14.908934",
-      "lines": 109,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "social-media/xurl",
-      "name": "xurl",
-      "description": "X/Twitter via xurl CLI: post, search, DM, media, v2 API.",
-      "version": "1.1.1",
-      "author": "xdevplatform + openclaw + BlackMagicBox Encover Agent",
-      "category": "social-media",
-      "tags": [
-        "[twitter, x, social-media, xurl, official-api]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl",
-        "node",
-        "python"
-      ],
-      "content_hash": "37a90eca4219",
-      "path": "social-media/xurl/SKILL.md",
-      "updated": "2026-05-15T13:35:50.844414",
-      "lines": 415,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "software-development/bmb-encover-skill-authoring",
-      "name": "bmb-encover-skill-authoring",
-      "description": "Author in-repo SKILL.md: frontmatter, validator, structure.",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "software-development",
-      "tags": [
-        "[skills, authoring, bmb-encover, conventions, skill-md]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "git",
-        "python"
-      ],
-      "content_hash": "9f68b1525006",
-      "path": "software-development/bmb-agent-skill-authoring/SKILL.md",
-      "updated": "2026-05-15T13:35:50.852020",
-      "lines": 165,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "software-development/debugging-bmb-tui-commands",
-      "name": "debugging-bmb-tui-commands",
-      "description": "Debug Hermes TUI slash commands: Python, gateway, Ink UI.",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "software-development",
-      "tags": [
-        "[debugging, bmb-encover, tui, slash-commands, typescript, python]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "node",
-        "python"
-      ],
-      "content_hash": "4e5e200aada5",
-      "path": "software-development/debugging-bmb-tui-commands/SKILL.md",
-      "updated": "2026-05-15T13:35:50.859625",
-      "lines": 152,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "software-development/node-inspect-debugger",
-      "name": "node-inspect-debugger",
-      "description": "Debug Node.js via --inspect + Chrome DevTools Protocol CLI.",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "software-development",
-      "tags": [
-        "[debugging, nodejs, node-inspect, cdp, breakpoints, ui-tui]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "curl",
-        "jq",
-        "node",
-        "python"
-      ],
-      "content_hash": "464120f05a78",
-      "path": "software-development/node-inspect-debugger/SKILL.md",
-      "updated": "2026-05-15T13:37:11.003416",
-      "lines": 319,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "software-development/plan",
-      "name": "plan",
-      "description": "Plan mode: write markdown plan to .hermes/plans/, no exec.",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "software-development",
-      "tags": [
-        "[planning, plan-mode, implementation, workflow]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "docker"
-      ],
-      "content_hash": "7434d45a4cb3",
-      "path": "software-development/plan/SKILL.md",
-      "updated": "2026-05-15T13:35:50.855822",
-      "lines": 58,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "software-development/python-debugpy",
-      "name": "python-debugpy",
-      "description": "Debug Python: pdb REPL + debugpy remote (DAP).",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent",
-      "category": "software-development",
-      "tags": [
-        "[debugging, python, pdb, debugpy, breakpoints, dap, post-mortem]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "git",
-        "node",
-        "pip",
-        "python"
-      ],
-      "content_hash": "5cb31e4160b4",
-      "path": "software-development/python-debugpy/SKILL.md",
-      "updated": "2026-05-15T13:37:11.003416",
-      "lines": 375,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "software-development/requesting-code-review",
-      "name": "requesting-code-review",
-      "description": "Pre-commit review: security scan, quality gates, auto-fix.",
-      "version": "2.0.0",
-      "author": "BlackMagicBox Encover Agent (adapted from obra/superpowers + MorAlekss)",
-      "category": "software-development",
-      "tags": [
-        "[code-review, security, verification, quality, pre-commit, auto-fix]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "git",
-        "node",
-        "npx",
-        "python"
-      ],
-      "content_hash": "49d578d938af",
-      "path": "software-development/requesting-code-review/SKILL.md",
-      "updated": "2026-05-15T13:35:50.848217",
-      "lines": 280,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "software-development/spike",
-      "name": "spike",
-      "description": "Throwaway experiments to validate an idea before build.",
-      "version": "1.0.0",
-      "author": "BlackMagicBox Encover Agent (adapted from gsd-build/get-shit-done)",
-      "category": "software-development",
-      "tags": [
-        "[spike, prototype, experiment, feasibility, throwaway, exploration, research, planning, mvp, proof-of-concept]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "docker",
-        "node",
-        "npx",
-        "pip",
-        "python"
-      ],
-      "content_hash": "49859a4cf08a",
-      "path": "software-development/spike/SKILL.md",
-      "updated": "2026-05-15T13:35:50.855822",
-      "lines": 197,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "software-development/subagent-driven-development",
-      "name": "subagent-driven-development",
-      "description": "Execute plans via delegate_task subagents (2-stage review).",
-      "version": "1.1.0",
-      "author": "BlackMagicBox Encover Agent (adapted from obra/superpowers)",
-      "category": "software-development",
-      "tags": [
-        "[delegation, subagent, implementation, workflow, parallel]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "git",
-        "python"
-      ],
-      "content_hash": "1ebd4fc6f71d",
-      "path": "software-development/subagent-driven-development/SKILL.md",
-      "updated": "2026-05-15T13:35:50.852020",
-      "lines": 352,
-      "has_ascii_art": false,
-      "has_examples": true
-    },
-    {
-      "id": "software-development/systematic-debugging",
-      "name": "systematic-debugging",
-      "description": "4-phase root cause debugging: understand bugs before fixing.",
-      "version": "1.1.0",
-      "author": "BlackMagicBox Encover Agent (adapted from obra/superpowers)",
-      "category": "software-development",
-      "tags": [
-        "[debugging, troubleshooting, problem-solving, root-cause, investigation]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "git",
-        "python"
-      ],
-      "content_hash": "3e1b13f6d12b",
-      "path": "software-development/systematic-debugging/SKILL.md",
-      "updated": "2026-05-15T13:35:50.859625",
-      "lines": 367,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "software-development/test-driven-development",
-      "name": "test-driven-development",
-      "description": "TDD: enforce RED-GREEN-REFACTOR, tests before code.",
-      "version": "1.1.0",
-      "author": "BlackMagicBox Encover Agent (adapted from obra/superpowers)",
-      "category": "software-development",
-      "tags": [
-        "[testing, tdd, development, quality, red-green-refactor]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "python"
-      ],
-      "content_hash": "6bdab2c76be4",
-      "path": "software-development/test-driven-development/SKILL.md",
-      "updated": "2026-05-15T13:35:50.863427",
-      "lines": 343,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "software-development/writing-plans",
-      "name": "writing-plans",
-      "description": "Write implementation plans: bite-sized tasks, paths, code.",
-      "version": "1.1.0",
-      "author": "BlackMagicBox Encover Agent (adapted from obra/superpowers)",
-      "category": "software-development",
-      "tags": [
-        "[planning, design, implementation, workflow, documentation]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "git",
-        "python"
-      ],
-      "content_hash": "543cd13713bc",
-      "path": "software-development/writing-plans/SKILL.md",
-      "updated": "2026-05-15T13:35:50.852020",
-      "lines": 297,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "training/axolotl",
-      "name": "axolotl",
-      "description": "Axolotl: YAML LLM fine-tuning (LoRA, DPO, GRPO).",
-      "version": "1.0.0",
-      "author": "Orchestra Research",
-      "category": "training",
-      "tags": [
-        "[Fine-Tuning, Axolotl, LLM, LoRA, QLoRA, DPO, KTO, ORPO, GRPO, YAML, HuggingFace, DeepSpeed, Multimodal]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "python"
-      ],
-      "content_hash": "06150971c412",
-      "path": "mlops/training/axolotl/SKILL.md",
-      "updated": "2026-05-04T11:57:14.876507",
-      "lines": 166,
-      "has_ascii_art": false,
-      "has_examples": true
-    },
-    {
-      "id": "training/fine-tuning-with-trl",
-      "name": "fine-tuning-with-trl",
-      "description": "TRL: SFT, DPO, PPO, GRPO, reward modeling for LLM RLHF.",
-      "version": "1.0.0",
-      "author": "Orchestra Research",
-      "category": "training",
-      "tags": [
-        "[Post-Training, TRL, Reinforcement Learning, Fine-Tuning, SFT, DPO, PPO, GRPO, RLHF, Preference Alignment, HuggingFace]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [
-        "pip",
-        "python"
-      ],
-      "content_hash": "ad0792435a54",
-      "path": "mlops/training/trl-fine-tuning/SKILL.md",
-      "updated": "2026-05-04T11:57:14.880561",
-      "lines": 463,
-      "has_ascii_art": false,
-      "has_examples": false
-    },
-    {
-      "id": "training/unsloth",
-      "name": "unsloth",
-      "description": "Unsloth: 2-5x faster LoRA/QLoRA fine-tuning, less VRAM.",
-      "version": "1.0.0",
-      "author": "Orchestra Research",
-      "category": "training",
-      "tags": [
-        "[Fine-Tuning, Unsloth, Fast Training, LoRA, QLoRA, Memory-Efficient, Optimization, Llama, Mistral, Gemma, Qwen]"
-      ],
-      "related_skills": [],
-      "type": "general",
-      "required_tools": [],
-      "content_hash": "05961478fad3",
-      "path": "mlops/training/unsloth/SKILL.md",
-      "updated": "2026-05-04T11:57:14.880561",
-      "lines": 84,
-      "has_ascii_art": false,
-      "has_examples": false
-    }
-  ]
-}
+[
+  {
+    "name": "airtable",
+    "description": "Airtable REST API via curl. Records CRUD, filters, upserts.",
+    "tags": [
+      "Airtable",
+      "Productivity",
+      "Database",
+      "API"
+    ],
+    "path": "productivity/airtable/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "airtable",
+    "description": "Airtable REST API via curl. Records CRUD, filters, upserts.",
+    "tags": [
+      "Airtable",
+      "Productivity",
+      "Database",
+      "API"
+    ],
+    "path": "productivity/airtable/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "aislar-whatsapp",
+    "description": "Aisla WhatsApp del gateway. Elimina watchdog, respalda sesion, mata zombies. Regla fija - nunca responder en grupos ni broadcasts.",
+    "tags": [],
+    "path": "aislar-whatsapp/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "apple-notes",
+    "description": "Manage Apple Notes via memo CLI: create, search, edit.",
+    "tags": [
+      "Notes",
+      "Apple",
+      "macOS",
+      "note-taking"
+    ],
+    "path": "apple/apple-notes/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "apple-notes",
+    "description": "Manage Apple Notes via memo CLI: create, search, edit.",
+    "tags": [
+      "Notes",
+      "Apple",
+      "macOS",
+      "note-taking"
+    ],
+    "path": "apple/apple-notes/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "apple-reminders",
+    "description": "Apple Reminders via remindctl: add, list, complete.",
+    "tags": [
+      "Reminders",
+      "tasks",
+      "todo",
+      "macOS",
+      "Apple"
+    ],
+    "path": "apple/apple-reminders/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "apple-reminders",
+    "description": "Apple Reminders via remindctl: add, list, complete.",
+    "tags": [
+      "Reminders",
+      "tasks",
+      "todo",
+      "macOS",
+      "Apple"
+    ],
+    "path": "apple/apple-reminders/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "architecture-diagram",
+    "description": "Dark-themed SVG architecture/cloud/infra diagrams as HTML.",
+    "tags": [
+      "architecture",
+      "diagrams",
+      "SVG",
+      "HTML",
+      "visualization",
+      "infrastructure",
+      "cloud"
+    ],
+    "path": "creative/architecture-diagram/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "architecture-diagram",
+    "description": "Dark-themed SVG architecture/cloud/infra diagrams as HTML.",
+    "tags": [
+      "architecture",
+      "diagrams",
+      "SVG",
+      "HTML",
+      "visualization",
+      "infrastructure",
+      "cloud"
+    ],
+    "path": "creative/architecture-diagram/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "arxiv",
+    "description": "Search arXiv papers by keyword, author, category, or ID.",
+    "tags": [
+      "Research",
+      "Arxiv",
+      "Papers",
+      "Academic",
+      "Science",
+      "API"
+    ],
+    "path": "research/arxiv/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "arxiv",
+    "description": "Search arXiv papers by keyword, author, category, or ID.",
+    "tags": [
+      "Research",
+      "Arxiv",
+      "Papers",
+      "Academic",
+      "Science",
+      "API"
+    ],
+    "path": "research/arxiv/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "ascii-art",
+    "description": "ASCII art: pyfiglet, cowsay, boxes, image-to-ascii.",
+    "tags": [
+      "ASCII",
+      "Art",
+      "Banners",
+      "Creative",
+      "Unicode",
+      "Text-Art",
+      "pyfiglet",
+      "figlet",
+      "cowsay",
+      "boxes"
+    ],
+    "path": "creative/ascii-art/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "ascii-art",
+    "description": "ASCII art: pyfiglet, cowsay, boxes, image-to-ascii.",
+    "tags": [
+      "ASCII",
+      "Art",
+      "Banners",
+      "Creative",
+      "Unicode",
+      "Text-Art",
+      "pyfiglet",
+      "figlet",
+      "cowsay",
+      "boxes"
+    ],
+    "path": "creative/ascii-art/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "ascii-video",
+    "description": "ASCII video: convert video/audio to colored ASCII MP4/GIF.",
+    "tags": [],
+    "path": "creative/ascii-video/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "ascii-video",
+    "description": "ASCII video: convert video/audio to colored ASCII MP4/GIF.",
+    "tags": [],
+    "path": "creative/ascii-video/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "audiocraft-audio-generation",
+    "description": "AudioCraft: MusicGen text-to-music, AudioGen text-to-sound.",
+    "tags": [
+      "Multimodal",
+      "Audio Generation",
+      "Text-to-Music",
+      "Text-to-Audio",
+      "MusicGen"
+    ],
+    "path": "mlops/models/audiocraft/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "audiocraft-audio-generation",
+    "description": "AudioCraft: MusicGen text-to-music, AudioGen text-to-sound.",
+    "tags": [
+      "Multimodal",
+      "Audio Generation",
+      "Text-to-Music",
+      "Text-to-Audio",
+      "MusicGen"
+    ],
+    "path": "mlops/models/audiocraft/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "axolotl",
+    "description": "Axolotl: YAML LLM fine-tuning (LoRA, DPO, GRPO).",
+    "tags": [
+      "Fine-Tuning",
+      "Axolotl",
+      "LLM",
+      "LoRA",
+      "QLoRA",
+      "DPO",
+      "KTO",
+      "ORPO",
+      "GRPO",
+      "YAML",
+      "HuggingFace",
+      "DeepSpeed",
+      "Multimodal"
+    ],
+    "path": "mlops/training/axolotl/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "axolotl",
+    "description": "Axolotl: YAML LLM fine-tuning (LoRA, DPO, GRPO).",
+    "tags": [
+      "Fine-Tuning",
+      "Axolotl",
+      "LLM",
+      "LoRA",
+      "QLoRA",
+      "DPO",
+      "KTO",
+      "ORPO",
+      "GRPO",
+      "YAML",
+      "HuggingFace",
+      "DeepSpeed",
+      "Multimodal"
+    ],
+    "path": "mlops/training/axolotl/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "baoyu-comic",
+    "description": "Knowledge comics (知识漫画): educational, biography, tutorial.",
+    "tags": [
+      "comic",
+      "knowledge-comic",
+      "creative",
+      "image-generation"
+    ],
+    "path": "creative/baoyu-comic/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "baoyu-comic",
+    "description": "Knowledge comics (知识漫画): educational, biography, tutorial.",
+    "tags": [
+      "comic",
+      "knowledge-comic",
+      "creative",
+      "image-generation"
+    ],
+    "path": "creative/baoyu-comic/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "baoyu-infographic",
+    "description": "Infographics: 21 layouts x 21 styles (信息图, 可视化).",
+    "tags": [
+      "infographic",
+      "visual-summary",
+      "creative",
+      "image-generation"
+    ],
+    "path": "creative/baoyu-infographic/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "baoyu-infographic",
+    "description": "Infographics: 21 layouts x 21 styles (信息图, 可视化).",
+    "tags": [
+      "infographic",
+      "visual-summary",
+      "creative",
+      "image-generation"
+    ],
+    "path": "creative/baoyu-infographic/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "blogwatcher",
+    "description": "Monitor blogs and RSS/Atom feeds via blogwatcher-cli tool.",
+    "tags": [
+      "RSS",
+      "Blogs",
+      "Feed-Reader",
+      "Monitoring"
+    ],
+    "path": "research/blogwatcher/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "blogwatcher",
+    "description": "Monitor blogs and RSS/Atom feeds via blogwatcher-cli tool.",
+    "tags": [
+      "RSS",
+      "Blogs",
+      "Feed-Reader",
+      "Monitoring"
+    ],
+    "path": "research/blogwatcher/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "bmb-encover",
+    "description": "Configure, extend, or contribute to BlackMagicBox Encover Agent.",
+    "tags": [
+      "hermes",
+      "setup",
+      "configuration",
+      "multi-agent",
+      "spawning",
+      "cli",
+      "gateway",
+      "development"
+    ],
+    "path": "autonomous-ai-agents/bmb-agent/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "bmb-encover-skill-authoring",
+    "description": "Author in-repo SKILL.md: frontmatter, validator, structure.",
+    "tags": [
+      "skills",
+      "authoring",
+      "bmb-encover",
+      "conventions",
+      "skill-md"
+    ],
+    "path": "software-development/bmb-agent-skill-authoring/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "bmb-mobile-desktop-apps",
+    "description": "Plan de desarrollo de las apps BMB Undercover Agent para Android, iPhone, Windows y Mac — modo chat, live mode (voz), pestañas multi-instancia, consola oculta, conexión remota vía Cloudflare Tunnel, TTS/STT local, endpoints para imágenes, audio y llamadas.",
+    "tags": [
+      "flutter",
+      "mobile",
+      "desktop",
+      "bmb",
+      "app",
+      "voice",
+      "webrtc",
+      "tailscale",
+      "cloudflare",
+      "tunnel"
+    ],
+    "path": "software-development/bmb-mobile-desktop-apps/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "bmb-skills-hub",
+    "description": "Skills Hub agéntico para BMB Encover — index.json, skill-tree, MCP manifest, embeddings index, README auto-generado. Inspirado en clawhub-skills (hanabi-jpn).",
+    "tags": [
+      "skills",
+      "index",
+      "mcp",
+      "catalog",
+      "agentic",
+      "discovery"
+    ],
+    "path": "meta/bmb-skills-hub/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "bmb-skills-hub",
+    "description": "Skills Hub agéntico para BMB Encover — genera index.json, skills_index.html y panel web de skills. TAMBIÉN contiene la lista maestra del proyecto.",
+    "tags": [
+      "skills",
+      "index",
+      "mcp",
+      "catalog",
+      "agentic",
+      "discovery"
+    ],
+    "path": "meta/bmb-skills-hub/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "bmb-windows-bridge",
+    "description": "Puente Linux→Windows via watchdog. Permite a BMB (en WSL) ejecutar comandos en Windows sin intervención manual. Linux crea .bat en carpeta compartida, watchdog Windows los ejecuta y logea.",
+    "tags": [
+      "windows",
+      "wsl",
+      "watchdog",
+      "bridge",
+      "automation",
+      "puente"
+    ],
+    "path": "software-development/bmb-windows-bridge/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "claude-code",
+    "description": "Delegate coding to Claude Code CLI (features, PRs).",
+    "tags": [
+      "Coding-Agent",
+      "Claude",
+      "Anthropic",
+      "Code-Review",
+      "Refactoring",
+      "PTY",
+      "Automation"
+    ],
+    "path": "autonomous-ai-agents/claude-code/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "claude-code",
+    "description": "Delegate coding to Claude Code CLI (features, PRs).",
+    "tags": [
+      "Coding-Agent",
+      "Claude",
+      "Anthropic",
+      "Code-Review",
+      "Refactoring",
+      "PTY",
+      "Automation"
+    ],
+    "path": "autonomous-ai-agents/claude-code/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "claude-design",
+    "description": "Design one-off HTML artifacts (landing, deck, prototype).",
+    "tags": [
+      "design",
+      "html",
+      "prototype",
+      "ux",
+      "ui",
+      "creative",
+      "artifact",
+      "deck",
+      "motion",
+      "design-system"
+    ],
+    "path": "creative/claude-design/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "claude-design",
+    "description": "Design one-off HTML artifacts (landing, deck, prototype).",
+    "tags": [
+      "design",
+      "html",
+      "prototype",
+      "ux",
+      "ui",
+      "creative",
+      "artifact",
+      "deck",
+      "motion",
+      "design-system"
+    ],
+    "path": "creative/claude-design/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "codebase-inspection",
+    "description": "Inspect codebases w/ pygount: LOC, languages, ratios.",
+    "tags": [
+      "LOC",
+      "Code Analysis",
+      "pygount",
+      "Codebase",
+      "Metrics",
+      "Repository"
+    ],
+    "path": "github/codebase-inspection/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "codebase-inspection",
+    "description": "Inspect codebases w/ pygount: LOC, languages, ratios.",
+    "tags": [
+      "LOC",
+      "Code Analysis",
+      "pygount",
+      "Codebase",
+      "Metrics",
+      "Repository"
+    ],
+    "path": "github/codebase-inspection/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "codex",
+    "description": "Delegate coding to OpenAI Codex CLI (features, PRs).",
+    "tags": [
+      "Coding-Agent",
+      "Codex",
+      "OpenAI",
+      "Code-Review",
+      "Refactoring"
+    ],
+    "path": "autonomous-ai-agents/codex/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "codex",
+    "description": "Delegate coding to OpenAI Codex CLI (features, PRs).",
+    "tags": [
+      "Coding-Agent",
+      "Codex",
+      "OpenAI",
+      "Code-Review",
+      "Refactoring"
+    ],
+    "path": "autonomous-ai-agents/codex/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "comfyui",
+    "description": "Generate images, video, and audio with ComfyUI — install, launch, manage nodes/models, run workflows with parameter injection. Uses the official comfy-cli for lifecycle and direct REST/WebSocket API for execution.",
+    "tags": [
+      "comfyui",
+      "image-generation",
+      "stable-diffusion",
+      "flux",
+      "sd3",
+      "wan-video",
+      "hunyuan-video",
+      "creative",
+      "generative-ai",
+      "video-generation"
+    ],
+    "path": "creative/comfyui/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "comfyui",
+    "description": "Generate images, video, and audio with ComfyUI — install, launch, manage nodes/models, run workflows with parameter injection. Uses the official comfy-cli for lifecycle and direct REST/WebSocket API for execution.",
+    "tags": [
+      "comfyui",
+      "image-generation",
+      "stable-diffusion",
+      "flux",
+      "sd3",
+      "wan-video",
+      "hunyuan-video",
+      "creative",
+      "generative-ai",
+      "video-generation"
+    ],
+    "path": "creative/comfyui/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "debugging-bmb-tui-commands",
+    "description": "Debug Hermes TUI slash commands: Python, gateway, Ink UI.",
+    "tags": [
+      "debugging",
+      "bmb-encover",
+      "tui",
+      "slash-commands",
+      "typescript",
+      "python"
+    ],
+    "path": "software-development/debugging-bmb-tui-commands/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "debugging-hermes-tui-commands",
+    "description": "Debug Hermes TUI slash commands: Python, gateway, Ink UI.",
+    "tags": [
+      "debugging",
+      "hermes-agent",
+      "tui",
+      "slash-commands",
+      "typescript",
+      "python"
+    ],
+    "path": "software-development/debugging-hermes-tui-commands/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "deep-research-orchestrator",
+    "description": "Orchestrate deep research via delegated subagents — multi-source, multi-language, multi-phase investigation. Critical rule: CONFIRM SCOPE with user BEFORE dispatching any subagent. No premature execution.",
+    "tags": [
+      "research",
+      "delegation",
+      "orchestration",
+      "deep-research",
+      "web-search",
+      "multi-language"
+    ],
+    "path": "research/deep-research-orchestrator/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "deep-web-technical-research",
+    "description": ">",
+    "tags": [],
+    "path": "software-development/deep-web-technical-research/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "design-md",
+    "description": "Author/validate/export Google's DESIGN.md token spec files.",
+    "tags": [
+      "design",
+      "design-system",
+      "tokens",
+      "ui",
+      "accessibility",
+      "wcag",
+      "tailwind",
+      "dtcg",
+      "google"
+    ],
+    "path": "creative/design-md/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "design-md",
+    "description": "Author/validate/export Google's DESIGN.md token spec files.",
+    "tags": [
+      "design",
+      "design-system",
+      "tokens",
+      "ui",
+      "accessibility",
+      "wcag",
+      "tailwind",
+      "dtcg",
+      "google"
+    ],
+    "path": "creative/design-md/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "distill-micro-skills",
+    "description": "Al completar un objetivo complejo, hacer retrospectiva del camino: identificar hitos clave, atajos y breakthroughs, destilar el mapa más corto como micro-skill. Si el skill creado falla después, renovarlo iterativamente. Si la meta no se alcanza, NO guardar nada.",
+    "tags": [
+      "meta",
+      "skills",
+      "optimization",
+      "subagents",
+      "retrospective"
+    ],
+    "path": "meta/distill-micro-skills/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "dogfood",
+    "description": "Exploratory QA of web apps: find bugs, evidence, reports.",
+    "tags": [
+      "qa",
+      "testing",
+      "browser",
+      "web",
+      "dogfood"
+    ],
+    "path": "dogfood/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "dogfood",
+    "description": "Exploratory QA of web apps: find bugs, evidence, reports.",
+    "tags": [
+      "qa",
+      "testing",
+      "browser",
+      "web",
+      "dogfood"
+    ],
+    "path": "dogfood/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "dspy",
+    "description": "DSPy: declarative LM programs, auto-optimize prompts, RAG.",
+    "tags": [
+      "Prompt Engineering",
+      "DSPy",
+      "Declarative Programming",
+      "RAG",
+      "Agents",
+      "Prompt Optimization",
+      "LM Programming",
+      "Stanford NLP",
+      "Automatic Optimization",
+      "Modular AI"
+    ],
+    "path": "mlops/research/dspy/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "dspy",
+    "description": "DSPy: declarative LM programs, auto-optimize prompts, RAG.",
+    "tags": [
+      "Prompt Engineering",
+      "DSPy",
+      "Declarative Programming",
+      "RAG",
+      "Agents",
+      "Prompt Optimization",
+      "LM Programming",
+      "Stanford NLP",
+      "Automatic Optimization",
+      "Modular AI"
+    ],
+    "path": "mlops/research/dspy/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "evaluating-llms-harness",
+    "description": "lm-eval-harness: benchmark LLMs (MMLU, GSM8K, etc.).",
+    "tags": [
+      "Evaluation",
+      "LM Evaluation Harness",
+      "Benchmarking",
+      "MMLU",
+      "HumanEval",
+      "GSM8K",
+      "EleutherAI",
+      "Model Quality",
+      "Academic Benchmarks",
+      "Industry Standard"
+    ],
+    "path": "mlops/evaluation/lm-evaluation-harness/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "evaluating-llms-harness",
+    "description": "lm-eval-harness: benchmark LLMs (MMLU, GSM8K, etc.).",
+    "tags": [
+      "Evaluation",
+      "LM Evaluation Harness",
+      "Benchmarking",
+      "MMLU",
+      "HumanEval",
+      "GSM8K",
+      "EleutherAI",
+      "Model Quality",
+      "Academic Benchmarks",
+      "Industry Standard"
+    ],
+    "path": "mlops/evaluation/lm-evaluation-harness/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "excalidraw",
+    "description": "Hand-drawn Excalidraw JSON diagrams (arch, flow, seq).",
+    "tags": [
+      "Excalidraw",
+      "Diagrams",
+      "Flowcharts",
+      "Architecture",
+      "Visualization",
+      "JSON"
+    ],
+    "path": "creative/excalidraw/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "excalidraw",
+    "description": "Hand-drawn Excalidraw JSON diagrams (arch, flow, seq).",
+    "tags": [
+      "Excalidraw",
+      "Diagrams",
+      "Flowcharts",
+      "Architecture",
+      "Visualization",
+      "JSON"
+    ],
+    "path": "creative/excalidraw/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "findmy",
+    "description": "Track Apple devices/AirTags via FindMy.app on macOS.",
+    "tags": [
+      "FindMy",
+      "AirTag",
+      "location",
+      "tracking",
+      "macOS",
+      "Apple"
+    ],
+    "path": "apple/findmy/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "findmy",
+    "description": "Track Apple devices/AirTags via FindMy.app on macOS.",
+    "tags": [
+      "FindMy",
+      "AirTag",
+      "location",
+      "tracking",
+      "macOS",
+      "Apple"
+    ],
+    "path": "apple/findmy/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "fine-tuning-with-trl",
+    "description": "TRL: SFT, DPO, PPO, GRPO, reward modeling for LLM RLHF.",
+    "tags": [
+      "Post-Training",
+      "TRL",
+      "Reinforcement Learning",
+      "Fine-Tuning",
+      "SFT",
+      "DPO",
+      "PPO",
+      "GRPO",
+      "RLHF",
+      "Preference Alignment",
+      "HuggingFace"
+    ],
+    "path": "mlops/training/trl-fine-tuning/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "fine-tuning-with-trl",
+    "description": "TRL: SFT, DPO, PPO, GRPO, reward modeling for LLM RLHF.",
+    "tags": [
+      "Post-Training",
+      "TRL",
+      "Reinforcement Learning",
+      "Fine-Tuning",
+      "SFT",
+      "DPO",
+      "PPO",
+      "GRPO",
+      "RLHF",
+      "Preference Alignment",
+      "HuggingFace"
+    ],
+    "path": "mlops/training/trl-fine-tuning/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "fork-and-rebrand-python-project",
+    "description": "Fork, rebrand, and de-bloat an open-source Python project — copy source, rename package/CLI/branding, cut test/docs/node_modules/docker, remove dead code and references to upstream, regenerate venv, install and verify.",
+    "tags": [
+      "python",
+      "fork",
+      "rebrand",
+      "open-source",
+      "refactoring"
+    ],
+    "path": "software-development/fork-and-rebrand-python-project/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "gif-search",
+    "description": "Search/download GIFs from Tenor via curl + jq.",
+    "tags": [
+      "GIF",
+      "Media",
+      "Search",
+      "Tenor",
+      "API"
+    ],
+    "path": "media/gif-search/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "gif-search",
+    "description": "Search/download GIFs from Tenor via curl + jq.",
+    "tags": [
+      "GIF",
+      "Media",
+      "Search",
+      "Tenor",
+      "API"
+    ],
+    "path": "media/gif-search/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "github-auth",
+    "description": "GitHub auth setup: HTTPS tokens, SSH keys, gh CLI login.",
+    "tags": [
+      "GitHub",
+      "Authentication",
+      "Git",
+      "gh-cli",
+      "SSH",
+      "Setup"
+    ],
+    "path": "github/github-auth/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "github-auth",
+    "description": "GitHub auth setup: HTTPS tokens, SSH keys, gh CLI login.",
+    "tags": [
+      "GitHub",
+      "Authentication",
+      "Git",
+      "gh-cli",
+      "SSH",
+      "Setup"
+    ],
+    "path": "github/github-auth/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "github-code-review",
+    "description": "Review PRs: diffs, inline comments via gh or REST.",
+    "tags": [
+      "GitHub",
+      "Code-Review",
+      "Pull-Requests",
+      "Git",
+      "Quality"
+    ],
+    "path": "github/github-code-review/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "github-code-review",
+    "description": "Review PRs: diffs, inline comments via gh or REST.",
+    "tags": [
+      "GitHub",
+      "Code-Review",
+      "Pull-Requests",
+      "Git",
+      "Quality"
+    ],
+    "path": "github/github-code-review/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "github-issues",
+    "description": "Create, triage, label, assign GitHub issues via gh or REST.",
+    "tags": [
+      "GitHub",
+      "Issues",
+      "Project-Management",
+      "Bug-Tracking",
+      "Triage"
+    ],
+    "path": "github/github-issues/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "github-issues",
+    "description": "Create, triage, label, assign GitHub issues via gh or REST.",
+    "tags": [
+      "GitHub",
+      "Issues",
+      "Project-Management",
+      "Bug-Tracking",
+      "Triage"
+    ],
+    "path": "github/github-issues/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "github-pr-workflow",
+    "description": "GitHub PR lifecycle: branch, commit, open, CI, merge.",
+    "tags": [
+      "GitHub",
+      "Pull-Requests",
+      "CI/CD",
+      "Git",
+      "Automation",
+      "Merge"
+    ],
+    "path": "github/github-pr-workflow/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "github-pr-workflow",
+    "description": "GitHub PR lifecycle: branch, commit, open, CI, merge.",
+    "tags": [
+      "GitHub",
+      "Pull-Requests",
+      "CI/CD",
+      "Git",
+      "Automation",
+      "Merge"
+    ],
+    "path": "github/github-pr-workflow/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "github-repo-management",
+    "description": "Clone/create/fork repos; manage remotes, releases.",
+    "tags": [
+      "GitHub",
+      "Repositories",
+      "Git",
+      "Releases",
+      "Secrets",
+      "Configuration"
+    ],
+    "path": "github/github-repo-management/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "github-repo-management",
+    "description": "Clone/create/fork repos; manage remotes, releases.",
+    "tags": [
+      "GitHub",
+      "Repositories",
+      "Git",
+      "Releases",
+      "Secrets",
+      "Configuration"
+    ],
+    "path": "github/github-repo-management/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "goal-tracking",
+    "description": "Autonomous goal & milestone tracking — set a goal, the agent auto-detects milestones, and validates everything at the end.",
+    "tags": [],
+    "path": "productivity/goal-tracking/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "godmode",
+    "description": "Jailbreak LLMs: Parseltongue, GODMODE, ULTRAPLINIAN.",
+    "tags": [
+      "jailbreak",
+      "red-teaming",
+      "G0DM0D3",
+      "Parseltongue",
+      "GODMODE",
+      "uncensoring",
+      "safety-bypass",
+      "prompt-engineering",
+      "L1B3RT4S"
+    ],
+    "path": "red-teaming/godmode/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "google-workspace",
+    "description": "Gmail, Calendar, Drive, Docs, Sheets via gws CLI or Python.",
+    "tags": [
+      "Google",
+      "Gmail",
+      "Calendar",
+      "Drive",
+      "Sheets",
+      "Docs",
+      "Contacts",
+      "Email",
+      "OAuth"
+    ],
+    "path": "productivity/google-workspace/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "google-workspace",
+    "description": "Gmail, Calendar, Drive, Docs, Sheets via gws CLI or Python.",
+    "tags": [
+      "Google",
+      "Gmail",
+      "Calendar",
+      "Drive",
+      "Sheets",
+      "Docs",
+      "Contacts",
+      "Email",
+      "OAuth"
+    ],
+    "path": "productivity/google-workspace/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "grabarpodcast-asistente",
+    "description": "Contexto completo del negocio GrabarPodcast para responder clientes por WhatsApp automáticamente. Precios actualizados, tienda online con 144 productos, flujo de venta escalonado (efectivo→web→cupón), reenvío al dueño.",
+    "tags": [],
+    "path": "social-media/grabarpodcast-asistente/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "grabarpodcast-woocommerce-admin",
+    "description": "Gestión técnica de WordPress y WooCommerce de GrabarPodcast — editar páginas, productos, categorías, settings, imágenes, banners, checkout, CSS, pedidos. Automatización vía REST API + WP REST + sesión con nonce.",
+    "tags": [
+      "wordpress",
+      "woocommerce",
+      "grabarpodcast",
+      "productos",
+      "api",
+      "css",
+      "divi"
+    ],
+    "path": "social-media/grabarpodcast-woocommerce-admin/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "heartmula",
+    "description": "HeartMuLa: Suno-like song generation from lyrics + tags.",
+    "tags": [
+      "music",
+      "audio",
+      "generation",
+      "ai",
+      "heartmula",
+      "heartcodec",
+      "lyrics",
+      "songs"
+    ],
+    "path": "media/heartmula/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "heartmula",
+    "description": "HeartMuLa: Suno-like song generation from lyrics + tags.",
+    "tags": [
+      "music",
+      "audio",
+      "generation",
+      "ai",
+      "heartmula",
+      "heartcodec",
+      "lyrics",
+      "songs"
+    ],
+    "path": "media/heartmula/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "hermes-agent",
+    "description": "Configure, extend, or contribute to Hermes Agent. Also covers the BMB Encover Agent fork (cloned and rebranded).",
+    "tags": [
+      "hermes",
+      "setup",
+      "configuration",
+      "multi-agent",
+      "spawning",
+      "cli",
+      "gateway",
+      "development",
+      "bmb"
+    ],
+    "path": "autonomous-ai-agents/hermes-agent/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "hermes-agent-skill-authoring",
+    "description": "Author in-repo SKILL.md: frontmatter, validator, structure.",
+    "tags": [
+      "skills",
+      "authoring",
+      "hermes-agent",
+      "conventions",
+      "skill-md"
+    ],
+    "path": "software-development/hermes-agent-skill-authoring/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "hermes-gateway-messaging",
+    "description": "Configure Hermes Agent gateway for messaging platforms (Telegram, WhatsApp) with custom auto-responder logic, contact databases, and tiered message handling.",
+    "tags": [
+      "hermes",
+      "gateway",
+      "telegram",
+      "whatsapp",
+      "baileys",
+      "auto-responder",
+      "messaging"
+    ],
+    "path": "autonomous-ai-agents/hermes-gateway-messaging/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "himalaya",
+    "description": "Himalaya CLI: IMAP/SMTP email from terminal.",
+    "tags": [
+      "Email",
+      "IMAP",
+      "SMTP",
+      "CLI",
+      "Communication"
+    ],
+    "path": "email/himalaya/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "himalaya",
+    "description": "Himalaya CLI: IMAP/SMTP email from terminal.",
+    "tags": [
+      "Email",
+      "IMAP",
+      "SMTP",
+      "CLI",
+      "Communication"
+    ],
+    "path": "email/himalaya/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "huggingface-hub",
+    "description": "HuggingFace hf CLI: search/download/upload models, datasets.",
+    "tags": [
+      "huggingface",
+      "hf",
+      "models",
+      "datasets",
+      "hub",
+      "mlops"
+    ],
+    "path": "mlops/huggingface-hub/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "huggingface-hub",
+    "description": "HuggingFace hf CLI: search/download/upload models, datasets.",
+    "tags": [
+      "huggingface",
+      "hf",
+      "models",
+      "datasets",
+      "hub",
+      "mlops"
+    ],
+    "path": "mlops/huggingface-hub/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "humanizer",
+    "description": "Humanize text: strip AI-isms and add real voice.",
+    "tags": [
+      "writing",
+      "editing",
+      "humanize",
+      "anti-ai-slop",
+      "voice",
+      "prose",
+      "text"
+    ],
+    "path": "creative/humanizer/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "humanizer",
+    "description": "Humanize text: strip AI-isms and add real voice.",
+    "tags": [
+      "writing",
+      "editing",
+      "humanize",
+      "anti-ai-slop",
+      "voice",
+      "prose",
+      "text"
+    ],
+    "path": "creative/humanizer/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "ideation",
+    "description": "Generate project ideas via creative constraints.",
+    "tags": [
+      "Creative",
+      "Ideation",
+      "Projects",
+      "Brainstorming",
+      "Inspiration"
+    ],
+    "path": "creative/creative-ideation/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "ideation",
+    "description": "Generate project ideas via creative constraints.",
+    "tags": [
+      "Creative",
+      "Ideation",
+      "Projects",
+      "Brainstorming",
+      "Inspiration"
+    ],
+    "path": "creative/creative-ideation/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "imessage",
+    "description": "Send and receive iMessages/SMS via the imsg CLI on macOS.",
+    "tags": [
+      "iMessage",
+      "SMS",
+      "messaging",
+      "macOS",
+      "Apple"
+    ],
+    "path": "apple/imessage/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "imessage",
+    "description": "Send and receive iMessages/SMS via the imsg CLI on macOS.",
+    "tags": [
+      "iMessage",
+      "SMS",
+      "messaging",
+      "macOS",
+      "Apple"
+    ],
+    "path": "apple/imessage/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "jupyter-live-kernel",
+    "description": "Iterative Python via live Jupyter kernel (hamelnb).",
+    "tags": [
+      "jupyter",
+      "notebook",
+      "repl",
+      "data-science",
+      "exploration",
+      "iterative"
+    ],
+    "path": "data-science/jupyter-live-kernel/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "jupyter-live-kernel",
+    "description": "Iterative Python via live Jupyter kernel (hamelnb).",
+    "tags": [
+      "jupyter",
+      "notebook",
+      "repl",
+      "data-science",
+      "exploration",
+      "iterative"
+    ],
+    "path": "data-science/jupyter-live-kernel/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "kanban-orchestrator",
+    "description": "Decomposition playbook + specialist-roster conventions + anti-temptation rules for an orchestrator profile routing work through Kanban. The \"don't do the work yourself\" rule and the basic lifecycle are auto-injected into every kanban worker's system prompt; this skill is the deeper playbook when you're specifically playing the orchestrator role.",
+    "tags": [
+      "kanban",
+      "multi-agent",
+      "orchestration",
+      "routing"
+    ],
+    "path": "devops/kanban-orchestrator/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "kanban-orchestrator",
+    "description": "Decomposition playbook + specialist-roster conventions + anti-temptation rules for an orchestrator profile routing work through Kanban. The \"don't do the work yourself\" rule and the basic lifecycle are auto-injected into every kanban worker's system prompt; this skill is the deeper playbook when you're specifically playing the orchestrator role.",
+    "tags": [
+      "kanban",
+      "multi-agent",
+      "orchestration",
+      "routing"
+    ],
+    "path": "devops/kanban-orchestrator/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "kanban-worker",
+    "description": "Pitfalls, examples, and edge cases for Hermes Kanban workers. The lifecycle itself is auto-injected into every worker's system prompt as KANBAN_GUIDANCE (from agent/prompt_builder.py); this skill is what you load when you want deeper detail on specific scenarios.",
+    "tags": [
+      "kanban",
+      "multi-agent",
+      "collaboration",
+      "workflow",
+      "pitfalls"
+    ],
+    "path": "devops/kanban-worker/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "kanban-worker",
+    "description": "Pitfalls, examples, and edge cases for Hermes Kanban workers. The lifecycle itself is auto-injected into every worker's system prompt as KANBAN_GUIDANCE (from agent/prompt_builder.py); this skill is what you load when you want deeper detail on specific scenarios.",
+    "tags": [
+      "kanban",
+      "multi-agent",
+      "collaboration",
+      "workflow",
+      "pitfalls"
+    ],
+    "path": "devops/kanban-worker/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "linear",
+    "description": "Linear: manage issues, projects, teams via GraphQL + curl.",
+    "tags": [
+      "Linear",
+      "Project Management",
+      "Issues",
+      "GraphQL",
+      "API",
+      "Productivity"
+    ],
+    "path": "productivity/linear/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "linear",
+    "description": "Linear: manage issues, projects, teams via GraphQL + curl.",
+    "tags": [
+      "Linear",
+      "Project Management",
+      "Issues",
+      "GraphQL",
+      "API",
+      "Productivity"
+    ],
+    "path": "productivity/linear/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "livestream-view-orchestration",
+    "description": ">",
+    "tags": [],
+    "path": "software-development/livestream-view-orchestration/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "llama-cpp",
+    "description": "llama.cpp local GGUF inference + HF Hub model discovery.",
+    "tags": [
+      "llama.cpp",
+      "GGUF",
+      "Quantization",
+      "Hugging Face Hub",
+      "CPU Inference",
+      "Apple Silicon",
+      "Edge Deployment",
+      "AMD GPUs",
+      "Intel GPUs",
+      "NVIDIA",
+      "URL-first"
+    ],
+    "path": "mlops/inference/llama-cpp/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "llama-cpp",
+    "description": "llama.cpp local GGUF inference + HF Hub model discovery.",
+    "tags": [
+      "llama.cpp",
+      "GGUF",
+      "Quantization",
+      "Hugging Face Hub",
+      "CPU Inference",
+      "Apple Silicon",
+      "Edge Deployment",
+      "AMD GPUs",
+      "Intel GPUs",
+      "NVIDIA",
+      "URL-first"
+    ],
+    "path": "mlops/inference/llama-cpp/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "llm-wiki",
+    "description": "Karpathy's LLM Wiki: build/query interlinked markdown KB.",
+    "tags": [
+      "wiki",
+      "knowledge-base",
+      "research",
+      "notes",
+      "markdown",
+      "rag-alternative"
+    ],
+    "path": "research/llm-wiki/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "llm-wiki",
+    "description": "Karpathy's LLM Wiki: build/query interlinked markdown KB.",
+    "tags": [
+      "wiki",
+      "knowledge-base",
+      "research",
+      "notes",
+      "markdown",
+      "rag-alternative"
+    ],
+    "path": "research/llm-wiki/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "local-speech-to-speech",
+    "description": "Evaluate, install, and run local speech-to-speech (S2S) models for conversational voice AI — end-to-end models that listen and speak, not pipelines (Whisper+LLM+TTS). Covers Mini-Omni, Qwen2.5-Omni, Moshi family, and more.",
+    "tags": [
+      "speech",
+      "s2s",
+      "voice",
+      "local",
+      "gpu",
+      "windows",
+      "wsl",
+      "llamacpp",
+      "candle"
+    ],
+    "path": "mlops/local-speech-to-speech/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "local-tts-conversacional",
+    "description": "Selección, evaluación e integración de modelos TTS descargables para conversación en tiempo real (streaming, baja latencia). Cubre NVIDIA, Microsoft, Meta/Mistral y open-source.",
+    "tags": [
+      "tts",
+      "voice",
+      "realtime",
+      "streaming",
+      "conversational",
+      "evaluation",
+      "spanish"
+    ],
+    "path": "mlops/local-tts-conversacional/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "manim-video",
+    "description": "Manim CE animations: 3Blue1Brown math/algo videos.",
+    "tags": [],
+    "path": "creative/manim-video/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "manim-video",
+    "description": "Manim CE animations: 3Blue1Brown math/algo videos.",
+    "tags": [],
+    "path": "creative/manim-video/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "maps",
+    "description": "Geocode, POIs, routes, timezones via OpenStreetMap/OSRM.",
+    "tags": [
+      "maps",
+      "geocoding",
+      "places",
+      "routing",
+      "distance",
+      "directions",
+      "nearby",
+      "location",
+      "openstreetmap",
+      "nominatim",
+      "overpass",
+      "osrm"
+    ],
+    "path": "productivity/maps/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "maps",
+    "description": "Geocode, POIs, routes, timezones via OpenStreetMap/OSRM.",
+    "tags": [
+      "maps",
+      "geocoding",
+      "places",
+      "routing",
+      "distance",
+      "directions",
+      "nearby",
+      "location",
+      "openstreetmap",
+      "nominatim",
+      "overpass",
+      "osrm"
+    ],
+    "path": "productivity/maps/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "minecraft-modpack-server",
+    "description": "Host modded Minecraft servers (CurseForge, Modrinth).",
+    "tags": [
+      "minecraft",
+      "gaming",
+      "server",
+      "neoforge",
+      "forge",
+      "modpack"
+    ],
+    "path": "gaming/minecraft-modpack-server/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "minecraft-modpack-server",
+    "description": "Host modded Minecraft servers (CurseForge, Modrinth).",
+    "tags": [
+      "minecraft",
+      "gaming",
+      "server",
+      "neoforge",
+      "forge",
+      "modpack"
+    ],
+    "path": "gaming/minecraft-modpack-server/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "modelos-locales-windows",
+    "description": "Compilar, instalar y ejecutar modelos ML/AI locales en Windows (GPU NVIDIA RTX, CUDA, Rust/Candle, speech-to-speech, whisper, TTS). Maneja dependencias críticas: Visual Studio MSVC linker, CUDA Toolkit, Rust toolchain, Python CUDA wheels. Orchestrado desde WSL.",
+    "tags": [
+      "windows",
+      "cuda",
+      "moshi",
+      "tts",
+      "whisper",
+      "rust",
+      "candle",
+      "build",
+      "installation"
+    ],
+    "path": "mlops/modelos-locales-windows/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "nano-pdf",
+    "description": "Edit PDF text/typos/titles via nano-pdf CLI (NL prompts).",
+    "tags": [
+      "PDF",
+      "Documents",
+      "Editing",
+      "NLP",
+      "Productivity"
+    ],
+    "path": "productivity/nano-pdf/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "nano-pdf",
+    "description": "Edit PDF text/typos/titles via nano-pdf CLI (NL prompts).",
+    "tags": [
+      "PDF",
+      "Documents",
+      "Editing",
+      "NLP",
+      "Productivity"
+    ],
+    "path": "productivity/nano-pdf/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "native-mcp",
+    "description": "MCP client: connect servers, register tools (stdio/HTTP).",
+    "tags": [
+      "MCP",
+      "Tools",
+      "Integrations"
+    ],
+    "path": "mcp/native-mcp/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "native-mcp",
+    "description": "MCP client: connect servers, register tools (stdio/HTTP).",
+    "tags": [
+      "MCP",
+      "Tools",
+      "Integrations"
+    ],
+    "path": "mcp/native-mcp/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "node-inspect-debugger",
+    "description": "Debug Node.js via --inspect + Chrome DevTools Protocol CLI.",
+    "tags": [
+      "debugging",
+      "nodejs",
+      "node-inspect",
+      "cdp",
+      "breakpoints",
+      "ui-tui"
+    ],
+    "path": "software-development/node-inspect-debugger/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "node-inspect-debugger",
+    "description": "Debug Node.js via --inspect + Chrome DevTools Protocol CLI.",
+    "tags": [
+      "debugging",
+      "nodejs",
+      "node-inspect",
+      "cdp",
+      "breakpoints",
+      "ui-tui"
+    ],
+    "path": "software-development/node-inspect-debugger/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "notion",
+    "description": "Notion API via curl: pages, databases, blocks, search.",
+    "tags": [
+      "Notion",
+      "Productivity",
+      "Notes",
+      "Database",
+      "API"
+    ],
+    "path": "productivity/notion/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "notion",
+    "description": "Notion API via curl: pages, databases, blocks, search.",
+    "tags": [
+      "Notion",
+      "Productivity",
+      "Notes",
+      "Database",
+      "API"
+    ],
+    "path": "productivity/notion/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "obliteratus",
+    "description": "OBLITERATUS: abliterate LLM refusals (diff-in-means).",
+    "tags": [
+      "Abliteration",
+      "Uncensoring",
+      "Refusal-Removal",
+      "LLM",
+      "Weight-Projection",
+      "SVD",
+      "Mechanistic-Interpretability",
+      "HuggingFace",
+      "Model-Surgery"
+    ],
+    "path": "mlops/inference/obliteratus/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "obliteratus",
+    "description": "OBLITERATUS: abliterate LLM refusals (diff-in-means).",
+    "tags": [
+      "Abliteration",
+      "Uncensoring",
+      "Refusal-Removal",
+      "LLM",
+      "Weight-Projection",
+      "SVD",
+      "Mechanistic-Interpretability",
+      "HuggingFace",
+      "Model-Surgery"
+    ],
+    "path": "mlops/inference/obliteratus/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "obsidian",
+    "description": "Read, search, and create notes in the Obsidian vault.",
+    "tags": [],
+    "path": "note-taking/obsidian/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "obsidian",
+    "description": "Read, search, and create notes in the Obsidian vault.",
+    "tags": [],
+    "path": "note-taking/obsidian/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "ocr-and-documents",
+    "description": "Extract text from PDFs/scans (pymupdf, marker-pdf).",
+    "tags": [
+      "PDF",
+      "Documents",
+      "Research",
+      "Arxiv",
+      "Text-Extraction",
+      "OCR"
+    ],
+    "path": "productivity/ocr-and-documents/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "ocr-and-documents",
+    "description": "Extract text from PDFs/scans (pymupdf, marker-pdf).",
+    "tags": [
+      "PDF",
+      "Documents",
+      "Research",
+      "Arxiv",
+      "Text-Extraction",
+      "OCR"
+    ],
+    "path": "productivity/ocr-and-documents/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "opencode",
+    "description": "Delegate coding to OpenCode CLI (features, PR review).",
+    "tags": [
+      "Coding-Agent",
+      "OpenCode",
+      "Autonomous",
+      "Refactoring",
+      "Code-Review"
+    ],
+    "path": "autonomous-ai-agents/opencode/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "opencode",
+    "description": "Delegate coding to OpenCode CLI (features, PR review).",
+    "tags": [
+      "Coding-Agent",
+      "OpenCode",
+      "Autonomous",
+      "Refactoring",
+      "Code-Review"
+    ],
+    "path": "autonomous-ai-agents/opencode/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "openhue",
+    "description": "Control Philips Hue lights, scenes, rooms via OpenHue CLI.",
+    "tags": [
+      "Smart-Home",
+      "Hue",
+      "Lights",
+      "IoT",
+      "Automation"
+    ],
+    "path": "smart-home/openhue/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "openhue",
+    "description": "Control Philips Hue lights, scenes, rooms via OpenHue CLI.",
+    "tags": [
+      "Smart-Home",
+      "Hue",
+      "Lights",
+      "IoT",
+      "Automation"
+    ],
+    "path": "smart-home/openhue/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "outlines",
+    "description": "Outlines: structured JSON/regex/Pydantic LLM generation.",
+    "tags": [
+      "Prompt Engineering",
+      "Outlines",
+      "Structured Generation",
+      "JSON Schema",
+      "Pydantic",
+      "Local Models",
+      "Grammar-Based Generation",
+      "vLLM",
+      "Transformers",
+      "Type Safety"
+    ],
+    "path": "mlops/inference/outlines/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "outlines",
+    "description": "Outlines: structured JSON/regex/Pydantic LLM generation.",
+    "tags": [
+      "Prompt Engineering",
+      "Outlines",
+      "Structured Generation",
+      "JSON Schema",
+      "Pydantic",
+      "Local Models",
+      "Grammar-Based Generation",
+      "vLLM",
+      "Transformers",
+      "Type Safety"
+    ],
+    "path": "mlops/inference/outlines/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "p5js",
+    "description": "p5.js sketches: gen art, shaders, interactive, 3D.",
+    "tags": [
+      "creative-coding",
+      "generative-art",
+      "p5js",
+      "canvas",
+      "interactive",
+      "visualization",
+      "webgl",
+      "shaders",
+      "animation"
+    ],
+    "path": "creative/p5js/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "p5js",
+    "description": "p5.js sketches: gen art, shaders, interactive, 3D.",
+    "tags": [
+      "creative-coding",
+      "generative-art",
+      "p5js",
+      "canvas",
+      "interactive",
+      "visualization",
+      "webgl",
+      "shaders",
+      "animation"
+    ],
+    "path": "creative/p5js/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "pixel-art",
+    "description": "Pixel art w/ era palettes (NES, Game Boy, PICO-8).",
+    "tags": [
+      "creative",
+      "pixel-art",
+      "arcade",
+      "snes",
+      "nes",
+      "gameboy",
+      "retro",
+      "image",
+      "video"
+    ],
+    "path": "creative/pixel-art/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "pixel-art",
+    "description": "Pixel art w/ era palettes (NES, Game Boy, PICO-8).",
+    "tags": [
+      "creative",
+      "pixel-art",
+      "arcade",
+      "snes",
+      "nes",
+      "gameboy",
+      "retro",
+      "image",
+      "video"
+    ],
+    "path": "creative/pixel-art/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "plan",
+    "description": "Plan mode: write markdown plan to .hermes/plans/, no exec.",
+    "tags": [
+      "planning",
+      "plan-mode",
+      "implementation",
+      "workflow"
+    ],
+    "path": "software-development/plan/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "plan",
+    "description": "Plan mode: write markdown plan to .hermes/plans/, no exec.",
+    "tags": [
+      "planning",
+      "plan-mode",
+      "implementation",
+      "workflow"
+    ],
+    "path": "software-development/plan/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "pokemon-player",
+    "description": "Play Pokemon via headless emulator + RAM reads.",
+    "tags": [
+      "gaming",
+      "pokemon",
+      "emulator",
+      "pyboy",
+      "gameplay",
+      "gameboy"
+    ],
+    "path": "gaming/pokemon-player/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "pokemon-player",
+    "description": "Play Pokemon via headless emulator + RAM reads.",
+    "tags": [
+      "gaming",
+      "pokemon",
+      "emulator",
+      "pyboy",
+      "gameplay",
+      "gameboy"
+    ],
+    "path": "gaming/pokemon-player/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "polymarket",
+    "description": "Query Polymarket: markets, prices, orderbooks, history.",
+    "tags": [
+      "polymarket",
+      "prediction-markets",
+      "market-data",
+      "trading"
+    ],
+    "path": "research/polymarket/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "polymarket",
+    "description": "Query Polymarket: markets, prices, orderbooks, history.",
+    "tags": [
+      "polymarket",
+      "prediction-markets",
+      "market-data",
+      "trading"
+    ],
+    "path": "research/polymarket/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "popular-web-designs",
+    "description": "54 real design systems (Stripe, Linear, Vercel) as HTML/CSS.",
+    "tags": [
+      "design",
+      "css",
+      "html",
+      "ui",
+      "web-development",
+      "design-systems",
+      "templates"
+    ],
+    "path": "creative/popular-web-designs/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "popular-web-designs",
+    "description": "54 real design systems (Stripe, Linear, Vercel) as HTML/CSS.",
+    "tags": [
+      "design",
+      "css",
+      "html",
+      "ui",
+      "web-development",
+      "design-systems",
+      "templates"
+    ],
+    "path": "creative/popular-web-designs/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "powerpoint",
+    "description": "Create, read, edit .pptx decks, slides, notes, templates.",
+    "tags": [],
+    "path": "productivity/powerpoint/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "powerpoint",
+    "description": "Create, read, edit .pptx decks, slides, notes, templates.",
+    "tags": [],
+    "path": "productivity/powerpoint/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "pretext",
+    "description": "Use when building creative browser demos with @chenglou/pretext — DOM-free text layout for ASCII art, typographic flow around obstacles, text-as-geometry games, kinetic typography, and text-powered generative art. Produces single-file HTML demos by default.",
+    "tags": [
+      "creative-coding",
+      "typography",
+      "pretext",
+      "ascii-art",
+      "canvas",
+      "generative",
+      "text-layout",
+      "kinetic-typography"
+    ],
+    "path": "creative/pretext/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "pretext",
+    "description": "Use when building creative browser demos with @chenglou/pretext — DOM-free text layout for ASCII art, typographic flow around obstacles, text-as-geometry games, kinetic typography, and text-powered generative art. Produces single-file HTML demos by default.",
+    "tags": [
+      "creative-coding",
+      "typography",
+      "pretext",
+      "ascii-art",
+      "canvas",
+      "generative",
+      "text-layout",
+      "kinetic-typography"
+    ],
+    "path": "creative/pretext/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "python-debugpy",
+    "description": "Debug Python: pdb REPL + debugpy remote (DAP).",
+    "tags": [
+      "debugging",
+      "python",
+      "pdb",
+      "debugpy",
+      "breakpoints",
+      "dap",
+      "post-mortem"
+    ],
+    "path": "software-development/python-debugpy/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "python-debugpy",
+    "description": "Debug Python: pdb REPL + debugpy remote (DAP).",
+    "tags": [
+      "debugging",
+      "python",
+      "pdb",
+      "debugpy",
+      "breakpoints",
+      "dap",
+      "post-mortem"
+    ],
+    "path": "software-development/python-debugpy/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "requesting-code-review",
+    "description": "Pre-commit review: security scan, quality gates, auto-fix.",
+    "tags": [
+      "code-review",
+      "security",
+      "verification",
+      "quality",
+      "pre-commit",
+      "auto-fix"
+    ],
+    "path": "software-development/requesting-code-review/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "requesting-code-review",
+    "description": "Pre-commit review: security scan, quality gates, auto-fix.",
+    "tags": [
+      "code-review",
+      "security",
+      "verification",
+      "quality",
+      "pre-commit",
+      "auto-fix"
+    ],
+    "path": "software-development/requesting-code-review/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "research-paper-writing",
+    "description": "Write ML papers for NeurIPS/ICML/ICLR: design→submit.",
+    "tags": [
+      "Research",
+      "Paper Writing",
+      "Experiments",
+      "ML",
+      "AI",
+      "NeurIPS",
+      "ICML",
+      "ICLR",
+      "ACL",
+      "AAAI",
+      "COLM",
+      "LaTeX",
+      "Citations",
+      "Statistical Analysis"
+    ],
+    "path": "research/research-paper-writing/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "research-paper-writing",
+    "description": "Write ML papers for NeurIPS/ICML/ICLR: design→submit.",
+    "tags": [
+      "Research",
+      "Paper Writing",
+      "Experiments",
+      "ML",
+      "AI",
+      "NeurIPS",
+      "ICML",
+      "ICLR",
+      "ACL",
+      "AAAI",
+      "COLM",
+      "LaTeX",
+      "Citations",
+      "Statistical Analysis"
+    ],
+    "path": "research/research-paper-writing/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "revisar-codigo-2-veces",
+    "description": "Regla obligatoria: antes de hacer cualquier cambio en el código, leer los archivos involucrados COMPLETAMENTE dos veces, trazando el flujo de datos de punta a punta, para detectar errores de interfaz entre componentes.",
+    "tags": [
+      "code-quality",
+      "review",
+      "discipline"
+    ],
+    "path": "meta/revisar-codigo-2-veces/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "s2s-pipeline-rag",
+    "description": "Build and run local Speech-to-Speech pipelines with RAG — orchestrate Whisper (STT) + vector DB (RAG) + LLM + TTS into a single pipeline that listens, retrieves context, generates a response, and speaks it. All components run locally in WSL/CPU/GPU.",
+    "tags": [
+      "speech",
+      "s2s",
+      "pipeline",
+      "rag",
+      "whisper",
+      "tts",
+      "local",
+      "wsl"
+    ],
+    "path": "software-development/s2s-pipeline-rag/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "segment-anything-model",
+    "description": "SAM: zero-shot image segmentation via points, boxes, masks.",
+    "tags": [
+      "Multimodal",
+      "Image Segmentation",
+      "Computer Vision",
+      "SAM",
+      "Zero-Shot"
+    ],
+    "path": "mlops/models/segment-anything/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "segment-anything-model",
+    "description": "SAM: zero-shot image segmentation via points, boxes, masks.",
+    "tags": [
+      "Multimodal",
+      "Image Segmentation",
+      "Computer Vision",
+      "SAM",
+      "Zero-Shot"
+    ],
+    "path": "mlops/models/segment-anything/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "serving-llms-vllm",
+    "description": "vLLM: high-throughput LLM serving, OpenAI API, quantization.",
+    "tags": [
+      "vLLM",
+      "Inference Serving",
+      "PagedAttention",
+      "Continuous Batching",
+      "High Throughput",
+      "Production",
+      "OpenAI API",
+      "Quantization",
+      "Tensor Parallelism"
+    ],
+    "path": "mlops/inference/vllm/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "serving-llms-vllm",
+    "description": "vLLM: high-throughput LLM serving, OpenAI API, quantization.",
+    "tags": [
+      "vLLM",
+      "Inference Serving",
+      "PagedAttention",
+      "Continuous Batching",
+      "High Throughput",
+      "Production",
+      "OpenAI API",
+      "Quantization",
+      "Tensor Parallelism"
+    ],
+    "path": "mlops/inference/vllm/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "sketch",
+    "description": "Throwaway HTML mockups: 2-3 design variants to compare.",
+    "tags": [
+      "sketch",
+      "mockup",
+      "design",
+      "ui",
+      "prototype",
+      "html",
+      "variants",
+      "exploration",
+      "wireframe",
+      "comparison"
+    ],
+    "path": "creative/sketch/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "sketch",
+    "description": "Throwaway HTML mockups: 2-3 design variants to compare.",
+    "tags": [
+      "sketch",
+      "mockup",
+      "design",
+      "ui",
+      "prototype",
+      "html",
+      "variants",
+      "exploration",
+      "wireframe",
+      "comparison"
+    ],
+    "path": "creative/sketch/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "social-media-automation",
+    "description": "Build and manage Playwright-based social media publishing bots — YouTube, Instagram, TikTok, Facebook, WhatsApp Web. Chrome CDP architecture, AI metadata generation, visual fallback (OCR), and WSL↔Windows orchestration.",
+    "tags": [
+      "social-media",
+      "automation",
+      "playwright",
+      "youtube",
+      "instagram",
+      "tiktok",
+      "facebook",
+      "chrome-cdp",
+      "ocr",
+      "wsl"
+    ],
+    "path": "software-development/social-media-automation/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "songsee",
+    "description": "Audio spectrograms/features (mel, chroma, MFCC) via CLI.",
+    "tags": [
+      "Audio",
+      "Visualization",
+      "Spectrogram",
+      "Music",
+      "Analysis"
+    ],
+    "path": "media/songsee/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "songsee",
+    "description": "Audio spectrograms/features (mel, chroma, MFCC) via CLI.",
+    "tags": [
+      "Audio",
+      "Visualization",
+      "Spectrogram",
+      "Music",
+      "Analysis"
+    ],
+    "path": "media/songsee/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "songwriting-and-ai-music",
+    "description": "Songwriting craft and Suno AI music prompts.",
+    "tags": [
+      "songwriting",
+      "music",
+      "suno",
+      "parody",
+      "lyrics",
+      "creative"
+    ],
+    "path": "creative/songwriting-and-ai-music/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "songwriting-and-ai-music",
+    "description": "Songwriting craft and Suno AI music prompts.",
+    "tags": [
+      "songwriting",
+      "music",
+      "suno",
+      "parody",
+      "lyrics",
+      "creative"
+    ],
+    "path": "creative/songwriting-and-ai-music/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "spike",
+    "description": "Throwaway experiments to validate an idea before build.",
+    "tags": [
+      "spike",
+      "prototype",
+      "experiment",
+      "feasibility",
+      "throwaway",
+      "exploration",
+      "research",
+      "planning",
+      "mvp",
+      "proof-of-concept"
+    ],
+    "path": "software-development/spike/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "spike",
+    "description": "Throwaway experiments to validate an idea before build.",
+    "tags": [
+      "spike",
+      "prototype",
+      "experiment",
+      "feasibility",
+      "throwaway",
+      "exploration",
+      "research",
+      "planning",
+      "mvp",
+      "proof-of-concept"
+    ],
+    "path": "software-development/spike/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "spotify",
+    "description": "Spotify: play, search, queue, manage playlists and devices.",
+    "tags": [
+      "spotify",
+      "music",
+      "playback",
+      "playlists",
+      "media"
+    ],
+    "path": "media/spotify/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "spotify",
+    "description": "Spotify: play, search, queue, manage playlists and devices.",
+    "tags": [
+      "spotify",
+      "music",
+      "playback",
+      "playlists",
+      "media"
+    ],
+    "path": "media/spotify/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "subagent-driven-development",
+    "description": "Execute plans via delegate_task subagents (2-stage review).",
+    "tags": [
+      "delegation",
+      "subagent",
+      "implementation",
+      "workflow",
+      "parallel"
+    ],
+    "path": "software-development/subagent-driven-development/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "subagent-driven-development",
+    "description": "Execute plans via delegate_task subagents (2-stage review).",
+    "tags": [
+      "delegation",
+      "subagent",
+      "implementation",
+      "workflow",
+      "parallel"
+    ],
+    "path": "software-development/subagent-driven-development/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "systematic-debugging",
+    "description": "4-phase root cause debugging: understand bugs before fixing.",
+    "tags": [
+      "debugging",
+      "troubleshooting",
+      "problem-solving",
+      "root-cause",
+      "investigation"
+    ],
+    "path": "software-development/systematic-debugging/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "systematic-debugging",
+    "description": "4-phase root cause debugging: understand bugs before fixing.",
+    "tags": [
+      "debugging",
+      "troubleshooting",
+      "problem-solving",
+      "root-cause",
+      "investigation"
+    ],
+    "path": "software-development/systematic-debugging/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "test-driven-development",
+    "description": "TDD: enforce RED-GREEN-REFACTOR, tests before code.",
+    "tags": [
+      "testing",
+      "tdd",
+      "development",
+      "quality",
+      "red-green-refactor"
+    ],
+    "path": "software-development/test-driven-development/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "test-driven-development",
+    "description": "TDD: enforce RED-GREEN-REFACTOR, tests before code.",
+    "tags": [
+      "testing",
+      "tdd",
+      "development",
+      "quality",
+      "red-green-refactor"
+    ],
+    "path": "software-development/test-driven-development/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "touchdesigner-mcp",
+    "description": "Control a running TouchDesigner instance via twozero MCP — create operators, set parameters, wire connections, execute Python, build real-time visuals. 36 native tools.",
+    "tags": [
+      "TouchDesigner",
+      "MCP",
+      "twozero",
+      "creative-coding",
+      "real-time-visuals",
+      "generative-art",
+      "audio-reactive",
+      "VJ",
+      "installation",
+      "GLSL"
+    ],
+    "path": "creative/touchdesigner-mcp/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "touchdesigner-mcp",
+    "description": "Control a running TouchDesigner instance via twozero MCP — create operators, set parameters, wire connections, execute Python, build real-time visuals. 36 native tools.",
+    "tags": [
+      "TouchDesigner",
+      "MCP",
+      "twozero",
+      "creative-coding",
+      "real-time-visuals",
+      "generative-art",
+      "audio-reactive",
+      "VJ",
+      "installation",
+      "GLSL"
+    ],
+    "path": "creative/touchdesigner-mcp/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "ui-checker",
+    "description": "QA visual agent — checks UI of web apps (via Playwright/Browser) and Windows native apps (via screenshots + OCR). Delegates tasks, analyzes layouts, detects visual regressions.",
+    "tags": [],
+    "path": "software-development/ui-checker/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "unsloth",
+    "description": "Unsloth: 2-5x faster LoRA/QLoRA fine-tuning, less VRAM.",
+    "tags": [
+      "Fine-Tuning",
+      "Unsloth",
+      "Fast Training",
+      "LoRA",
+      "QLoRA",
+      "Memory-Efficient",
+      "Optimization",
+      "Llama",
+      "Mistral",
+      "Gemma",
+      "Qwen"
+    ],
+    "path": "mlops/training/unsloth/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "unsloth",
+    "description": "Unsloth: 2-5x faster LoRA/QLoRA fine-tuning, less VRAM.",
+    "tags": [
+      "Fine-Tuning",
+      "Unsloth",
+      "Fast Training",
+      "LoRA",
+      "QLoRA",
+      "Memory-Efficient",
+      "Optimization",
+      "Llama",
+      "Mistral",
+      "Gemma",
+      "Qwen"
+    ],
+    "path": "mlops/training/unsloth/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "webhook-subscriptions",
+    "description": "Webhook subscriptions: event-driven agent runs.",
+    "tags": [
+      "webhook",
+      "events",
+      "automation",
+      "integrations",
+      "notifications",
+      "push"
+    ],
+    "path": "devops/webhook-subscriptions/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "webhook-subscriptions",
+    "description": "Webhook subscriptions: event-driven agent runs.",
+    "tags": [
+      "webhook",
+      "events",
+      "automation",
+      "integrations",
+      "notifications",
+      "push"
+    ],
+    "path": "devops/webhook-subscriptions/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "weights-and-biases",
+    "description": "W&B: log ML experiments, sweeps, model registry, dashboards.",
+    "tags": [
+      "MLOps",
+      "Weights And Biases",
+      "WandB",
+      "Experiment Tracking",
+      "Hyperparameter Tuning",
+      "Model Registry",
+      "Collaboration",
+      "Real-Time Visualization",
+      "PyTorch",
+      "TensorFlow",
+      "HuggingFace"
+    ],
+    "path": "mlops/evaluation/weights-and-biases/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "weights-and-biases",
+    "description": "W&B: log ML experiments, sweeps, model registry, dashboards.",
+    "tags": [
+      "MLOps",
+      "Weights And Biases",
+      "WandB",
+      "Experiment Tracking",
+      "Hyperparameter Tuning",
+      "Model Registry",
+      "Collaboration",
+      "Real-Time Visualization",
+      "PyTorch",
+      "TensorFlow",
+      "HuggingFace"
+    ],
+    "path": "mlops/evaluation/weights-and-biases/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "whatsapp-voice-reply-config",
+    "description": "Configuración de respuesta con voz en WhatsApp usando Gemini 3.1 Flash TTS con acento uruguayo y audio tags.",
+    "tags": [],
+    "path": "devops/whatsapp-voice-reply-config/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "wordpress-automation",
+    "description": "Automate WordPress and WooCommerce via XML-RPC and REST API — create posts, products, categories, upload media, configure payment gateways.",
+    "tags": [
+      "wordpress",
+      "woocommerce",
+      "xmlrpc",
+      "rest-api",
+      "products",
+      "divi",
+      "automation"
+    ],
+    "path": "software-development/wordpress-automation/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "writing-plans",
+    "description": "Write implementation plans: bite-sized tasks, paths, code.",
+    "tags": [
+      "planning",
+      "design",
+      "implementation",
+      "workflow",
+      "documentation"
+    ],
+    "path": "software-development/writing-plans/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "writing-plans",
+    "description": "Write implementation plans: bite-sized tasks, paths, code.",
+    "tags": [
+      "planning",
+      "design",
+      "implementation",
+      "workflow",
+      "documentation"
+    ],
+    "path": "software-development/writing-plans/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "xurl",
+    "description": "X/Twitter via xurl CLI: post, search, DM, media, v2 API.",
+    "tags": [
+      "twitter",
+      "x",
+      "social-media",
+      "xurl",
+      "official-api"
+    ],
+    "path": "social-media/xurl/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "xurl",
+    "description": "X/Twitter via xurl CLI: post, search, DM, media, v2 API.",
+    "tags": [
+      "twitter",
+      "x",
+      "social-media",
+      "xurl",
+      "official-api"
+    ],
+    "path": "social-media/xurl/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "youtube-content",
+    "description": "YouTube transcripts to summaries, threads, blogs.",
+    "tags": [],
+    "path": "media/youtube-content/SKILL.md",
+    "source": "built-in"
+  },
+  {
+    "name": "youtube-content",
+    "description": "YouTube transcripts to summaries, threads, blogs.",
+    "tags": [],
+    "path": "media/youtube-content/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "youtube-stress-testing",
+    "description": "Build, debug, and run YouTube Live stress-test tools — session harvesting (Playwright OR HTTP-only OR Chrome CDP), heartbeat injection via YouTube internal API, residential proxy management, adaptive PC-resource scaling, logging/reporting, and memory-constrained deployment.",
+    "tags": [
+      "youtube",
+      "stress-test",
+      "viewbot",
+      "heartbeat",
+      "proxy",
+      "playwright",
+      "utls",
+      "go",
+      "python",
+      "chrome-cdp",
+      "wsl"
+    ],
+    "path": "software-development/youtube-stress-testing/SKILL.md",
+    "source": "installed"
+  },
+  {
+    "name": "yuanbao",
+    "description": "Yuanbao (元宝) groups: @mention users, query info/members.",
+    "tags": [
+      "yuanbao",
+      "mention",
+      "at",
+      "group",
+      "members",
+      "元宝",
+      "派",
+      "艾特"
+    ],
+    "path": "yuanbao/SKILL.md",
+    "source": "installed"
+  }
+]

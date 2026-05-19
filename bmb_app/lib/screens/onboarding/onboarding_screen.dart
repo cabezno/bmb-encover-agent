@@ -256,9 +256,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                         label: 'Escanear Código QR',
                         subtitle: 'Escanea el QR de la app de escritorio',
                         onTap: () {
-                          setState(() {
-                            _showManualEntry = true;
-                          });
+                          Navigator.of(context).pushNamed('/qr-scanner');
                         },
                       ),
                       const SizedBox(height: 16),
