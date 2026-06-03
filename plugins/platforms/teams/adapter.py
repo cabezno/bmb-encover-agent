@@ -210,7 +210,7 @@ class TeamsAdapter(BasePlatformAdapter):
                 client_secret=self._client_secret,
                 tenant_id=self._tenant_id,
                 http_server_adapter=_AiohttpBridgeAdapter(aiohttp_app),
-                client=ClientOptions(headers={"User-Agent": "Hermes"}),
+                client=ClientOptions(headers={"User-Agent": "BMB"}),
             )
 
             # Register message handler before initialize()
@@ -661,7 +661,7 @@ def interactive_setup() -> None:
 # ── Plugin entry point ────────────────────────────────────────────────────────
 
 def register(ctx) -> None:
-    """Plugin entry point — called by the Hermes plugin system."""
+    """Plugin entry point — called by the BMB plugin system."""
     ctx.register_platform(
         name="teams",
         label="Microsoft Teams",

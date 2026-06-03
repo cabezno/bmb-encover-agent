@@ -5,7 +5,7 @@ import re
 import sys
 
 BMB = "/opt/bmb-encover"
-EXCLUDE_DIRS = {'.git', 'venv', 'node_modules', '__pycache__', '.hermes'}
+EXCLUDE_DIRS = {'.git', 'venv', 'node_modules', '__pycache__', '.bmb'}
 
 def should_exclude(path):
     parts = path.replace(BMB, '').lstrip('/').split('/')
@@ -16,7 +16,7 @@ print("📁 FASE 1: Renombrando archivos...")
 
 renames = [
     ('bmb', 'bmb'),
-    ('Hermes', 'Encover'),
+    ('BMB', 'Encover'),
     ('HERMES', 'BMB_ENCOVER'),
 ]
 

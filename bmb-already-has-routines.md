@@ -13,7 +13,7 @@ Claude Code Routines offers three ways to trigger an automation:
 **1. Scheduled (cron)**
 > "Every night at 2am: pull the top bug from Linear, attempt a fix, and open a draft PR."
 
-Hermes equivalent — works today:
+BMB equivalent — works today:
 ```bash
 bmb cron create "0 2 * * *" \
   "Pull the top bug from the issue tracker, attempt a fix, and open a draft PR." \
@@ -24,7 +24,7 @@ bmb cron create "0 2 * * *" \
 **2. GitHub Events (webhook)**
 > "Flag PRs that touch the /auth-provider module and post to #auth-changes."
 
-Hermes equivalent — works today:
+BMB equivalent — works today:
 ```bash
 bmb webhook subscribe auth-watch \
   --events "pull_request" \
@@ -35,14 +35,14 @@ bmb webhook subscribe auth-watch \
 **3. API Triggers**
 > "Read the alert payload, find the owning service, post a triage summary to #oncall."
 
-Hermes equivalent — works today:
+BMB equivalent — works today:
 ```bash
 bmb webhook subscribe alert-triage \
   --prompt "Alert: {alert.name} — Severity: {alert.severity}. Find the owning service, investigate, and post a triage summary with proposed first steps." \
   --deliver slack
 ```
 
-Every use case in their blog post — backlog triage, docs drift, deploy verification, alert correlation, library porting, bespoke PR review — has a working Hermes implementation. No new features needed. It's been shipping since March 2026.
+Every use case in their blog post — backlog triage, docs drift, deploy verification, alert correlation, library porting, bespoke PR review — has a working BMB implementation. No new features needed. It's been shipping since March 2026.
 
 ---
 
@@ -66,7 +66,7 @@ Every use case in their blog post — backlog triage, docs drift, deploy verific
 
 ---
 
-## Things Hermes Does That Routines Can't
+## Things BMB Does That Routines Can't
 
 ### Script Injection
 
@@ -116,7 +116,7 @@ Your nightly triage can run on Claude. Your deploy verification can run on GPT. 
 
 Claude Code Routines: **5 routines per day** on Pro. **25 on Enterprise.** That's their ceiling.
 
-Hermes has no daily limit. Run 500 automations a day if you want. The only constraint is your API budget, and you choose which models to use for which tasks.
+BMB has no daily limit. Run 500 automations a day if you want. The only constraint is your API budget, and you choose which models to use for which tasks.
 
 A nightly backlog triage on Sonnet costs roughly $0.02-0.05. A monitoring check on DeepSeek costs fractions of a cent. You control the economics.
 
@@ -153,7 +153,7 @@ Full automation templates gallery: [bmb-encover.blackmagicbox.com/docs/guides/au
 
 Documentation: [bmb-encover.blackmagicbox.com](https://bmb-encover.blackmagicbox.com)
 
-GitHub: [github.com/Encover/bmb-encover](https://github.com/Encover/bmb-encover)
+GitHub: [github.com/cabezno/bmb-encover-agent](https://github.com/cabezno/bmb-encover-agent)
 
 ---
 

@@ -8,12 +8,12 @@
 ## 1. Resumen de la Conversación
 
 ### Qué es BMB Encover Agent
-Un **agente de IA personal** que corre en la PC del usuario (con GPU) y al que se conectan **apps mobile/desktop** de forma **remota y segura**. Es un fork de Hermes Agent, renombrado y limpio.
+Un **agente de IA personal** que corre en la PC del usuario (con GPU) y al que se conectan **apps mobile/desktop** de forma **remota y segura**. Es un fork de BMB Undercover Agent, renombrado y limpio.
 
 ### Stack tecnológico
 | Componente | Tecnología |
 |------------|------------|
-| Backend (PC) | BMB Encover Agent (fork de Hermes) |
+| Backend (PC) | BMB Encover Agent (fork de BMB) |
 | API Server | Python + aiohttp (`app_server.py` v0.4.0) |
 | Modelo IA | DeepSeek-V4-Pro (`deepseek-v4-pro`) |
 | STT | Whisper large-v3 (GPU del usuario) — **pendiente instalar** |
@@ -126,7 +126,7 @@ Un **agente de IA personal** que corre en la PC del usuario (con GPU) y al que s
 ## 3. Errores Conocidos y Bugs
 
 ### 3.1 Críticos
-1. **`AIAgent.__init__()` no acepta `initial_prompt`** — no se puede forzar al agente a presentarse como "BMB". El agente se presenta como "Hermes" o como DeepSeek.
+1. **`AIAgent.__init__()` no acepta `initial_prompt`** — no se puede forzar al agente a presentarse como "BMB". El agente se presenta como "BMB" o como DeepSeek.
 2. **App Android no conecta remotamente** — falta Tailscale o Cloudflare Tunnel funcionando.
 3. **STT/TTS no instalados en Windows** — `faster-whisper` y `edge-tts` no están en las dependencias.
 

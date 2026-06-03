@@ -6,14 +6,14 @@
 # Uses uv for desktop/server setup and Python's stdlib venv + pip on Termux.
 #
 # Usage:
-#   ./setup-hermes.sh
+#   ./setup-bmb.sh
 #
 # This script:
 # 1. Detects desktop/server vs Android/Termux setup path
 # 2. Creates a Python 3.11 virtual environment
 # 3. Installs the appropriate dependency set for the platform
 # 4. Creates .env from template (if not exists)
-# 5. Symlinks the 'hermes' CLI command into a user-facing bin dir
+# 5. Symlinks the 'bmb' CLI command into a user-facing bin dir
 # 6. Runs the setup wizard (optional)
 # ============================================================================
 
@@ -284,12 +284,12 @@ fi
 
 echo -e "${CYAN}→${NC} Setting up bmb command..."
 
-HERMES_BIN="$SCRIPT_DIR/venv/bin/hermes"
+BMB_BIN="$SCRIPT_DIR/venv/bin/bmb"
 COMMAND_LINK_DIR="$(get_command_link_dir)"
 COMMAND_LINK_DISPLAY_DIR="$(get_command_link_display_dir)"
 mkdir -p "$COMMAND_LINK_DIR"
-ln -sf "$HERMES_BIN" "$COMMAND_LINK_DIR/hermes"
-echo -e "${GREEN}✓${NC} Symlinked bmb → $COMMAND_LINK_DISPLAY_DIR/hermes"
+ln -sf "$BMB_BIN" "$COMMAND_LINK_DIR/bmb"
+echo -e "${GREEN}✓${NC} Symlinked bmb → $COMMAND_LINK_DISPLAY_DIR/bmb"
 
 if is_termux; then
     export PATH="$COMMAND_LINK_DIR:$PATH"
@@ -336,8 +336,8 @@ fi
 # Seed bundled skills into ~/.bmb/skills/
 # ============================================================================
 
-HERMES_SKILLS_DIR="${BMB_ENCOVER_HOME:-$HOME/.bmb}/skills"
-mkdir -p "$HERMES_SKILLS_DIR"
+BMB_SKILLS_DIR="${BMB_ENCOVER_HOME:-$HOME/.bmb}/skills"
+mkdir -p "$BMB_SKILLS_DIR"
 
 echo ""
 echo "Syncing bundled skills to ~/.bmb/skills/ ..."
@@ -346,7 +346,7 @@ if "$SCRIPT_DIR/venv/bin/python" "$SCRIPT_DIR/tools/skills_sync.py" 2>/dev/null;
 else
     # Fallback: copy if sync script fails (missing deps, etc.)
     if [ -d "$SCRIPT_DIR/skills" ]; then
-        cp -rn "$SCRIPT_DIR/skills/"* "$HERMES_SKILLS_DIR/" 2>/dev/null || true
+        cp -rn "$SCRIPT_DIR/skills/"* "$BMB_SKILLS_DIR/" 2>/dev/null || true
         echo -e "${GREEN}✓${NC} Skills copied"
     fi
 fi

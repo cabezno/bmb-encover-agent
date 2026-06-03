@@ -1,4 +1,4 @@
-"""``bmb logs`` — view and filter Hermes log files.
+"""``bmb logs`` — view and filter BMB log files.
 
 Supports tailing, following, session filtering, level filtering,
 component filtering, and relative time ranges.  All log files live
@@ -172,7 +172,7 @@ def tail_log(
     log_path = get_bmb_home() / "logs" / filename
     if not log_path.exists():
         print(f"Log file not found: {log_path}")
-        print(f"(Logs are created when Hermes runs — try 'bmb chat' first)")
+        print(f"(Logs are created when BMB runs — try 'bmb chat' first)")
         sys.exit(1)
 
     # Parse --since into a datetime cutoff

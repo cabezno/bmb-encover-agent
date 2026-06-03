@@ -1,6 +1,6 @@
 """Vercel Sandbox execution environment.
 
-Uses the Vercel Python SDK to run commands in cloud sandboxes through Hermes'
+Uses the Vercel Python SDK to run commands in cloud sandboxes through BMB'
 shared ``BaseEnvironment`` shell contract. When persistence is enabled, the
 backend stores task-scoped snapshot metadata under ``BMB_ENCOVER_HOME`` and restores
 new sandboxes from those snapshots on later task reuse.
@@ -323,9 +323,9 @@ class VercelSandboxEnvironment(BaseEnvironment):
         self._remote_home = self._detect_remote_home()
 
         if self._remote_home == "/":
-            container_base = "/.hermes"
+            container_base = "/.bmb"
         else:
-            container_base = f"{self._remote_home.rstrip('/')}/.hermes"
+            container_base = f"{self._remote_home.rstrip('/')}/.bmb"
         self._sync_manager = FileSyncManager(
             get_files_fn=lambda: iter_sync_files(container_base),
             upload_fn=self._vercel_upload,
@@ -529,12 +529,12 @@ class VercelSandboxEnvironment(BaseEnvironment):
 
     def _vercel_bulk_download(self, dest_tar_path: Path) -> None:
         remote_hermes = (
-            "/.hermes"
+            "/.bmb"
             if self._remote_home == "/"
-            else f"{self._remote_home.rstrip('/')}/.hermes"
+            else f"{self._remote_home.rstrip('/')}/.bmb"
         )
-        archive_member = remote_hermes.lstrip("/")
-        remote_tar = f"/tmp/.hermes_sync.{os.getpid()}.tar"
+        archive_member = remote_bmb.lstrip("/")
+        remote_tar = f"/tmp/.bmb_sync.{os.getpid()}.tar"
         sandbox = self._sandbox
         if sandbox is None:
             raise RuntimeError("Vercel sandbox is not attached")

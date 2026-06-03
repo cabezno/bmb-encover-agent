@@ -6,7 +6,7 @@ author: BlackMagicBox Encover Agent
 license: MIT
 dependencies: []
 metadata:
-  hermes:
+  bmb:
     tags: [Excalidraw, Diagrams, Flowcharts, Architecture, Visualization, JSON]
     related_skills: []
 

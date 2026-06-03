@@ -106,7 +106,7 @@ _MARKER_TTL = 86400  # 24 hours
 
 
 def _get_bmb_home() -> str:
-    """Return the Hermes home directory, respecting BMB_ENCOVER_HOME env var."""
+    """Return the BMB home directory, respecting BMB_ENCOVER_HOME env var."""
     return str(get_bmb_home())
 
 

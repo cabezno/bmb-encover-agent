@@ -6,7 +6,7 @@ author: BlackMagicBox Encover Agent
 license: MIT
 platforms: [macos]
 metadata:
-  hermes:
+  bmb:
     tags: [iMessage, SMS, messaging, macOS, Apple]
 prerequisites:
   commands: [imsg]

@@ -1,5 +1,5 @@
 """
-Profile management for multiple isolated Hermes instances.
+Profile management for multiple isolated BMB instances.
 
 Each profile is a fully independent BMB_ENCOVER_HOME directory with its own
 config.yaml, .env, memory, sessions, skills, gateway, cron, and logs.
@@ -127,8 +127,8 @@ _RESERVED_NAMES = frozenset({
     "bmb", "default", "test", "tmp", "root", "sudo",
 })
 
-# Hermes subcommands that cannot be used as profile names/aliases
-_HERMES_SUBCOMMANDS = frozenset({
+# BMB subcommands that cannot be used as profile names/aliases
+_BMB_SUBCOMMANDS = frozenset({
     "chat", "model", "gateway", "setup", "whatsapp", "login", "logout",
     "status", "cron", "doctor", "dump", "config", "pairing", "skills", "tools",
     "mcp", "sessions", "insights", "version", "update", "uninstall",
@@ -243,7 +243,7 @@ def check_alias_collision(name: str) -> Optional[str]:
     canon = normalize_profile_name(name)
     if canon in _RESERVED_NAMES:
         return f"'{canon}' is a reserved name"
-    if canon in _HERMES_SUBCOMMANDS:
+    if canon in _BMB_SUBCOMMANDS:
         return f"'{canon}' conflicts with a bmb subcommand"
 
     # Check existing commands in PATH
@@ -856,7 +856,7 @@ def export_profile(name: str, output_path: str) -> Path:
 
     if canon == "default":
         # The default profile IS ~/.bmb itself — its parent is ~/ and its
-        # directory name is ".hermes", not "default".  We stage a clean copy
+        # directory name is ".bmb", not "default".  We stage a clean copy
         # under a temp dir so the archive contains ``default/...``.
         with tempfile.TemporaryDirectory() as tmpdir:
             staged = Path(tmpdir) / "default"
@@ -1027,8 +1027,8 @@ def import_profile(archive_path: str, name: Optional[str] = None) -> Path:
 
 def _migrate_honcho_profile_host(old_name: str, new_name: str, new_dir: Path) -> None:
     """Rename Honcho host blocks for a renamed profile without changing peers."""
-    old_host = f"hermes.{old_name}"
-    new_host = f"hermes.{new_name}"
+    old_host = f"bmb.{old_name}"
+    new_host = f"bmb.{new_name}"
 
     candidates = [
         new_dir / "honcho.json",

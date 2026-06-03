@@ -23,8 +23,8 @@ entry points you'll actually edit.
 bmb-encover/
 ├── run_agent.py          # AIAgent class — core conversation loop (~12k LOC)
 ├── model_tools.py        # Tool orchestration, discover_builtin_tools(), handle_function_call()
-├── toolsets.py           # Toolset definitions, _HERMES_CORE_TOOLS list
-├── cli.py                # HermesCLI class — interactive CLI orchestrator (~11k LOC)
+├── toolsets.py           # Toolset definitions, _BMB_CORE_TOOLS list
+├── cli.py                # EncoverCLI class — interactive CLI orchestrator (~11k LOC)
 ├── bmb_state.py       # SessionDB — SQLite session store (FTS5 search)
 ├── bmb_constants.py   # get_bmb_home(), display_bmb_home() — profile-aware paths
 ├── bmb_logging.py     # setup_logging() — agent.log / errors.log / gateway.log (profile-aware)
@@ -141,7 +141,7 @@ Reasoning content is stored in `assistant_msg["reasoning"]`.
 - **KawaiiSpinner** (`agent/display.py`) — animated faces during API calls, `┊` activity feed for tool results
 - `load_cli_config()` in cli.py merges hardcoded defaults + user config YAML
 - **Skin engine** (`bmb_cli/skin_engine.py`) — data-driven CLI theming; initialized from `display.skin` config key at startup; skins customize banner colors, spinner faces/verbs/wings, tool prefix, response box, branding text
-- `process_command()` is a method on `HermesCLI` — dispatches on canonical command name resolved via `resolve_command()` from the central registry
+- `process_command()` is a method on `EncoverCLI` — dispatches on canonical command name resolved via `resolve_command()` from the central registry
 - Skill slash commands: `agent/skill_commands.py` scans `~/.bmb/skills/`, injects as **user message** (not system prompt) to preserve prompt caching
 
 ### Slash Command Registry (`bmb_cli/commands.py`)
@@ -152,7 +152,7 @@ All slash commands are defined in a central `COMMAND_REGISTRY` list of `CommandD
 - **Gateway** — `GATEWAY_KNOWN_COMMANDS` frozenset for hook emission, `resolve_command()` for dispatch
 - **Gateway help** — `gateway_help_lines()` generates `/help` output
 - **Telegram** — `telegram_bot_commands()` generates the BotCommand menu
-- **Slack** — `slack_subcommand_map()` generates `/hermes` subcommand routing
+- **Slack** — `slack_subcommand_map()` generates `/bmb` subcommand routing
 - **Autocomplete** — `COMMANDS` flat dict feeds `SlashCommandCompleter`
 - **CLI help** — `COMMANDS_BY_CATEGORY` dict feeds `show_help()`
 
@@ -163,7 +163,7 @@ All slash commands are defined in a central `COMMAND_REGISTRY` list of `CommandD
 CommandDef("mycommand", "Description of what it does", "Session",
            aliases=("mc",), args_hint="[arg]"),
 ```
-2. Add handler in `HermesCLI.process_command()` in `cli.py`:
+2. Add handler in `EncoverCLI.process_command()` in `cli.py`:
 ```python
 elif canonical == "mycommand":
     self._handle_mycommand(cmd_original)
@@ -191,7 +191,7 @@ if canonical == "mycommand":
 
 ## TUI Architecture (ui-tui + tui_gateway)
 
-The TUI is a full replacement for the classic (prompt_toolkit) CLI, activated via `bmb --tui` or `HERMES_TUI=1`.
+The TUI is a full replacement for the classic (prompt_toolkit) CLI, activated via `bmb --tui` or `BMB_TUI=1`.
 
 ### Process Model
 
@@ -231,9 +231,9 @@ Newline-delimited JSON-RPC over stdio. Requests from Ink, events from Python. Se
 ```bash
 cd ui-tui
 npm install       # first time
-npm run dev       # watch mode (rebuilds hermes-ink + tsx --watch)
+npm run dev       # watch mode (rebuilds bmb-ink + tsx --watch)
 npm start         # production
-npm run build     # full build (hermes-ink + tsc)
+npm run build     # full build (bmb-ink + tsc)
 npm run type-check # typecheck only (tsc --noEmit)
 npm run lint      # eslint
 npm run fmt       # prettier
@@ -257,14 +257,14 @@ The dashboard embeds the real `bmb --tui` — **not** a rewrite.  See `bmb_cli/p
 
 ## Adding New Tools
 
-For most custom or local-only tools, do **not** edit Hermes core. Use the plugin
+For most custom or local-only tools, do **not** edit BMB core. Use the plugin
 route instead: create `~/.bmb/plugins/<name>/plugin.yaml` and
 `~/.bmb/plugins/<name>/__init__.py`, then register tools with
 `ctx.register_tool(...)`. Plugin toolsets are discovered automatically and can be
 enabled or disabled without touching `tools/` or `toolsets.py`.
 
 Use the built-in route below only when the user is explicitly contributing a new
-core Hermes tool that should ship in the base system.
+core BMB tool that should ship in the base system.
 
 Built-in/core tools require changes in **2 files**:
 
@@ -289,7 +289,7 @@ registry.register(
 )
 ```
 
-**2. Add to `toolsets.py`** — either `_HERMES_CORE_TOOLS` (all platforms) or a new toolset.
+**2. Add to `toolsets.py`** — either `_BMB_CORE_TOOLS` (all platforms) or a new toolset.
 
 Auto-discovery: any `tools/*.py` file with a top-level `registry.register()` call is imported automatically — no manual import list to maintain.
 
@@ -297,7 +297,7 @@ The registry handles schema collection, dispatch, availability checking, and err
 
 **Path references in tool schemas**: If the schema description mentions file paths (e.g. default output directories), use `display_bmb_home()` to make them profile-aware. The schema is generated at import time, which is after `_apply_profile_override()` sets `BMB_ENCOVER_HOME`.
 
-**State files**: If a tool stores persistent state (caches, logs, checkpoints), use `get_bmb_home()` for the base directory — never `Path.home() / ".hermes"`. This ensures each profile gets its own state.
+**State files**: If a tool stores persistent state (caches, logs, checkpoints), use `get_bmb_home()` for the base directory — never `Path.home() / ".bmb"`. This ensures each profile gets its own state.
 
 **Agent-level tools** (todo, memory): intercepted by `run_agent.py` before `handle_function_call()`. See `tools/todo_tool.py` for the pattern.
 
@@ -391,7 +391,7 @@ bmb_cli/skin_engine.py    # SkinConfig dataclass, built-in skins, YAML loader
 
 ### Built-in skins
 
-- `default` — Classic Hermes gold/kawaii (the current look)
+- `default` — Classic BMB gold/kawaii (the current look)
 - `ares` — Crimson/bronze war-god theme with custom spinner wings
 - `mono` — Clean grayscale monochrome
 - `slate` — Cool blue developer-focused theme
@@ -442,13 +442,13 @@ Activate with `/skin cyberpunk` or `display.skin: cyberpunk` in config.yaml.
 
 ## Plugins
 
-Hermes has two plugin surfaces. Both live under `plugins/` in the repo so
+BMB has two plugin surfaces. Both live under `plugins/` in the repo so
 repo-shipped plugins can be discovered alongside user-installed ones in
 `~/.bmb/plugins/` and pip-installed entry points.
 
 ### General plugins (`bmb_cli/plugins.py` + `plugins/<name>/`)
 
-`PluginManager` discovers plugins from `~/.bmb/plugins/`, `./.hermes/plugins/`,
+`PluginManager` discovers plugins from `~/.bmb/plugins/`, `./.bmb/plugins/`,
 and pip entry points. Each plugin exposes a `register(ctx)` function that
 can:
 
@@ -521,8 +521,8 @@ niche skills belong in `optional-skills/`.
 
 Standard fields: `name`, `description`, `version`, `platforms`
 (OS-gating list: `[macos]`, `[linux, macos]`, ...),
-`metadata.hermes.tags`, `metadata.hermes.category`,
-`metadata.hermes.config` (config.yaml settings the skill needs — stored
+`metadata.bmb.tags`, `metadata.bmb.category`,
+`metadata.bmb.config` (config.yaml settings the skill needs — stored
 under `skills.config.<key>`, prompted during setup, injected at load time).
 
 ---
@@ -548,7 +548,7 @@ invalidation. See `/skills install --now` for the canonical pattern.
 When `terminal(background=true, notify_on_complete=true)` is used, the gateway runs a watcher that
 detects process completion and triggers a new agent turn. Control verbosity of background process
 messages with `display.background_process_notifications`
-in config.yaml (or `HERMES_BACKGROUND_NOTIFICATIONS` env var):
+in config.yaml (or `BMB_BACKGROUND_NOTIFICATIONS` env var):
 
 - `all` — running-output updates + final message (default)
 - `result` — only the final completion message
@@ -559,7 +559,7 @@ in config.yaml (or `HERMES_BACKGROUND_NOTIFICATIONS` env var):
 
 ## Profiles: Multi-Instance Support
 
-Hermes supports **profiles** — multiple fully isolated instances, each with its own
+BMB supports **profiles** — multiple fully isolated instances, each with its own
 `BMB_ENCOVER_HOME` directory (config, API keys, memory, sessions, skills, gateway, etc.).
 
 The core mechanism: `_apply_profile_override()` in `bmb_cli/main.py` sets
@@ -569,14 +569,14 @@ automatically scope to the active profile.
 ### Rules for profile-safe code
 
 1. **Use `get_bmb_home()` for all BMB_ENCOVER_HOME paths.** Import from `bmb_constants`.
-   NEVER hardcode `~/.bmb` or `Path.home() / ".hermes"` in code that reads/writes state.
+   NEVER hardcode `~/.bmb` or `Path.home() / ".bmb"` in code that reads/writes state.
    ```python
    # GOOD
    from bmb_constants import get_bmb_home
    config_path = get_bmb_home() / "config.yaml"
 
    # BAD — breaks profiles
-   config_path = Path.home() / ".hermes" / "config.yaml"
+   config_path = Path.home() / ".bmb" / "config.yaml"
    ```
 
 2. **Use `display_bmb_home()` for user-facing messages.** Import from `bmb_constants`.
@@ -592,13 +592,13 @@ automatically scope to the active profile.
 
 3. **Module-level constants are fine** — they cache `get_bmb_home()` at import time,
    which is AFTER `_apply_profile_override()` sets the env var. Just use `get_bmb_home()`,
-   not `Path.home() / ".hermes"`.
+   not `Path.home() / ".bmb"`.
 
 4. **Tests that mock `Path.home()` must also set `BMB_ENCOVER_HOME`** — since code now uses
-   `get_bmb_home()` (reads env var), not `Path.home() / ".hermes"`:
+   `get_bmb_home()` (reads env var), not `Path.home() / ".bmb"`:
    ```python
    with patch.object(Path, "home", return_value=tmp_path), \
-        patch.dict(os.environ, {"BMB_ENCOVER_HOME": str(tmp_path / ".hermes")}):
+        patch.dict(os.environ, {"BMB_ENCOVER_HOME": str(tmp_path / ".bmb")}):
        ...
    ```
 
@@ -609,7 +609,7 @@ automatically scope to the active profile.
    See `gateway/platforms/telegram.py` for the canonical pattern.
 
 6. **Profile operations are HOME-anchored, not BMB_ENCOVER_HOME-anchored** — `_get_profiles_root()`
-   returns `Path.home() / ".hermes" / "profiles"`, NOT `get_bmb_home() / "profiles"`.
+   returns `Path.home() / ".bmb" / "profiles"`, NOT `get_bmb_home() / "profiles"`.
    This is intentional — it lets `bmb -p coder profile list` see all profiles regardless
    of which one is active.
 
@@ -669,7 +669,7 @@ Use the pattern from `tests/bmb_cli/test_profiles.py`:
 ```python
 @pytest.fixture
 def profile_env(tmp_path, monkeypatch):
-    home = tmp_path / ".hermes"
+    home = tmp_path / ".bmb"
     home.mkdir()
     monkeypatch.setattr(Path, "home", lambda: tmp_path)
     monkeypatch.setenv("BMB_ENCOVER_HOME", str(home))

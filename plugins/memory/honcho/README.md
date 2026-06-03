@@ -2,7 +2,7 @@
 
 AI-native cross-session user modeling with multi-pass dialectic reasoning, session summaries, bidirectional peer tools, and persistent conclusions.
 
-> **Honcho docs:** <https://docs.honcho.dev/v3/guides/integrations/hermes>
+> **Honcho docs:** <https://docs.honcho.dev/v3/guides/integrations/bmb>
 
 ## Requirements
 
@@ -105,11 +105,11 @@ Config is read from the first file that exists:
 
 | Priority | Path | Scope |
 |----------|------|-------|
-| 1 | `$BMB_ENCOVER_HOME/honcho.json` | Profile-local (isolated Hermes instances) |
+| 1 | `$BMB_ENCOVER_HOME/honcho.json` | Profile-local (isolated BMB instances) |
 | 2 | `~/.bmb/honcho.json` | Default profile (shared host blocks) |
 | 3 | `~/.honcho/config.json` | Global (cross-app interop) |
 
-Host key is derived from the active Hermes profile: `bmb` (default) or `bmb.<profile>`.
+Host key is derived from the active BMB profile: `bmb` (default) or `bmb.<profile>`.
 
 For every key, resolution order is: **host block > root > env var > default**.
 
@@ -159,7 +159,7 @@ The Honcho session name determines which conversation bucket memory lands in. Re
 | 1 | Manual map (`sessions` config) | `"myproject-main"` |
 | 2 | `/title` command (mid-session rename) | `"refactor-auth"` |
 | 3 | Gateway session key (Telegram, Discord, etc.) | `"agent-main-telegram-dm-8439114563"` |
-| 4 | `per-session` strategy | Hermes session ID (`20260415_a3f2b1`) |
+| 4 | `per-session` strategy | BMB session ID (`20260415_a3f2b1`) |
 | 5 | `per-repo` strategy | Git root directory name (`bmb-encover`) |
 | 6 | `per-directory` strategy | Current directory basename (`src`) |
 | 7 | `global` strategy | Workspace name (`bmb`) |
@@ -172,12 +172,12 @@ If `sessionPeerPrefix` is `true`, the peer name is prepended: `eri-bmb-encover`.
 
 - **`per-directory`** — basename of `$PWD`. Opening bmb in `~/code/myapp` and `~/code/other` gives two separate sessions. Same directory = same session across runs.
 - **`per-repo`** — git root directory name. All subdirectories within a repo share one session. Falls back to `per-directory` if not inside a git repo.
-- **`per-session`** — Hermes session ID (timestamp + hex). Every `bmb` invocation starts a fresh Honcho session. Falls back to `per-directory` if no session ID is available.
+- **`per-session`** — BMB session ID (timestamp + hex). Every `bmb` invocation starts a fresh Honcho session. Falls back to `per-directory` if no session ID is available.
 - **`global`** — workspace name. One session for everything. Memory accumulates across all directories and runs.
 
 ### Multi-Profile Pattern
 
-Multiple Hermes profiles can share one workspace while maintaining separate AI identities. Config resolution is **host block > root > env var > default** — host blocks inherit from root, so shared settings only need to be declared once:
+Multiple BMB profiles can share one workspace while maintaining separate AI identities. Config resolution is **host block > root > env var > default** — host blocks inherit from root, so shared settings only need to be declared once:
 
 ```json
 {
@@ -190,7 +190,7 @@ Multiple Hermes profiles can share one workspace while maintaining separate AI i
       "recallMode": "hybrid",
       "sessionStrategy": "per-directory"
     },
-    "hermes.coder": {
+    "bmb.coder": {
       "aiPeer": "coder",
       "recallMode": "tools",
       "sessionStrategy": "per-repo"
@@ -201,7 +201,7 @@ Multiple Hermes profiles can share one workspace while maintaining separate AI i
 
 Both profiles see the same user (`yourname`) in the same shared environment (`bmb`), but each AI peer builds its own observations, conclusions, and behavior patterns. The coder's memory stays code-oriented; the main agent's stays broad.
 
-Host key is derived from the active Hermes profile: `bmb` (default) or `bmb.<profile>` (e.g. `bmb -p coder` → host key `bmb.coder`).
+Host key is derived from the active BMB profile: `bmb` (default) or `bmb.<profile>` (e.g. `bmb -p coder` → host key `bmb.coder`).
 
 ### Dialectic & Reasoning
 
@@ -266,7 +266,7 @@ Presets:
 | `HONCHO_API_KEY` | `apiKey` |
 | `HONCHO_BASE_URL` | `baseUrl` |
 | `HONCHO_ENVIRONMENT` | `environment` |
-| `HERMES_HONCHO_HOST` | Host key override |
+| `BMB_HONCHO_HOST` | Host key override |
 
 ## CLI Commands
 
@@ -281,7 +281,7 @@ Presets:
 | `bmb honcho tokens --context <N>` | Set context token budget |
 | `bmb honcho tokens --dialectic <N>` | Set dialectic max chars |
 | `bmb honcho map <name>` | Map current directory to a session name |
-| `bmb honcho sync` | Create host blocks for all Hermes profiles |
+| `bmb honcho sync` | Create host blocks for all BMB profiles |
 
 ## Example Config
 
@@ -309,7 +309,7 @@ Presets:
       "dialecticMaxChars": 600,
       "saveMessages": true
     },
-    "hermes.coder": {
+    "bmb.coder": {
       "enabled": true,
       "aiPeer": "coder",
       "sessionStrategy": "per-repo",

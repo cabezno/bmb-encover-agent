@@ -1,6 +1,6 @@
 """Resolve BMB_ENCOVER_HOME for standalone skill scripts.
 
-Skill scripts may run outside the Hermes process (e.g. system Python,
+Skill scripts may run outside the BMB process (e.g. system Python,
 nix env, CI) where ``bmb_constants`` is not importable.  This module
 provides the same ``get_bmb_home()`` and ``display_bmb_home()``
 contracts as ``bmb_constants`` without requiring it on ``sys.path``.
@@ -25,11 +25,11 @@ try:
 except (ModuleNotFoundError, ImportError):
 
     def get_bmb_home() -> Path:
-        """Return the Hermes home directory (default: ~/.bmb).
+        """Return the BMB home directory (default: ~/.bmb).
 
         Mirrors ``bmb_constants.get_bmb_home()``."""
         val = os.environ.get("BMB_ENCOVER_HOME", "").strip()
-        return Path(val) if val else Path.home() / ".hermes"
+        return Path(val) if val else Path.home() / ".bmb"
 
     def display_bmb_home() -> str:
         """Return a user-friendly ``~/``-shortened display string.

@@ -15,16 +15,16 @@ echo "======================================"
 echo ""
 echo "📁 FASE 1: Renombrando archivos y directorios..."
 
-# Archivos con "hermes" en el nombre
+# Archivos con "bmb" en el nombre
 find . -depth -name "*hermes*" -not -path "./.git/*" -not -path "./venv/*" | while read f; do
-    newname=$(echo "$f" | sed 's/hermes/bmb/g')
+    newname=$(echo "$f" | sed 's/bmb/bmb/g')
     if [ "$f" != "$newname" ]; then
         mkdir -p "$(dirname "$newname")" 2>/dev/null
         mv "$f" "$newname" 2>/dev/null && echo "  📄 $f → $(basename $newname)"
     fi
 done
 
-# Archivos con "Hermes" en el nombre (con mayúscula)
+# Archivos con "BMB" en el nombre (con mayúscula)
 find . -depth -name "*Hermes*" -not -path "./.git/*" -not -path "./venv/*" | while read f; do
     newname=$(echo "$f" | sed 's/BMB/Encover/g')
     if [ "$f" != "$newname" ]; then
@@ -51,7 +51,7 @@ echo "📝 FASE 2: Renombrando contenido de archivos..."
 # Reemplazar en archivos Python, JS, TS, TSX, JSON, YAML, MD, SH, TXT, HTML, CSS
 FILE_TYPES="-name '*.py' -o -name '*.js' -o -name '*.ts' -o -name '*.tsx' -o -name '*.json' -o -name '*.yaml' -o -name '*.yml' -o -name '*.md' -o -name '*.sh' -o -name '*.txt' -o -name '*.html' -o -name '*.css' -o -name '*.cfg' -o -name '*.ini' -o -name '*.toml' -o -name '*.cfg'"
 
-TARGET_FILES=$(eval "find . $FILE_TYPES -not -path './.git/*' -not -path './venv/*' -not -path './node_modules/*' -not -path './ui-tui/node_modules/*' -not -path './.hermes/*' 2>/dev/null")
+TARGET_FILES=$(eval "find . $FILE_TYPES -not -path './.git/*' -not -path './venv/*' -not -path './node_modules/*' -not -path './ui-tui/node_modules/*' -not -path './.bmb/*' 2>/dev/null")
 
 echo "  Archivos a procesar: $(echo "$TARGET_FILES" | wc -l)"
 
@@ -60,7 +60,7 @@ replaces=(
     # Constantes y env vars
     "BMB_ENCOVER_HOME:BMB_ENCOVER_HOME"
     "BMB_ENCOVER_CONFIG:BMB_ENCOVER_CONFIG"
-    "HERMES_VERSION:BMB_ENCOVER_VERSION"
+    "BMB_VERSION:BMB_ENCOVER_VERSION"
     
     # Paquete Python
     "from bmb_agent:from bmb_agent"
@@ -82,7 +82,7 @@ replaces=(
     "bmb tui:bmb tui"
     "bmb help:bmb help"
     "bmb version:bmb version"
-    "<hermes:<bmb:"
+    "<bmb:<bmb:"
     "bmb_cli:bmb_cli"
     
     # Nombre del proyecto en general
@@ -91,29 +91,29 @@ replaces=(
     
     # Clases Python
     "class EncoverCLI:class EncoverCLI"
-    "class Hermes:class Encover"
+    "class BMB:class Encover"
     "def hermes_:def bmb_"
     "self.hermes_:self.bmb_"
     
     # Strings y branding
     "BlackMagicBox Encover Agent:BlackMagicBox Encover Agent"
-    "Hermes AI:Encover AI"
+    "BMB AI:Encover AI"
     "Encover:Encover"
     "Encover:Encover"
     "bmb_agent_logo:bmb_agent_logo"
     "bmb_agent_ascii:bmb_agent_ascii"
     
     # Paths y directorios
-    "/hermes/:/bmb/"
+    "/bmb/:/bmb/"
     "~/.bmb:~/.bmb"
     "\$HOME/.bmb:\$HOME/.bmb"
-    ".hermes/skills:.bmb/skills"
-    ".hermes/config.yaml:.bmb/config.yaml"
-    ".hermes/.env:.bmb/.env"
-    ".hermes/logs:.bmb/logs"
+    ".bmb/skills:.bmb/skills"
+    ".bmb/config.yaml:.bmb/config.yaml"
+    ".bmb/.env:.bmb/.env"
+    ".bmb/logs:.bmb/logs"
     
     # Comandos de sistema y npm
-    "npx hermes:npx bmb"
+    "npx bmb:npx bmb"
     "bmb CLI:bmb CLI"
     
     # Urls (sin cambiar el repo real)
@@ -146,8 +146,8 @@ echo "✅ Limpieza completa"
 echo ""
 echo "======================================"
 echo "🎉 Rename completado!"
-echo "Quedan referencias a 'hermes':"
-grep -r "hermes" --include="*.py" --include="*.js" --include="*.ts" --include="*.tsx" \
+echo "Quedan referencias a 'bmb':"
+grep -r "bmb" --include="*.py" --include="*.js" --include="*.ts" --include="*.tsx" \
   --include="*.json" --include="*.yaml" --include="*.yml" --include="*.md" --include="*.sh" \
   . 2>/dev/null | grep -v "venv/" | grep -v "node_modules/" | grep -v "binary" | \
   grep -iv "hermesito\|bmb_tools\|bmb_agent" | head -30

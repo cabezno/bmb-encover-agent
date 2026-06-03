@@ -2,7 +2,7 @@
 """
 Code Execution Tool -- Programmatic Tool Calling (PTC)
 
-Lets the LLM write a Python script that calls Hermes tools via RPC,
+Lets the LLM write a Python script that calls BMB tools via RPC,
 collapsing multi-step tool chains into a single inference turn.
 
 Architecture (two transports):
@@ -223,7 +223,7 @@ def retry(fn, max_attempts=3, delay=2):
 # ---- UDS transport (local backend) ---------------------------------------
 
 _UDS_TRANSPORT_HEADER = '''\
-"""Auto-generated Hermes tools RPC stubs."""
+"""Auto-generated BMB tools RPC stubs."""
 import json, os, socket, shlex, threading, time
 
 _sock = None
@@ -238,7 +238,7 @@ def _connect():
     global _sock
     if _sock is None:
         _sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-        _sock.connect(os.environ["HERMES_RPC_SOCKET"])
+        _sock.connect(os.environ["BMB_RPC_SOCKET"])
         _sock.settimeout(300)
     return _sock
 
@@ -270,7 +270,7 @@ def _call(tool_name, args):
 # ---- File-based transport (remote backends) -------------------------------
 
 _FILE_TRANSPORT_HEADER = '''\
-"""Auto-generated Hermes tools RPC stubs (file-based transport)."""
+"""Auto-generated BMB tools RPC stubs (file-based transport)."""
 import json, os, shlex, tempfile, threading, time
 
 _RPC_DIR = os.environ.get("BMB_RPC_DIR") or os.path.join(tempfile.gettempdir(), "bmb_rpc")
@@ -819,7 +819,7 @@ def _execute_remote(
             f"BMB_RPC_DIR={shlex.quote(f'{sandbox_dir}/rpc')} "
             f"PYTHONDONTWRITEBYTECODE=1"
         )
-        tz = os.getenv("HERMES_TIMEZONE", "").strip()
+        tz = os.getenv("BMB_TIMEZONE", "").strip()
         if tz:
             env_prefix += f" TZ={tz}"
 
@@ -938,7 +938,7 @@ def execute_code(
 ) -> str:
     """
     Run a Python script in a sandboxed child process with RPC access
-    to a subset of Hermes tools.
+    to a subset of BMB tools.
 
     Dispatches to the local (UDS) or remote (file-based RPC) path
     depending on the configured terminal backend.
@@ -1034,7 +1034,7 @@ def execute_code(
         _SAFE_ENV_PREFIXES = ("PATH", "HOME", "USER", "LANG", "LC_", "TERM",
                               "TMPDIR", "TMP", "TEMP", "SHELL", "LOGNAME",
                               "XDG_", "PYTHONPATH", "VIRTUAL_ENV", "CONDA",
-                              "HERMES_")
+                              "BMB_")
         _SECRET_SUBSTRINGS = ("KEY", "TOKEN", "SECRET", "PASSWORD", "CREDENTIAL",
                               "PASSWD", "AUTH")
         try:
@@ -1053,7 +1053,7 @@ def execute_code(
             # Allow vars with known safe prefixes.
             if any(k.startswith(p) for p in _SAFE_ENV_PREFIXES):
                 child_env[k] = v
-        child_env["HERMES_RPC_SOCKET"] = sock_path
+        child_env["BMB_RPC_SOCKET"] = sock_path
         child_env["PYTHONDONTWRITEBYTECODE"] = "1"
         # Ensure the bmb-encover root is importable in the sandbox so
         # repo-root modules are available to child scripts.  We also prepend
@@ -1067,12 +1067,12 @@ def execute_code(
         child_env["PYTHONPATH"] = os.pathsep.join(_pp_parts)
         # Inject user's configured timezone so datetime.now() in sandboxed
         # code reflects the correct wall-clock time.  Only TZ is set —
-        # HERMES_TIMEZONE is an internal Hermes setting and must not leak
+        # BMB_TIMEZONE is an internal BMB setting and must not leak
         # into child processes.
-        _tz_name = os.getenv("HERMES_TIMEZONE", "").strip()
+        _tz_name = os.getenv("BMB_TIMEZONE", "").strip()
         if _tz_name:
             child_env["TZ"] = _tz_name
-        child_env.pop("HERMES_TIMEZONE", None)
+        child_env.pop("BMB_TIMEZONE", None)
 
         # Per-profile HOME isolation: redirect system tool configs into
         # {BMB_ENCOVER_HOME}/home/ when that directory exists.
@@ -1558,7 +1558,7 @@ def build_execute_code_schema(enabled_sandbox_tools: set = None,
         )
 
     description = (
-        "Run a Python script that can call Hermes tools programmatically. "
+        "Run a Python script that can call BMB tools programmatically. "
         "Use this when you need 3+ tool calls with processing logic between them, "
         "need to filter/reduce large tool outputs before they enter your context, "
         "need conditional branching (if X then Y else Z), or need to loop "

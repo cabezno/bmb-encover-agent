@@ -1,4 +1,4 @@
-"""hermes-memory-store — holographic memory plugin using MemoryProvider interface.
+"""bmb-memory-store — holographic memory plugin using MemoryProvider interface.
 
 Registers as a MemoryProvider plugin, giving the agent structured fact storage
 with entity resolution, trust scoring, and HRR-based compositional retrieval.
@@ -7,7 +7,7 @@ Original plugin by dusterbloom (PR #2351), adapted to the MemoryProvider ABC.
 
 Config in $BMB_ENCOVER_HOME/config.yaml (profile-scoped):
   plugins:
-    hermes-memory-store:
+    bmb-memory-store:
       db_path: $BMB_ENCOVER_HOME/memory_store.db   # omit to use the default
       auto_extract: false
       default_trust: 0.5
@@ -103,7 +103,7 @@ def _load_plugin_config() -> dict:
         import yaml
         with open(config_path) as f:
             all_config = yaml.safe_load(f) or {}
-        return cfg_get(all_config, "plugins", "hermes-memory-store", default={}) or {}
+        return cfg_get(all_config, "plugins", "bmb-memory-store", default={}) or {}
     except Exception:
         return {}
 
@@ -129,7 +129,7 @@ class HolographicMemoryProvider(MemoryProvider):
         return True  # SQLite is always available, numpy is optional
 
     def save_config(self, values, bmb_home):
-        """Write config to config.yaml under plugins.hermes-memory-store."""
+        """Write config to config.yaml under plugins.bmb-memory-store."""
         from pathlib import Path
         config_path = Path(bmb_home) / "config.yaml"
         try:
@@ -139,7 +139,7 @@ class HolographicMemoryProvider(MemoryProvider):
                 with open(config_path) as f:
                     existing = yaml.safe_load(f) or {}
             existing.setdefault("plugins", {})
-            existing["plugins"]["hermes-memory-store"] = values
+            existing["plugins"]["bmb-memory-store"] = values
             with open(config_path, "w") as f:
                 yaml.dump(existing, f, default_flow_style=False)
         except Exception:

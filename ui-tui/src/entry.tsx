@@ -12,7 +12,7 @@ import { type MemorySnapshot, startMemoryMonitor } from './lib/memoryMonitor.js'
 import { resetTerminalModes } from './lib/terminalModes.js'
 
 if (!process.stdin.isTTY) {
-  console.log('hermes-tui: no TTY')
+  console.log('bmb-tui: no TTY')
   process.exit(0)
 }
 
@@ -50,13 +50,13 @@ const stopMemoryMonitor = startMemoryMonitor({
   onCritical: (snap, dump) => {
     resetTerminalModes()
     process.stderr.write(dumpNotice(snap, dump))
-    process.stderr.write('hermes-tui: exiting to avoid OOM; restart to recover\n')
+    process.stderr.write('bmb-tui: exiting to avoid OOM; restart to recover\n')
     process.exit(137)
   },
   onHigh: (snap, dump) => process.stderr.write(dumpNotice(snap, dump))
 })
 
-if (process.env.HERMES_HEAPDUMP_ON_START === '1') {
+if (process.env.BMB_HEAPDUMP_ON_START === '1') {
   void performHeapDump('manual')
 }
 

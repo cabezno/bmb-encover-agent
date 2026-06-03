@@ -825,10 +825,10 @@ _QWEN_CODE_VERSION = "0.14.1"
 
 def _routermint_headers() -> dict:
     """Return the User-Agent RouterMint needs to avoid Cloudflare 1010 blocks."""
-    from bmb_cli import __version__ as _HERMES_VERSION
+    from bmb_cli import __version__ as _BMB_VERSION
 
     return {
-        "User-Agent": f"BMB/{_HERMES_VERSION}",
+        "User-Agent": f"BMB/{_BMB_VERSION}",
     }
 
 
@@ -2814,19 +2814,19 @@ class AIAgent:
         Priority:
           1. ``providers.<id>.models.<model>.timeout_seconds`` (per-model override)
           2. ``providers.<id>.request_timeout_seconds`` (provider-wide)
-          3. ``BMB_API_TIMEOUT`` env var (also reads legacy HERMES_API_TIMEOUT escape hatch)
+          3. ``BMB_API_TIMEOUT`` env var (also reads legacy BMB_API_TIMEOUT escape hatch)
           4. 1800.0s default
 
         Used by OpenAI-wire chat completions (streaming and non-streaming) so
         the per-provider config knob wins over the 1800s default.  Without this
-        helper, the hardcoded ``BMB_API_TIMEOUT`` fallback (with HERMES_API_TIMEOUT legacy) would always be
+        helper, the hardcoded ``BMB_API_TIMEOUT`` fallback (with BMB_API_TIMEOUT legacy) would always be
         passed as a per-call ``timeout=`` kwarg, overriding the client-level
         timeout the AIAgent.__init__ path configured.
         """
         cfg = get_provider_request_timeout(self.provider, self.model)
         if cfg is not None:
             return cfg
-        return float(os.getenv("BMB_API_TIMEOUT", os.getenv("HERMES_API_TIMEOUT", 1800.0)))
+        return float(os.getenv("BMB_API_TIMEOUT", os.getenv("BMB_API_TIMEOUT", 1800.0)))
 
     def _resolved_api_call_stale_timeout_base(self) -> tuple[float, bool]:
         """Resolve the base non-stream stale timeout and whether it is implicit.
@@ -2834,7 +2834,7 @@ class AIAgent:
         Priority:
           1. ``providers.<id>.models.<model>.stale_timeout_seconds``
           2. ``providers.<id>.stale_timeout_seconds``
-          3. ``BMB_API_CALL_STALE_TIMEOUT`` env var (also reads legacy HERMES_API_CALL_STALE_TIMEOUT)
+          3. ``BMB_API_CALL_STALE_TIMEOUT`` env var (also reads legacy BMB_API_CALL_STALE_TIMEOUT)
           4. 300.0s default
 
         Returns ``(timeout_seconds, uses_implicit_default)`` so the caller can
@@ -2846,7 +2846,7 @@ class AIAgent:
         if cfg is not None:
             return cfg, False
 
-        env_timeout = os.getenv("BMB_API_CALL_STALE_TIMEOUT", os.getenv("HERMES_API_CALL_STALE_TIMEOUT"))
+        env_timeout = os.getenv("BMB_API_CALL_STALE_TIMEOUT", os.getenv("BMB_API_CALL_STALE_TIMEOUT"))
         if env_timeout is not None:
             return float(env_timeout), False
 
@@ -4897,7 +4897,7 @@ class AIAgent:
             # Fallback to hardcoded identity
             prompt_parts = [DEFAULT_AGENT_IDENTITY]
 
-        # Pointer to the bmb-encover skill + docs for user questions about Hermes itself.
+        # Pointer to the bmb-encover skill + docs for user questions about BMB itself.
         prompt_parts.append(BMB_ENCOVER_AGENT_HELP_GUIDANCE)
 
         # Tool-aware behavioral guidance: only inject when the tools are loaded
@@ -4910,7 +4910,7 @@ class AIAgent:
             tool_guidance.append(SKILLS_GUIDANCE)
         # Kanban worker/orchestrator lifecycle — only present when the
         # dispatcher spawned this process (kanban_show check_fn gates on
-        # HERMES_KANBAN_TASK env var). Normal chat sessions never see
+        # BMB_KANBAN_TASK env var). Normal chat sessions never see
         # this block.
         if "kanban_show" in self.valid_tool_names:
             tool_guidance.append(KANBAN_GUIDANCE)
@@ -6753,23 +6753,23 @@ class AIAgent:
             """Stream a chat completions response."""
             import httpx as _httpx
             # Per-provider / per-model request_timeout_seconds (from config.yaml)
-            # wins over the BMB_API_TIMEOUT env default (or legacy HERMES_API_TIMEOUT) if the user set it.
+            # wins over the BMB_API_TIMEOUT env default (or legacy BMB_API_TIMEOUT) if the user set it.
             _provider_timeout_cfg = get_provider_request_timeout(self.provider, self.model)
             _base_timeout = (
                 _provider_timeout_cfg
                 if _provider_timeout_cfg is not None
-                else float(os.getenv("BMB_API_TIMEOUT", os.getenv("HERMES_API_TIMEOUT", 1800.0)))
+                else float(os.getenv("BMB_API_TIMEOUT", os.getenv("BMB_API_TIMEOUT", 1800.0)))
             )
             # Read timeout: config wins here too.  Otherwise use
-            # HERMES_STREAM_READ_TIMEOUT (default 120s) for cloud providers.
+            # BMB_STREAM_READ_TIMEOUT (default 120s) for cloud providers.
             if _provider_timeout_cfg is not None:
                 _stream_read_timeout = _provider_timeout_cfg
             else:
-                _stream_read_timeout = float(os.getenv("HERMES_STREAM_READ_TIMEOUT", 120.0))
+                _stream_read_timeout = float(os.getenv("BMB_STREAM_READ_TIMEOUT", 120.0))
                 # Local providers (Ollama, llama.cpp, vLLM) can take minutes for
                 # prefill on large contexts before producing the first token.
                 # Auto-increase the httpx read timeout unless the user explicitly
-                # overrode HERMES_STREAM_READ_TIMEOUT.
+                # overrode BMB_STREAM_READ_TIMEOUT.
                 if _stream_read_timeout == 120.0 and self.base_url and is_local_endpoint(self.base_url):
                     _stream_read_timeout = _base_timeout
                     logger.debug(
@@ -7065,7 +7065,7 @@ class AIAgent:
         def _call():
             import httpx as _httpx
 
-            _max_stream_retries = int(os.getenv("HERMES_STREAM_RETRIES", 2))
+            _max_stream_retries = int(os.getenv("BMB_STREAM_RETRIES", 2))
 
             try:
                 for _stream_attempt in range(_max_stream_retries + 1):
@@ -7325,10 +7325,10 @@ class AIAgent:
                 if request_client is not None:
                     self._close_request_openai_client(request_client, reason="stream_request_complete")
 
-        _stream_stale_timeout_base = float(os.getenv("HERMES_STREAM_STALE_TIMEOUT", 180.0))
+        _stream_stale_timeout_base = float(os.getenv("BMB_STREAM_STALE_TIMEOUT", 180.0))
         # Local providers (Ollama, oMLX, llama-cpp) can take 300+ seconds
         # for prefill on large contexts.  Disable the stale detector unless
-        # the user explicitly set HERMES_STREAM_STALE_TIMEOUT.
+        # the user explicitly set BMB_STREAM_STALE_TIMEOUT.
         if _stream_stale_timeout_base == 180.0 and self.base_url and is_local_endpoint(self.base_url):
             _stream_stale_timeout = float("inf")
             logger.debug("Local provider detected (%s) — stale stream timeout disabled", self.base_url)
@@ -9139,10 +9139,10 @@ class AIAgent:
                 logger.warning("Session DB compression split failed — new session will NOT be indexed: %s", e)
 
         # Notify the context engine that the session_id rotated because of
-        # compression (not a fresh /new). Plugin engines (e.g. hermes-lcm) use
+        # compression (not a fresh /new). Plugin engines (e.g. bmb-lcm) use
         # boundary_reason="compression" to preserve DAG lineage across the
         # rollover instead of re-initializing fresh per-session state.
-        # See hermes-lcm#68. Built-in ContextCompressor ignores kwargs.
+        # See bmb-lcm#68. Built-in ContextCompressor ignores kwargs.
         try:
             _old_sid = locals().get("old_session_id")
             if _old_sid and hasattr(self.context_compressor, "on_session_start"):
@@ -10691,7 +10691,7 @@ class AIAgent:
         # Context is ALWAYS injected into the user message, never the
         # system prompt.  This preserves the prompt cache prefix — the
         # system prompt stays identical across turns so cached tokens
-        # are reused.  The system prompt is Hermes's territory; plugins
+        # are reused.  The system prompt is BMB's territory; plugins
         # contribute context alongside the user's input.
         #
         # All injected context is ephemeral (not persisted to session DB).
@@ -10953,7 +10953,7 @@ class AIAgent:
             # NOTE: Plugin context from pre_llm_call hooks is injected into the
             # user message (see injection block above), NOT the system prompt.
             # This is intentional — system prompt modifications break the prompt
-            # cache prefix.  The system prompt is reserved for Hermes internals.
+            # cache prefix.  The system prompt is reserved for BMB internals.
             if effective_system:
                 api_messages = [{"role": "system", "content": effective_system}] + api_messages
 
@@ -11115,7 +11115,7 @@ class AIAgent:
                     except Exception:
                         pass
 
-                    if env_var_enabled("HERMES_DUMP_REQUESTS"):
+                    if env_var_enabled("BMB_DUMP_REQUESTS"):
                         self._dump_api_request_debug(api_kwargs, reason="preflight")
 
                     # Always prefer the streaming path — even without stream
@@ -12055,7 +12055,7 @@ class AIAgent:
                         print(f"{self.log_prefix}   Troubleshooting:")
                         from bmb_constants import display_bmb_home as _dhh_fn
                         _dhh = _dhh_fn()
-                        print(f"{self.log_prefix}     • Check ANTHROPIC_TOKEN in {_dhh}/.env for Hermes-managed OAuth/setup tokens")
+                        print(f"{self.log_prefix}     • Check ANTHROPIC_TOKEN in {_dhh}/.env for BMB-managed OAuth/setup tokens")
                         print(f"{self.log_prefix}     • Check ANTHROPIC_API_KEY in {_dhh}/.env for API keys or legacy token values")
                         print(f"{self.log_prefix}     • For API keys: verify at https://platform.claude.com/settings/keys")
                         print(f"{self.log_prefix}     • For Claude Code: run 'claude /login' to refresh, then retry")
@@ -12257,7 +12257,7 @@ class AIAgent:
                     # this on the next pass and try fallback or bail.
                     #
                     # IMPORTANT: Nous Portal multiplexes multiple upstream
-                    # providers (DeepSeek, Kimi, MiMo, Hermes).  A 429 can
+                    # providers (DeepSeek, Kimi, MiMo, BMB).  A 429 can
                     # also mean an UPSTREAM provider is out of capacity
                     # for one specific model -- transient, clears in
                     # seconds, nothing to do with the caller's quota.

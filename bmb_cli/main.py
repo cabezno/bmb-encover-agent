@@ -5141,6 +5141,142 @@ def cmd_app_server(args):
     server.run()
 
 
+def cmd_n8n(args):
+    """Gestionar n8n — instalación y orquestación de contenido."""
+    from bmb_cli.n8n import (
+        cmd_install, cmd_start, cmd_stop, cmd_restart, cmd_status,
+        cmd_publish, cmd_generate, cmd_schedule_week,
+    )
+
+    dispatch = {
+        "install": cmd_install,
+        "start": cmd_start,
+        "stop": cmd_stop,
+        "restart": cmd_restart,
+        "status": cmd_status,
+        "publish": cmd_publish,
+        "generate": cmd_generate,
+        "schedule-week": cmd_schedule_week,
+    }
+
+    handler = dispatch.get(args.n8n_command)
+    if handler:
+        handler(args)
+    else:
+        print(f"Comando n8n desconocido: {args.n8n_command}")
+        print("Use: bmb n8n install|start|stop|restart|status|publish|generate|schedule-week")
+
+
+def cmd_stt(args):
+    """Speech-to-Text con Whisper."""
+    from bmb_cli.stt import cmd_listen, cmd_install_deps
+    import sys
+
+    if args.stt_command == "listen":
+        cmd_listen(args)
+    elif args.stt_command == "file":
+        from bmb_cli.stt import WhisperEngine
+        audio = args.audio
+        if not os.path.exists(audio):
+            print(f"❌ Archivo no encontrado: {audio}")
+            return
+        print(f"\n🎤 Transcribiendo: {audio}")
+        engine = WhisperEngine()
+        text = engine.transcribe(audio)
+        if text:
+            print(f"\n📝 Transcripción:\n{text}")
+    elif args.stt_command == "install":
+        cmd_install_deps(args)
+    else:
+        print("Use: bmb stt listen|file|install")
+
+
+def cmd_voice(args):
+    """Pipeline de voz: STT + RAG + LLM + TTS."""
+    from bmb_cli.voice_pipeline import (
+        cmd_transcribe, cmd_speak, cmd_converse,
+        cmd_rag_add, cmd_rag_list,
+    )
+
+    dispatch = {
+        "transcribe": cmd_transcribe,
+        "speak": cmd_speak,
+        "converse": cmd_converse,
+        "rag-add": cmd_rag_add,
+        "rag-list": cmd_rag_list,
+    }
+
+    handler = dispatch.get(args.voice_command)
+    if handler:
+        handler(args)
+    else:
+        print(f"Comando voice desconocido: {args.voice_command}")
+        print("Use: bmb voice transcribe|speak|converse|rag-add|rag-list")
+
+
+def cmd_wp(args):
+    """Gestionar WordPress y WooCommerce."""
+    from bmb_cli.wp import (
+        cmd_products, cmd_product_get, cmd_orders, cmd_order_get,
+        cmd_pages, cmd_categories, cmd_create_product, cmd_update_stock,
+        cmd_post,
+    )
+
+    dispatch = {
+        "setup": cmd_setup,
+        "products": cmd_products,
+        "product": cmd_product_get,
+        "orders": cmd_orders,
+        "order": cmd_order_get,
+        "pages": cmd_pages,
+        "categories": cmd_categories,
+        "create-product": cmd_create_product,
+        "update-stock": cmd_update_stock,
+        "post": cmd_post,
+    }
+
+    handler = dispatch.get(args.wp_command)
+    if handler:
+        handler(args)
+    else:
+        print(f"Comando wp desconocido: {args.wp_command}")
+        print("Use: bmb wp products|product|orders|order|pages|categories|create-product|update-stock|post")
+
+
+def cmd_call_main(args):
+    """Modo llamada de voz."""
+    from bmb_cli.voice_call import cmd_call, cmd_call_status, cmd_call_end
+
+    dispatch = {
+        "start": cmd_call,
+        "status": cmd_call_status,
+        "end": cmd_call_end,
+    }
+
+    handler = dispatch.get(args.call_command)
+    if handler:
+        handler(args)
+    else:
+        print("Use: bmb call start|status|end")
+
+
+def cmd_suite(args):
+    """Bridge de la suite BMB."""
+    from bmb_cli.suite_bridge import cmd_suite_start, cmd_suite_status, cmd_suite_command
+
+    dispatch = {
+        "start": cmd_suite_start,
+        "status": cmd_suite_status,
+        "command": cmd_suite_command,
+    }
+
+    handler = dispatch.get(args.suite_command)
+    if handler:
+        handler(args)
+    else:
+        print("Use: bmb suite start|status|command")
+
+
 def cmd_version(args):
     """Show version."""
     print(f"BlackMagicBox Encover Agent v{__version__} ({__release_date__})")
@@ -10246,9 +10382,197 @@ Examples:
         "--host", default="0.0.0.0", help="Host (default: 0.0.0.0)"
     )
     app_server_parser.add_argument(
-        "--port", type=int, default=8643, help="Puerto (default: 8643)"
+        "--port", type=int, default=8644, help="Puerto (default: 8644)"
     )
     app_server_parser.set_defaults(func=cmd_app_server)
+
+    # =========================================================================
+    # n8n command — Instalar y gestionar n8n para automatización de contenido
+    # =========================================================================
+    n8n_parser = subparsers.add_parser(
+        "n8n",
+        help="Gestionar n8n (automatización de contenido para redes sociales)",
+        description="Instala, configura y orquesta n8n para publicar contenido en redes sociales via webhooks.",
+    )
+    n8n_subparsers = n8n_parser.add_subparsers(dest="n8n_command", required=True)
+
+    n8n_install = n8n_subparsers.add_parser("install", help="Instalar n8n localmente")
+    n8n_install.add_argument("--method", choices=["auto", "npm", "docker"], default="auto",
+                            help="Método de instalación (default: auto)")
+
+    n8n_start = n8n_subparsers.add_parser("start", help="Iniciar n8n")
+    n8n_stop = n8n_subparsers.add_parser("stop", help="Detener n8n")
+    n8n_restart = n8n_subparsers.add_parser("restart", help="Reiniciar n8n")
+    n8n_status = n8n_subparsers.add_parser("status", help="Estado de n8n")
+
+    n8n_publish = n8n_subparsers.add_parser("publish", help="Publicar contenido via n8n")
+    n8n_publish.add_argument("text", help="Texto a publicar")
+    n8n_publish.add_argument("--platforms", default="twitter",
+                            help="Plataformas separadas por coma (twitter,linkedin,facebook,instagram)")
+
+    n8n_generate = n8n_subparsers.add_parser("generate", help="Generar y publicar contenido con IA")
+    n8n_generate.add_argument("prompt", help="Prompt para generar contenido")
+    n8n_generate.add_argument("--platforms", default="twitter",
+                             help="Plataformas separadas por coma")
+
+    n8n_week = n8n_subparsers.add_parser("schedule-week",
+                                         help="Programar una semana de contenido")
+    n8n_week.add_argument("topic", help="Tema de la semana")
+    n8n_week.add_argument("--platforms", default="twitter,linkedin,facebook",
+                         help="Plataformas separadas por coma")
+
+    n8n_parser.set_defaults(func=cmd_n8n)
+
+    # =========================================================================
+    # wp command — WordPress / WooCommerce management
+    # =========================================================================
+    wp_parser = subparsers.add_parser(
+        "wp",
+        help="Gestionar WordPress y WooCommerce",
+        description="Comandos para gestionar contenido y productos en WordPress/WooCommerce via REST API.",
+    )
+    wp_subparsers = wp_parser.add_subparsers(dest="wp_command", required=True)
+
+    # wp setup
+    wp_setup = wp_subparsers.add_parser("setup", help="Configurar WordPress/WooCommerce")
+
+    # wp products
+    wp_products = wp_subparsers.add_parser("products", help="Listar productos")
+    wp_products.add_argument("--category", help="Filtrar por categoría")
+    wp_products.add_argument("--page", type=int, default=1, help="Página")
+    wp_products.add_argument("--per-page", type=int, default=20, help="Productos por página")
+
+    # wp product
+    wp_product = wp_subparsers.add_parser("product", help="Ver detalle de producto")
+    wp_product.add_argument("product_id", type=int, help="ID del producto")
+
+    # wp create-product
+    wp_create = wp_subparsers.add_parser("create-product", help="Crear producto")
+    wp_create.add_argument("name", help="Nombre del producto")
+    wp_create.add_argument("price", type=float, help="Precio")
+    wp_create.add_argument("--categories", default="",
+                          help="IDs de categorías separadas por coma (ej: 18,19)")
+    wp_create.add_argument("--description", default="", help="Descripción")
+
+    # wp orders
+    wp_orders = wp_subparsers.add_parser("orders", help="Listar órdenes")
+    wp_orders.add_argument("--status", help="Filtrar por estado (processing, completed, etc.)")
+    wp_orders.add_argument("--page", type=int, default=1, help="Página")
+
+    # wp order
+    wp_order = wp_subparsers.add_parser("order", help="Ver detalle de orden")
+    wp_order.add_argument("order_id", type=int, help="ID de la orden")
+
+    # wp pages
+    wp_pages = wp_subparsers.add_parser("pages", help="Listar páginas")
+
+    # wp categories
+    wp_cats = wp_subparsers.add_parser("categories", help="Listar categorías")
+
+    # wp update-stock
+    wp_stock = wp_subparsers.add_parser("update-stock", help="Actualizar stock")
+    wp_stock.add_argument("product_id", type=int, help="ID del producto")
+    wp_stock.add_argument("--stock", default="instock",
+                         choices=["instock", "outofstock", "onbackorder"],
+                         help="Estado de stock")
+
+    # wp post
+    wp_post = wp_subparsers.add_parser("post", help="Crear post (requiere App Password)")
+    wp_post.add_argument("title", help="Título del post")
+    wp_post.add_argument("--content", default="", help="Contenido")
+    wp_post.add_argument("--status", default="draft",
+                        choices=["draft", "publish", "pending"],
+                        help="Estado")
+
+    wp_parser.set_defaults(func=cmd_wp)
+
+    # =========================================================================
+    # stt command — Speech-to-Text con Whisper
+    # =========================================================================
+    stt_parser = subparsers.add_parser(
+        "stt",
+        help="Speech-to-Text: transcribir audio con Whisper local",
+        description="Reconocimiento de voz local con faster-whisper. Escucha desde microfono o transcribe archivos.",
+    )
+    stt_subparsers = stt_parser.add_subparsers(dest="stt_command", required=True)
+
+    stt_listen = stt_subparsers.add_parser("listen", help="Escuchar desde microfono y transcribir")
+    stt_listen.add_argument("-d", "--duration", type=int, default=5, help="Duracion en segundos (default: 5)")
+    stt_listen.add_argument("--device", type=int, help="ID del dispositivo de audio")
+
+    stt_file = stt_subparsers.add_parser("file", help="Transcribir un archivo de audio")
+    stt_file.add_argument("audio", help="Archivo de audio (.wav, .mp3, .ogg)")
+
+    stt_install = stt_subparsers.add_parser("install", help="Instalar dependencias STT")
+
+    stt_parser.set_defaults(func=cmd_stt)
+
+    # =========================================================================
+    # voice command — Pipeline de voz STT + RAG + LLM + TTS
+    # =========================================================================
+    voice_parser = subparsers.add_parser(
+        "voice",
+        help="Pipeline de voz: transcribir, hablar, conversar con RAG",
+        description="Pipeline completo de voz: Whisper STT → RAG → LLM → TTS streaming.",
+    )
+    voice_subparsers = voice_parser.add_subparsers(dest="voice_command", required=True)
+
+    v_transcribe = voice_subparsers.add_parser("transcribe", help="Transcribir audio a texto")
+    v_transcribe.add_argument("audio", help="Archivo de audio (.wav, .mp3, .ogg)")
+
+    v_speak = voice_subparsers.add_parser("speak", help="Convertir texto a audio (TTS)")
+    v_speak.add_argument("text", help="Texto a convertir")
+    v_speak.add_argument("-o", "--output", help="Archivo de salida (opcional)")
+
+    v_converse = voice_subparsers.add_parser("converse", help="Pipeline completo: audio → texto → respuesta → audio")
+    v_converse.add_argument("audio", help="Archivo de audio de entrada")
+
+    v_rag_add = voice_subparsers.add_parser("rag-add", help="Agregar documento al conocimiento")
+    v_rag_add.add_argument("file", help="Archivo .txt o .md")
+
+    v_rag_list = voice_subparsers.add_parser("rag-list", help="Listar documentos en conocimiento")
+
+    voice_parser.set_defaults(func=cmd_voice)
+
+    # =========================================================================
+    # call command — Modo llamada de voz (STT → LLM → TTS)
+    # =========================================================================
+    call_parser = subparsers.add_parser(
+        "call",
+        help="Modo llamada de voz: escucha, procesa y responde con voz",
+        description="Inicia una sesión de llamada de voz: graba audio, transcribe, procesa con IA, y responde con voz sintética.",
+    )
+    call_subparsers = call_parser.add_subparsers(dest="call_command", required=True)
+
+    call_start = call_subparsers.add_parser("start", help="Iniciar llamada")
+    call_start.add_argument("-d", "--duration", type=int, default=10, help="Duración por turno (segundos)")
+    call_start.add_argument("-c", "--continuous", action="store_true", help="Modo continuo (varios turnos)")
+
+    call_status = call_subparsers.add_parser("status", help="Ver sesiones activas")
+    call_end = call_subparsers.add_parser("end", help="Finalizar sesiones")
+
+    call_parser.set_defaults(func=cmd_call_main)
+
+    # =========================================================================
+    # suite command — Bridge de aplicaciones de la suite BMB
+    # =========================================================================
+    suite_parser = subparsers.add_parser(
+        "suite",
+        help="Bridge de la suite BMB: conecta aplicaciones con el agente",
+        description="Bridge de comunicación entre BMB Agent y las aplicaciones de la suite BMB (Gestor de IAs, Editor Caja Negra, Editor de Video, Streaming).",
+    )
+    suite_subparsers = suite_parser.add_subparsers(dest="suite_command", required=True)
+
+    suite_start = suite_subparsers.add_parser("start", help="Iniciar el bridge")
+    suite_start.add_argument("--host", default="0.0.0.0", help="Host (default: 0.0.0.0)")
+    suite_start.add_argument("--port", type=int, default=8644, help="Puerto (default: 8644)")
+
+    suite_status = suite_subparsers.add_parser("status", help="Estado del bridge y apps")
+    suite_command = suite_subparsers.add_parser("command", help="Enviar comando a una app")
+    suite_command.add_argument("app_id", help="ID de la app (gestor-ias, editor-caja-negra, editor-video, streaming)")
+    suite_command.add_argument("command", help="Comando a ejecutar")
+
+    suite_parser.set_defaults(func=cmd_suite)
 
     # =========================================================================
     profile_export = profile_subparsers.add_parser(

@@ -8,13 +8,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Encover/Hermes-Agent.git"
+    "url": "git+https://github.com/cabezno/Hermes-Agent.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Encover/Hermes-Agent/issues"
+    "url": "https://github.com/cabezno/BMB-Agent/issues"
   },
-  "homepage": "https://github.com/Encover/Hermes-Agent#readme",
+  "homepage": "https://github.com/cabezno/Hermes-Agent#readme",
   "dependencies": {
     "@askjo/camofox-browser": "^1.5.2",
     "agent-browser": "^0.26.0"

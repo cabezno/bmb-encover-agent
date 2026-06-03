@@ -1,5 +1,5 @@
 """
-Hermes Plugin System
+BMB Plugin System
 ====================
 
 Discovers, loads, and manages plugins from four sources:
@@ -8,8 +8,8 @@ Discovers, loads, and manages plugins from four sources:
    ``memory/`` and ``context_engine/`` subdirs are excluded — they have their
    own discovery paths)
 2. **User plugins**   – ``~/.bmb/plugins/<name>/``
-3. **Project plugins** – ``./.hermes/plugins/<name>/`` (opt-in via
-   ``HERMES_ENABLE_PROJECT_PLUGINS``)
+3. **Project plugins** – ``./.bmb/plugins/<name>/`` (opt-in via
+   ``BMB_ENABLE_PROJECT_PLUGINS``)
 4. **Pip plugins**     – packages that expose the ``bmb_agent.plugins``
    entry-point group.
 
@@ -55,11 +55,11 @@ from bmb_cli.config import cfg_get
 def get_bundled_plugins_dir() -> Path:
     """Locate the bundled ``plugins/`` directory.
 
-    Honours ``HERMES_BUNDLED_PLUGINS`` (set by the Nix wrapper / packaged
+    Honours ``BMB_BUNDLED_PLUGINS`` (set by the Nix wrapper / packaged
     installs) so read-only store paths are consulted first.  Falls back to
     the in-repo path used during development.
     """
-    env_override = os.getenv("HERMES_BUNDLED_PLUGINS")
+    env_override = os.getenv("BMB_BUNDLED_PLUGINS")
     if env_override:
         return Path(env_override)
     return Path(__file__).resolve().parent.parent / "plugins"
@@ -662,9 +662,9 @@ class PluginManager:
         user_dir = get_bmb_home() / "plugins"
         manifests.extend(self._scan_directory(user_dir, source="user"))
 
-        # 3. Project plugins (./.hermes/plugins/)
-        if _env_enabled("HERMES_ENABLE_PROJECT_PLUGINS"):
-            project_dir = Path.cwd() / ".hermes" / "plugins"
+        # 3. Project plugins (./.bmb/plugins/)
+        if _env_enabled("BMB_ENABLE_PROJECT_PLUGINS"):
+            project_dir = Path.cwd() / ".bmb" / "plugins"
             manifests.extend(self._scan_directory(project_dir, source="project"))
 
         # 4. Pip / entry-point plugins
@@ -715,7 +715,7 @@ class PluginManager:
             # enforced by the tool wrapper.
             #
             # Bundled platform plugins (gateway adapters like IRC) auto-load
-            # for the same reason: every platform Hermes ships must be
+            # for the same reason: every platform BMB ships must be
             # available out of the box without the user having to opt in.
             if manifest.source == "bundled" and manifest.kind in ("backend", "platform"):
                 self._load_plugin(manifest)
@@ -1264,7 +1264,7 @@ def resolve_plugin_command_result(result: Any) -> Any:
 
     thread = threading.Thread(
         target=_runner,
-        name="hermes-plugin-command-await",
+        name="bmb-plugin-command-await",
         daemon=True,
     )
     thread.start()

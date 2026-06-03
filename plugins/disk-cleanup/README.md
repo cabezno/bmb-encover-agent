@@ -2,7 +2,7 @@
 
 Auto-tracks and cleans up ephemeral files created during BlackMagicBox Encover Agent
 sessions — test scripts, temp outputs, cron logs, stale chrome profiles.
-Scoped strictly to `$BMB_ENCOVER_HOME` and `/tmp/hermes-*`.
+Scoped strictly to `$BMB_ENCOVER_HOME` and `/tmp/bmb-*`.
 
 Originally contributed by [@LVT382009](https://github.com/LVT382009) as a
 skill in PR #12212.  Ported to the plugin system so the behaviour runs
@@ -41,7 +41,7 @@ Deletion rules (same as the original PR):
 
 ## Safety
 
-- `is_safe_path()` rejects anything outside `BMB_ENCOVER_HOME` or `/tmp/hermes-*`
+- `is_safe_path()` rejects anything outside `BMB_ENCOVER_HOME` or `/tmp/bmb-*`
 - Windows mounts (`/mnt/c` etc.) are rejected
 - The state directory `$BMB_ENCOVER_HOME/disk-cleanup/` is itself excluded
 - `$BMB_ENCOVER_HOME/logs/`, `memories/`, `sessions/`, `skills/`, `plugins/`,

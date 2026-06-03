@@ -5,9 +5,9 @@
 # BlackMagicBox Encover Agent ☤
 
 <p align="center">
-  <a href="https://bmb-encover.blackmagicbox.com/docs/"><img src="https://img.shields.io/badge/Docs-hermes--agent.blackmagicbox.com-FFD700?style=for-the-badge" alt="Documentation"></a>
+  <a href="https://bmb-encover.blackmagicbox.com/docs/"><img src="https://img.shields.io/badge/Docs-bmb--agent.blackmagicbox.com-FFD700?style=for-the-badge" alt="Documentation"></a>
   <a href="https://discord.gg/Encover"><img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord"></a>
-  <a href="https://github.com/Encover/bmb-encover/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT"></a>
+  <a href="https://github.com/cabezno/bmb-encover-agent/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT"></a>
   <a href="https://blackmagicbox.com"><img src="https://img.shields.io/badge/Built%20by-Nous%20Research-blueviolet?style=for-the-badge" alt="Built by Encover"></a>
 </p>
 
@@ -35,7 +35,7 @@ curl -fsSL https://raw.githubusercontent.com/Encover/bmb-encover/main/scripts/in
 
 Works on Linux, macOS, WSL2, and Android via Termux. The installer handles the platform-specific setup for you.
 
-> **Android / Termux:** The tested manual path is documented in the [Termux guide](https://bmb-encover.blackmagicbox.com/docs/getting-started/termux). On Termux, Hermes installs a curated `.[termux]` extra because the full `.[all]` extra currently pulls Android-incompatible voice dependencies.
+> **Android / Termux:** The tested manual path is documented in the [Termux guide](https://bmb-encover.blackmagicbox.com/docs/getting-started/termux). On Termux, BMB installs a curated `.[termux]` extra because the full `.[all]` extra currently pulls Android-incompatible voice dependencies.
 >
 > **Windows:** Native Windows is not supported. Please install [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) and run the command above.
 
@@ -66,7 +66,7 @@ hermes doctor       # Diagnose any issues
 
 ## CLI vs Messaging Quick Reference
 
-Hermes has two entry points: start the terminal UI with `bmb`, or run the gateway and talk to it from Telegram, Discord, Slack, WhatsApp, Signal, or Email. Once you're in a conversation, many slash commands are shared across both interfaces.
+BMB has two entry points: start the terminal UI with `bmb`, or run the gateway and talk to it from Telegram, Discord, Slack, WhatsApp, Signal, or Email. Once you're in a conversation, many slash commands are shared across both interfaces.
 
 | Action | CLI | Messaging platforms |
 |---------|-----|---------------------|
@@ -110,7 +110,7 @@ All documentation lives at **[bmb-encover.blackmagicbox.com/docs](https://bmb-en
 
 ## Migrating from OpenClaw
 
-If you're coming from OpenClaw, Hermes can automatically import your settings, memories, skills, and API keys.
+If you're coming from OpenClaw, BMB can automatically import your settings, memories, skills, and API keys.
 
 **During first-time setup:** The setup wizard (`bmb setup`) automatically detects `~/.openclaw` and offers to migrate before configuration begins.
 
@@ -141,12 +141,12 @@ See `bmb claw migrate --help` for all options, or use the `openclaw-migration` s
 
 We welcome contributions! See the [Contributing Guide](https://bmb-encover.blackmagicbox.com/docs/developer-guide/contributing) for development setup, code style, and PR process.
 
-Quick start for contributors — clone and go with `setup-hermes.sh`:
+Quick start for contributors — clone and go with `setup-bmb.sh`:
 
 ```bash
-git clone https://github.com/Encover/bmb-encover.git
+git clone https://github.com/cabezno/bmb-encover-agent.git
 cd bmb-encover
-./setup-hermes.sh     # installs uv, creates venv, installs .[all], symlinks ~/.local/bin/hermes
+./setup-bmb.sh     # installs uv, creates venv, installs .[all], symlinks ~/.local/bin/bmb
 ./bmb              # auto-detects the venv, no need to `source` first
 ```
 
@@ -168,8 +168,8 @@ scripts/run_tests.sh
 
 - 💬 [Discord](https://discord.gg/Encover)
 - 📚 [Skills Hub](https://agentskills.io)
-- 🐛 [Issues](https://github.com/Encover/bmb-encover/issues)
-- 🔌 [HermesClaw](https://github.com/AaronWong1999/hermesclaw) — Community WeChat bridge: Run BlackMagicBox Encover Agent and OpenClaw on the same WeChat account.
+- 🐛 [Issues](https://github.com/cabezno/bmb-encover-agent/issues)
+- 🔌 [HermesClaw](https://github.com/AaronWong1999/bmbclaw) — Community WeChat bridge: Run BlackMagicBox Encover Agent and OpenClaw on the same WeChat account.
 
 ---
 

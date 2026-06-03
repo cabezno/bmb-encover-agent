@@ -220,7 +220,7 @@
         {
           "id": "devops/kanban-worker",
           "name": "kanban-worker",
-          "description": "Pitfalls, examples, and edge cases for Hermes Kanban workers. The lifecycle itself is auto-injected ",
+          "description": "Pitfalls, examples, and edge cases for BMB Kanban workers. The lifecycle itself is auto-injected ",
           "type": "general"
         },
         {
@@ -586,7 +586,7 @@
         {
           "id": "software-development/debugging-bmb-tui-commands",
           "name": "debugging-bmb-tui-commands",
-          "description": "Debug Hermes TUI slash commands: Python, gateway, Ink UI.",
+          "description": "Debug BMB TUI slash commands: Python, gateway, Ink UI.",
           "type": "general"
         },
         {
@@ -598,7 +598,7 @@
         {
           "id": "software-development/plan",
           "name": "plan",
-          "description": "Plan mode: write markdown plan to .hermes/plans/, no exec.",
+          "description": "Plan mode: write markdown plan to .bmb/plans/, no exec.",
           "type": "general"
         },
         {

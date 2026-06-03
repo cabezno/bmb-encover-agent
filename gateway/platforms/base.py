@@ -23,7 +23,7 @@ from utils import normalize_proxy_url
 
 logger = logging.getLogger(__name__)
 
-# Audio file extensions Hermes recognizes for native audio delivery.
+# Audio file extensions BMB recognizes for native audio delivery.
 # Kept in sync with tools/send_message_tool.py and cron/scheduler.py via
 # should_send_media_as_audio() below.
 _AUDIO_EXTS = frozenset({'.ogg', '.opus', '.mp3', '.wav', '.m4a', '.flac'})
@@ -2668,15 +2668,15 @@ class BasePlatformAdapter(ABC):
         Return a random delay in seconds for human-like response pacing.
 
         Reads from env vars:
-          HERMES_HUMAN_DELAY_MODE: "off" (default) | "natural" | "custom"
-          HERMES_HUMAN_DELAY_MIN_MS: minimum delay in ms (default 800, custom mode)
-          HERMES_HUMAN_DELAY_MAX_MS: maximum delay in ms (default 2500, custom mode)
+          BMB_HUMAN_DELAY_MODE: "off" (default) | "natural" | "custom"
+          BMB_HUMAN_DELAY_MIN_MS: minimum delay in ms (default 800, custom mode)
+          BMB_HUMAN_DELAY_MAX_MS: maximum delay in ms (default 2500, custom mode)
         """
-        mode = os.getenv("HERMES_HUMAN_DELAY_MODE", "off").lower()
+        mode = os.getenv("BMB_HUMAN_DELAY_MODE", "off").lower()
         if mode == "off":
             return 0.0
-        min_ms = int(os.getenv("HERMES_HUMAN_DELAY_MIN_MS", "800"))
-        max_ms = int(os.getenv("HERMES_HUMAN_DELAY_MAX_MS", "2500"))
+        min_ms = int(os.getenv("BMB_HUMAN_DELAY_MIN_MS", "800"))
+        max_ms = int(os.getenv("BMB_HUMAN_DELAY_MAX_MS", "2500"))
         if mode == "natural":
             min_ms, max_ms = 800, 2500
         return random.uniform(min_ms / 1000.0, max_ms / 1000.0)

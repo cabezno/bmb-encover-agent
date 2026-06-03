@@ -56,12 +56,12 @@ _SENSITIVE_BODY_KEYS = frozenset({
 })
 
 # Snapshot at import time so runtime env mutations (e.g. LLM-generated
-# `export HERMES_REDACT_SECRETS=true`) cannot enable/disable redaction
+# `export BMB_REDACT_SECRETS=true`) cannot enable/disable redaction
 # mid-session.  OFF by default — user must opt in via
 # `security.redact_secrets: true` in config.yaml (bridged to this env var
-# in bmb_cli/main.py and gateway/run.py) or `HERMES_REDACT_SECRETS=true`
+# in bmb_cli/main.py and gateway/run.py) or `BMB_REDACT_SECRETS=true`
 # in ~/.bmb/.env.
-_REDACT_ENABLED = os.getenv("HERMES_REDACT_SECRETS", "").lower() in ("1", "true", "yes", "on")
+_REDACT_ENABLED = os.getenv("BMB_REDACT_SECRETS", "").lower() in ("1", "true", "yes", "on")
 
 # Known API key prefixes -- match the prefix + contiguous token chars
 _PREFIX_PATTERNS = [
@@ -195,7 +195,7 @@ def mask_secret(
 ) -> str:
     """Mask a secret for display, preserving ``head`` and ``tail`` characters.
 
-    Canonical helper for display-time redaction across Hermes — used by
+    Canonical helper for display-time redaction across BMB — used by
     ``bmb config``, ``bmb status``, ``bmb dump``, and anywhere
     a secret needs to be shown truncated for debuggability while still
     keeping the bulk hidden.

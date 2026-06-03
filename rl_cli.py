@@ -45,12 +45,12 @@ for _env_path in _loaded_env_paths:
 tinker_atropos_dir = Path(__file__).parent / 'tinker-atropos'
 if tinker_atropos_dir.exists():
     os.environ['TERMINAL_CWD'] = str(tinker_atropos_dir)
-    os.environ['HERMES_QUIET'] = '1'  # Disable temp subdirectory creation
+    os.environ['BMB_QUIET'] = '1'  # Disable temp subdirectory creation
     print(f"📂 Terminal working directory: {tinker_atropos_dir}")
 else:
     # Fall back to bmb-encover directory if submodule not found
     os.environ['TERMINAL_CWD'] = str(Path(__file__).parent)
-    os.environ['HERMES_QUIET'] = '1'
+    os.environ['BMB_QUIET'] = '1'
     print(f"⚠️  tinker-atropos submodule not found, using: {Path(__file__).parent}")
 
 # Import agent and tools

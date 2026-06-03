@@ -5,7 +5,7 @@ version: 1.0.0
 author: BlackMagicBox Encover Agent
 license: MIT
 metadata:
-  hermes:
+  bmb:
     tags: [design, design-system, tokens, ui, accessibility, wcag, tailwind, dtcg, google]
     related_skills: [popular-web-designs, claude-design, excalidraw, architecture-diagram]
 ---

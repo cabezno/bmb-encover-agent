@@ -5,7 +5,7 @@ version: 2.3.0
 author: BlackMagicBox Encover Agent
 license: MIT
 metadata:
-  hermes:
+  bmb:
     tags: [PDF, Documents, Research, Arxiv, Text-Extraction, OCR]
     related_skills: [powerpoint]
 ---

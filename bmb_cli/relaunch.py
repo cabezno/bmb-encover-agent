@@ -1,5 +1,5 @@
 """
-Unified self-relaunch for Hermes CLI.
+Unified self-relaunch for BMB CLI.
 
 Preserves critical flags (--tui, --dev, --profile, --model, etc.) across
 process replacement so that ``bmb sessions browse`` or post-setup relaunch
@@ -52,7 +52,7 @@ _INHERITED_FLAGS_TABLE = _build_inherited_flag_table()
 
 
 def _extract_inherited_flags(argv: Sequence[str]) -> list[str]:
-    """Pull out flags that should carry over into a self-relaunched hermes."""
+    """Pull out flags that should carry over into a self-relaunched bmb."""
     flags: list[str] = []
     i = 0
     while i < len(argv):
@@ -111,7 +111,7 @@ def build_relaunch_argv(
     preserve_inherited: bool = True,
     original_argv: Optional[Sequence[str]] = None,
 ) -> list[str]:
-    """Construct an argv list for replacing the current process with hermes.
+    """Construct an argv list for replacing the current process with bmb.
 
     Args:
         extra_args: Arguments to append (e.g. ``["--resume", id]``).

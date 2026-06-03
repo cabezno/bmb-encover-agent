@@ -47,7 +47,7 @@ Catálogo de skills agénticos para BMB Encover Agent.
 
 - **devops** (3 skills)
   - [kanban-orchestrator](devops/kanban-orchestrator/SKILL.md) — Decomposition playbook + specialist-roster conventions + anti-temptation rules for an orchestrator p `[kanban, multi-agent, orchestration, routing]`
-  - [kanban-worker](devops/kanban-worker/SKILL.md) — Pitfalls, examples, and edge cases for Hermes Kanban workers. The lifecycle itself is auto-injected  `[kanban, multi-agent, collaboration, workflow, pitfalls]`
+  - [kanban-worker](devops/kanban-worker/SKILL.md) — Pitfalls, examples, and edge cases for BMB Kanban workers. The lifecycle itself is auto-injected  `[kanban, multi-agent, collaboration, workflow, pitfalls]`
   - [webhook-subscriptions](devops/webhook-subscriptions/SKILL.md) — Webhook subscriptions: event-driven agent runs. `[webhook, events, automation, integrations, notifications, push]`
 
 - **email** (1 skills)
@@ -124,9 +124,9 @@ Catálogo de skills agénticos para BMB Encover Agent.
 
 - **software-development** (11 skills)
   - [bmb-encover-skill-authoring](software-development/bmb-agent-skill-authoring/SKILL.md) — Author in-repo SKILL.md: frontmatter, validator, structure. `[skills, authoring, bmb-encover, conventions, skill-md]`
-  - [debugging-bmb-tui-commands](software-development/debugging-bmb-tui-commands/SKILL.md) — Debug Hermes TUI slash commands: Python, gateway, Ink UI. `[debugging, bmb-encover, tui, slash-commands, typescript, python]`
+  - [debugging-bmb-tui-commands](software-development/debugging-bmb-tui-commands/SKILL.md) — Debug BMB TUI slash commands: Python, gateway, Ink UI. `[debugging, bmb-encover, tui, slash-commands, typescript, python]`
   - [node-inspect-debugger](software-development/node-inspect-debugger/SKILL.md) — Debug Node.js via --inspect + Chrome DevTools Protocol CLI. `[debugging, nodejs, node-inspect, cdp, breakpoints, ui-tui]`
-  - [plan](software-development/plan/SKILL.md) — Plan mode: write markdown plan to .hermes/plans/, no exec. `[planning, plan-mode, implementation, workflow]`
+  - [plan](software-development/plan/SKILL.md) — Plan mode: write markdown plan to .bmb/plans/, no exec. `[planning, plan-mode, implementation, workflow]`
   - [python-debugpy](software-development/python-debugpy/SKILL.md) — Debug Python: pdb REPL + debugpy remote (DAP). `[debugging, python, pdb, debugpy, breakpoints, dap, post-mortem]`
   - [requesting-code-review](software-development/requesting-code-review/SKILL.md) — Pre-commit review: security scan, quality gates, auto-fix. `[code-review, security, verification, quality, pre-commit, auto-fix]`
   - [spike](software-development/spike/SKILL.md) — Throwaway experiments to validate an idea before build. `[spike, prototype, experiment, feasibility, throwaway, exploration, research, planning, mvp, proof-of-concept]`

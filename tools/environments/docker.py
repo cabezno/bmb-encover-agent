@@ -15,7 +15,7 @@ import uuid
 from typing import Optional
 
 from tools.environments.base import BaseEnvironment, _popen_bash
-from tools.environments.local import _HERMES_PROVIDER_ENV_BLOCKLIST
+from tools.environments.local import _BMB_PROVIDER_ENV_BLOCKLIST
 
 logger = logging.getLogger(__name__)
 
@@ -102,7 +102,7 @@ def find_docker() -> Optional[str]:
     """Locate the docker (or podman) CLI binary.
 
     Resolution order:
-    1. ``HERMES_DOCKER_BINARY`` env var — explicit override (e.g. ``/usr/bin/podman``)
+    1. ``BMB_DOCKER_BINARY`` env var — explicit override (e.g. ``/usr/bin/podman``)
     2. ``docker`` on PATH via ``shutil.which``
     3. ``podman`` on PATH via ``shutil.which``
     4. Well-known macOS Docker Desktop install locations
@@ -114,10 +114,10 @@ def find_docker() -> Optional[str]:
         return _docker_executable
 
     # 1. Explicit override via env var (e.g. for Podman on immutable distros)
-    override = os.getenv("HERMES_DOCKER_BINARY")
+    override = os.getenv("BMB_DOCKER_BINARY")
     if override and os.path.isfile(override) and os.access(override, os.X_OK):
         _docker_executable = override
-        logger.info("Using HERMES_DOCKER_BINARY override: %s", override)
+        logger.info("Using BMB_DOCKER_BINARY override: %s", override)
         return override
 
     # 2. docker on PATH
@@ -491,7 +491,7 @@ class DockerEnvironment(BaseEnvironment):
         self._docker_exe = find_docker() or "docker"
 
         # Start the container directly via `docker run -d`.
-        container_name = f"hermes-{uuid.uuid4().hex[:8]}"
+        container_name = f"bmb-{uuid.uuid4().hex[:8]}"
         run_cmd = [
             self._docker_exe, "run", "-d",
             "--init",           # tini/catatonit as PID 1 — reaps zombie children
@@ -536,9 +536,9 @@ class DockerEnvironment(BaseEnvironment):
         except Exception:
             pass
         # Explicit docker_forward_env entries are an intentional opt-in and must
-        # win over the generic Hermes secret blocklist. Only implicit passthrough
+        # win over the generic BMB secret blocklist. Only implicit passthrough
         # keys are filtered.
-        forward_keys = explicit_forward_keys | (passthrough_keys - _HERMES_PROVIDER_ENV_BLOCKLIST)
+        forward_keys = explicit_forward_keys | (passthrough_keys - _BMB_PROVIDER_ENV_BLOCKLIST)
         hermes_env = _load_hermes_env_vars() if forward_keys else {}
         for key in sorted(forward_keys):
             value = os.getenv(key)

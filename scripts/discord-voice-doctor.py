@@ -19,7 +19,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-BMB_ENCOVER_HOME = Path(os.getenv("BMB_ENCOVER_HOME", Path.home() / ".hermes"))
+BMB_ENCOVER_HOME = Path(os.getenv("BMB_ENCOVER_HOME", Path.home() / ".bmb"))
 ENV_FILE = BMB_ENCOVER_HOME / ".env"
 
 OK = "\033[92m\u2713\033[0m"

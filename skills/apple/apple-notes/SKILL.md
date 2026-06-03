@@ -6,7 +6,7 @@ author: BlackMagicBox Encover Agent
 license: MIT
 platforms: [macos]
 metadata:
-  hermes:
+  bmb:
     tags: [Notes, Apple, macOS, note-taking]
     related_skills: [obsidian]
 prerequisites:

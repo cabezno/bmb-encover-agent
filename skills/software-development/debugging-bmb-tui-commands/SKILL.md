@@ -1,22 +1,22 @@
 ---
 name: debugging-bmb-tui-commands
-description: "Debug Hermes TUI slash commands: Python, gateway, Ink UI."
+description: "Debug BMB TUI slash commands: Python, gateway, Ink UI."
 version: 1.0.0
 author: BlackMagicBox Encover Agent
 license: MIT
 metadata:
-  hermes:
+  bmb:
     tags: [debugging, bmb-encover, tui, slash-commands, typescript, python]
     related_skills: [python-debugpy, node-inspect-debugger, systematic-debugging]
 ---
 
-# Debugging Hermes TUI Slash Commands
+# Debugging BMB TUI Slash Commands
 
 ## Overview
 
-Hermes slash commands span three layers — Python command registry, tui_gateway JSON-RPC bridge, and the Ink/TypeScript frontend. When a command misbehaves (missing from autocomplete, works in CLI but not TUI, config persists but UI doesn't update), the bug is almost always one layer being out of sync with another.
+BMB slash commands span three layers — Python command registry, tui_gateway JSON-RPC bridge, and the Ink/TypeScript frontend. When a command misbehaves (missing from autocomplete, works in CLI but not TUI, config persists but UI doesn't update), the bug is almost always one layer being out of sync with another.
 
-Use this skill when you encounter issues with slash commands in the Hermes TUI, particularly when commands aren't showing in autocomplete, aren't working properly in the TUI, or need to be added/updated.
+Use this skill when you encounter issues with slash commands in the BMB TUI, particularly when commands aren't showing in autocomplete, aren't working properly in the TUI, or need to be added/updated.
 
 ## When to Use
 
@@ -86,7 +86,7 @@ If a command exists in the TUI but doesn't show in autocomplete:
 
 3. Ensure `subcommands` matches the expected tab-completion options shown by the TUI.
 
-4. If the command runs server-side, add a handler in `HermesCLI.process_command()` in `cli.py`:
+4. If the command runs server-side, add a handler in `EncoverCLI.process_command()` in `cli.py`:
    ```python
    elif canonical == "commandname":
        self._handle_commandname(cmd_original)

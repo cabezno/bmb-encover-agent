@@ -120,8 +120,8 @@ export const en: Translations = {
     starting: "Starting",
     startedInBackground: "Started in background — check logs for progress",
     stopped: "Stopped",
-    updateHermes: "Update Hermes",
-    updatingHermes: "Updating Hermes…",
+    updateHermes: "Update BMB",
+    updatingHermes: "Updating BMB…",
     waitingForOutput: "Waiting for output…",
   },
 
@@ -266,7 +266,7 @@ export const en: Translations = {
     enableRuntime: "Enable",
     forceReinstall: "Force reinstall (delete existing folder first)",
     headline:
-      "Discover, install, enable, and update Hermes plugins (`bmb plugins` parity).",
+      "Discover, install, enable, and update BMB plugins (`bmb plugins` parity).",
     identifierLabel: "Git URL or owner/repo",
     inactive: "inactive",
     installBtn: "Install from Git",

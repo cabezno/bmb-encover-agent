@@ -4,9 +4,9 @@ from __future__ import annotations
 
 
 def bmb_xai_user_agent() -> str:
-    """Return a stable Hermes-specific User-Agent for xAI HTTP calls."""
+    """Return a stable BMB-specific User-Agent for xAI HTTP calls."""
     try:
         from bmb_cli import __version__
     except Exception:
         __version__ = "unknown"
-    return f"Hermes-Agent/{__version__}"
+    return f"BMB-Agent/{__version__}"

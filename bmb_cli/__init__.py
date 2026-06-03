@@ -1,8 +1,8 @@
 """
-Hermes CLI - Unified command-line interface for BlackMagicBox Encover Agent.
+BMB CLI - Unified command-line interface for BlackMagicBox Encover Agent.
 
 Provides subcommands for:
-- bmb chat          - Interactive chat (same as ./hermes)
+- bmb chat          - Interactive chat (same as ./bmb)
 - bmb gateway       - Run gateway in foreground
 - bmb gateway start - Start gateway service
 - bmb gateway stop  - Stop gateway service

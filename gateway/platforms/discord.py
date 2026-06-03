@@ -502,8 +502,8 @@ class DiscordAdapter(BasePlatformAdapter):
         self._voice_clients: Dict[int, Any] = {}  # guild_id -> VoiceClient
         self._voice_locks: Dict[int, asyncio.Lock] = {}  # guild_id -> serialize join/leave
         # Text batching: merge rapid successive messages (Telegram-style)
-        self._text_batch_delay_seconds = float(os.getenv("HERMES_DISCORD_TEXT_BATCH_DELAY_SECONDS", "0.6"))
-        self._text_batch_split_delay_seconds = float(os.getenv("HERMES_DISCORD_TEXT_BATCH_SPLIT_DELAY_SECONDS", "2.0"))
+        self._text_batch_delay_seconds = float(os.getenv("BMB_DISCORD_TEXT_BATCH_DELAY_SECONDS", "0.6"))
+        self._text_batch_split_delay_seconds = float(os.getenv("BMB_DISCORD_TEXT_BATCH_SPLIT_DELAY_SECONDS", "2.0"))
         self._pending_text_batches: Dict[str, MessageEvent] = {}
         self._pending_text_batch_tasks: Dict[str, asyncio.Task] = {}
         self._voice_text_channels: Dict[int, int] = {}  # guild_id -> text_channel_id
@@ -882,7 +882,7 @@ class DiscordAdapter(BasePlatformAdapter):
         return "safe"
 
     def _canonicalize_app_command_payload(self, payload: Dict[str, Any]) -> Dict[str, Any]:
-        """Reduce command payloads to the semantic fields Hermes manages."""
+        """Reduce command payloads to the semantic fields BMB manages."""
         contexts = payload.get("contexts")
         integration_types = payload.get("integration_types")
         return {
@@ -2574,7 +2574,7 @@ class DiscordAdapter(BasePlatformAdapter):
         async def slash_new(interaction: discord.Interaction):
             await self._run_simple_slash(interaction, "/reset", "New conversation started~")
 
-        @tree.command(name="reset", description="Reset your Hermes session")
+        @tree.command(name="reset", description="Reset your BMB session")
         async def slash_reset(interaction: discord.Interaction):
             await self._run_simple_slash(interaction, "/reset", "Session reset~")
 
@@ -2601,7 +2601,7 @@ class DiscordAdapter(BasePlatformAdapter):
         async def slash_undo(interaction: discord.Interaction):
             await self._run_simple_slash(interaction, "/undo")
 
-        @tree.command(name="status", description="Show Hermes session status")
+        @tree.command(name="status", description="Show BMB session status")
         async def slash_status(interaction: discord.Interaction):
             await self._run_simple_slash(interaction, "/status", "Status sent~")
 
@@ -2609,7 +2609,7 @@ class DiscordAdapter(BasePlatformAdapter):
         async def slash_sethome(interaction: discord.Interaction):
             await self._run_simple_slash(interaction, "/sethome")
 
-        @tree.command(name="stop", description="Stop the running Hermes agent")
+        @tree.command(name="stop", description="Stop the running BMB agent")
         async def slash_stop(interaction: discord.Interaction):
             await self._run_simple_slash(interaction, "/stop", "Stop requested~")
 
@@ -2670,7 +2670,7 @@ class DiscordAdapter(BasePlatformAdapter):
         async def slash_update(interaction: discord.Interaction):
             await self._run_simple_slash(interaction, "/update", "Update initiated~")
 
-        @tree.command(name="restart", description="Gracefully restart the Hermes gateway")
+        @tree.command(name="restart", description="Gracefully restart the BMB gateway")
         async def slash_restart(interaction: discord.Interaction):
             await self._run_simple_slash(interaction, "/restart", "Restart requested~")
 
@@ -2684,10 +2684,10 @@ class DiscordAdapter(BasePlatformAdapter):
         async def slash_deny(interaction: discord.Interaction, scope: str = ""):
             await self._run_simple_slash(interaction, f"/deny {scope}".strip())
 
-        @tree.command(name="thread", description="Create a new thread and start a Hermes session in it")
+        @tree.command(name="thread", description="Create a new thread and start a BMB session in it")
         @discord.app_commands.describe(
             name="Thread name",
-            message="Optional first message to send to Hermes in the thread",
+            message="Optional first message to send to BMB in the thread",
             auto_archive_duration="Auto-archive in minutes (60, 1440, 4320, 10080)",
         )
         async def slash_thread(
@@ -2986,7 +2986,7 @@ class DiscordAdapter(BasePlatformAdapter):
 
             cmd = discord.app_commands.Command(
                 name="skill",
-                description="Run a Hermes skill",
+                description="Run a BMB skill",
                 callback=_skill_handler,
             )
             tree.add_command(cmd)
@@ -3144,7 +3144,7 @@ class DiscordAdapter(BasePlatformAdapter):
         if thread_id:
             self._threads.mark(thread_id)
 
-        # If a message was provided, kick off a new Hermes session in the thread
+        # If a message was provided, kick off a new BMB session in the thread
         starter = (message or "").strip()
         if starter and thread_id:
             await self._dispatch_thread_session(interaction, thread_id, thread_name, starter)
@@ -3313,7 +3313,7 @@ class DiscordAdapter(BasePlatformAdapter):
             }
         except Exception as direct_error:
             try:
-                seed_content = starter_message or f"\U0001f9f5 Thread created by Hermes: **{name}**"
+                seed_content = starter_message or f"\U0001f9f5 Thread created by BMB: **{name}**"
                 seed_msg = await parent_channel.send(seed_content)
                 thread = await seed_msg.create_thread(
                     name=name,
@@ -3351,7 +3351,7 @@ class DiscordAdapter(BasePlatformAdapter):
         content = re.sub(r"<@[!&]?\d+>", "", content)
         content = re.sub(r"<#\d+>", "", content)
         content = re.sub(r"\s+", " ", content).strip()
-        thread_name = content[:80] if content else "Hermes"
+        thread_name = content[:80] if content else "BMB"
         if len(content) > 80:
             thread_name = thread_name[:77] + "..."
 
@@ -3362,7 +3362,7 @@ class DiscordAdapter(BasePlatformAdapter):
             display_name = getattr(getattr(message, "author", None), "display_name", None) or "unknown user"
             reason = f"Auto-threaded from mention by {display_name}"
             try:
-                seed_msg = await message.channel.send(f"\U0001f9f5 Thread created by Hermes: **{thread_name}**")
+                seed_msg = await message.channel.send(f"\U0001f9f5 Thread created by BMB: **{thread_name}**")
                 thread = await seed_msg.create_thread(
                     name=thread_name,
                     auto_archive_duration=1440,

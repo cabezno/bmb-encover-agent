@@ -17,6 +17,9 @@ dependencies:
   uuid: ^4.2.1
   cupertino_icons: ^1.0.6
   http: ^1.1.0
+  # Audio para llamadas de voz
+  record: ^5.0.4
+  audioplayers: ^5.2.1
 
 dev_dependencies:
   flutter_test:

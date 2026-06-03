@@ -54,7 +54,7 @@ Config file: `$BMB_ENCOVER_HOME/supermemory.json`
 
 ## Behavior
 
-When enabled, Hermes can:
+When enabled, BMB can:
 
 - prefetch relevant memory context before each turn
 - store cleaned conversation turns after each completed response
@@ -63,11 +63,11 @@ When enabled, Hermes can:
 
 ## Profile-Scoped Containers
 
-Use `{identity}` in the `container_tag` to scope memories per Hermes profile:
+Use `{identity}` in the `container_tag` to scope memories per BMB profile:
 
 ```json
 {
-  "container_tag": "hermes-{identity}"
+  "container_tag": "bmb-{identity}"
 }
 ```
 

@@ -50,7 +50,7 @@ def find_shell_configs() -> list:
 
 
 def remove_path_from_shell_configs():
-    """Remove Hermes PATH entries from shell configuration files."""
+    """Remove BMB PATH entries from shell configuration files."""
     configs = find_shell_configs()
     removed_from = []
     
@@ -99,7 +99,7 @@ def remove_wrapper_script():
     """Remove the bmb wrapper script if it exists."""
     wrapper_paths = [
         Path.home() / ".local" / "bin" / "bmb",
-        Path("/usr/local/bin/hermes"),
+        Path("/usr/local/bin/bmb"),
     ]
     
     removed = []
@@ -367,7 +367,7 @@ def run_uninstall(args):
     # Final confirmation
     print()
     if full_uninstall:
-        print(color("⚠️  WARNING: This will permanently delete ALL Hermes data!", Colors.RED, Colors.BOLD))
+        print(color("⚠️  WARNING: This will permanently delete ALL BMB data!", Colors.RED, Colors.BOLD))
         print(color("   Including: configs, API keys, sessions, scheduled jobs, logs", Colors.RED))
         if remove_profiles:
             print(color(
@@ -376,7 +376,7 @@ def run_uninstall(args):
                 Colors.RED
             ))
     else:
-        print("This will remove the Hermes code but keep your configuration and data.")
+        print("This will remove the BMB code but keep your configuration and data.")
     
     print()
     try:

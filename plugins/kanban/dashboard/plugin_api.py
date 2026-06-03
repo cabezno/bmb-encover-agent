@@ -211,7 +211,7 @@ def get_board(
     install doesn't surface a "failed to load" error on the plugin tab.
 
     ``board`` selects which board to read from. Omitting it falls
-    through to the active board (``HERMES_KANBAN_BOARD`` env → on-disk
+    through to the active board (``BMB_KANBAN_BOARD`` env → on-disk
     ``current`` pointer → ``default``).
     """
     board = _resolve_board(board)

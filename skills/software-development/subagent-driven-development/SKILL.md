@@ -5,7 +5,7 @@ version: 1.1.0
 author: BlackMagicBox Encover Agent (adapted from obra/superpowers)
 license: MIT
 metadata:
-  hermes:
+  bmb:
     tags: [delegation, subagent, implementation, workflow, parallel]
     related_skills: [writing-plans, requesting-code-review, test-driven-development]
 ---

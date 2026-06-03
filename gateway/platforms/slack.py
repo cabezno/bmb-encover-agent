@@ -277,7 +277,7 @@ class SlackAdapter(BasePlatformAdapter):
       - DMs and channel messages (mention-gated in channels)
       - Thread support
       - File/image/audio attachments
-      - Slash commands (/hermes)
+      - Slash commands (/bmb)
       - Typing indicators (not natively supported by Slack bots)
     """
 
@@ -631,7 +631,7 @@ class SlackAdapter(BasePlatformAdapter):
                     r"^/(?:" + "|".join(_re.escape(n) for n in _slash_names) + r")$"
                 )
             else:  # pragma: no cover - registry always non-empty
-                _slash_pattern = _re.compile(r"^/hermes$")
+                _slash_pattern = _re.compile(r"^/bmb$")
 
             @self._app.command(_slash_pattern)
             async def handle_hermes_command(ack, command):
@@ -892,7 +892,7 @@ class SlackAdapter(BasePlatformAdapter):
         """Whether top-level Slack DMs get per-message session threads.
 
         Defaults to ``True`` so each visible DM reply thread is isolated as its
-        own Hermes session — matching the per-thread behavior channels already
+        own BMB session — matching the per-thread behavior channels already
         have.  Set ``platforms.slack.extra.dm_top_level_threads_as_sessions``
         to ``false`` in config.yaml to revert to the legacy behavior where all
         top-level DMs share one continuous session.
@@ -2682,7 +2682,7 @@ class SlackAdapter(BasePlatformAdapter):
 
         The legacy ``/bmb <subcommand> [args]`` form is preserved for
         backward compatibility with older workspace manifests and for users
-        who want a single entry point for free-form questions (``/hermes
+        who want a single entry point for free-form questions (``/bmb
         what's the weather`` — non-slash text is treated as a regular
         message).
         """

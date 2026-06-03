@@ -5,7 +5,7 @@ version: 1.1.0
 author: BlackMagicBox Encover Agent
 license: MIT
 metadata:
-  hermes:
+  bmb:
     tags: [GitHub, Repositories, Git, Releases, Secrets, Configuration]
     related_skills: [github-auth, github-pr-workflow, github-issues]
 ---

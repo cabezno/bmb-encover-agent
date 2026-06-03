@@ -1,7 +1,7 @@
 """
 Dump command for bmb CLI.
 
-Outputs a compact, plain-text summary of the user's Hermes setup
+Outputs a compact, plain-text summary of the user's BMB setup
 that can be copy-pasted into Discord/GitHub/Telegram for support context.
 No ANSI colors, no checkmarks — just data.
 """
@@ -303,7 +303,7 @@ def run_dump(args):
     lines.append("")
     lines.append("features:")
 
-    toolsets = config.get("toolsets", ["hermes-cli"])
+    toolsets = config.get("toolsets", ["bmb-cli"])
     lines.append(f"  toolsets:           {', '.join(toolsets) if toolsets else '(default)'}")
     lines.append(f"  mcp_servers:        {_count_mcp_servers(config)}")
     lines.append(f"  memory_provider:    {_memory_provider(config)}")

@@ -5,7 +5,7 @@ version: 1.0.0
 author: BlackMagicBox Encover Agent
 license: MIT
 metadata:
-  hermes:
+  bmb:
     tags: [Research, Arxiv, Papers, Academic, Science, API]
     related_skills: [ocr-and-documents]
 ---

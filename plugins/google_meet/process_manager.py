@@ -136,27 +136,27 @@ def start(
                 pass
 
     env = os.environ.copy()
-    env["HERMES_MEET_URL"] = url
-    env["HERMES_MEET_OUT_DIR"] = str(out)
-    env["HERMES_MEET_GUEST_NAME"] = guest_name
+    env["BMB_MEET_URL"] = url
+    env["BMB_MEET_OUT_DIR"] = str(out)
+    env["BMB_MEET_GUEST_NAME"] = guest_name
     if headed:
-        env["HERMES_MEET_HEADED"] = "1"
+        env["BMB_MEET_HEADED"] = "1"
     if auth_state:
-        env["HERMES_MEET_AUTH_STATE"] = auth_state
+        env["BMB_MEET_AUTH_STATE"] = auth_state
     if duration:
-        env["HERMES_MEET_DURATION"] = duration
+        env["BMB_MEET_DURATION"] = duration
     # v2: realtime mode + passthroughs. The bot defaults to transcribe
-    # mode if HERMES_MEET_MODE isn't set, matching v1 behavior.
+    # mode if BMB_MEET_MODE isn't set, matching v1 behavior.
     if mode:
-        env["HERMES_MEET_MODE"] = mode
+        env["BMB_MEET_MODE"] = mode
     if realtime_model:
-        env["HERMES_MEET_REALTIME_MODEL"] = realtime_model
+        env["BMB_MEET_REALTIME_MODEL"] = realtime_model
     if realtime_voice:
-        env["HERMES_MEET_REALTIME_VOICE"] = realtime_voice
+        env["BMB_MEET_REALTIME_VOICE"] = realtime_voice
     if realtime_instructions:
-        env["HERMES_MEET_REALTIME_INSTRUCTIONS"] = realtime_instructions
+        env["BMB_MEET_REALTIME_INSTRUCTIONS"] = realtime_instructions
     if realtime_api_key:
-        env["HERMES_MEET_REALTIME_KEY"] = realtime_api_key
+        env["BMB_MEET_REALTIME_KEY"] = realtime_api_key
 
     log_path = out / "bot.log"
     # Detach: stdin=devnull, stdout/stderr → log file, new session so parent

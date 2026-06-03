@@ -50,30 +50,30 @@ logger = logging.getLogger(__name__)
 # Non-agentic model warning
 # ---------------------------------------------------------------------------
 
-_HERMES_MODEL_WARNING = (
-    "Encover Hermes 3 & 4 models are NOT agentic and are not designed "
+_BMB_MODEL_WARNING = (
+    "Encover BMB 3 & 4 models are NOT agentic and are not designed "
     "for use with BlackMagicBox Encover Agent. They lack the tool-calling capabilities "
     "required for agent workflows. Consider using an agentic model instead "
     "(Claude, GPT, Gemini, DeepSeek, etc.)."
 )
 
-# Match only the real Encover Hermes 3 / Hermes 4 chat families.
+# Match only the real Encover BMB 3 / BMB 4 chat families.
 # The previous substring check (`"bmb" in name.lower()`) false-positived on
 # unrelated local Modelfiles like ``bmb-brain:qwen3-14b-ctx16k`` that just
 # happen to carry "bmb" in their tag but are fully tool-capable.
 #
 # Positive examples the regex must match:
-#   Encover/Hermes-3-Llama-3.1-70B, hermes-4-405b, openrouter/hermes3:70b
+#   Encover/Hermes-3-Llama-3.1-70B, bmb-4-405b, openrouter/bmb3:70b
 # Negative examples it must NOT match:
-#   hermes-brain:qwen3-14b-ctx16k, qwen3:14b, claude-opus-4-6
-_NOUS_HERMES_NON_AGENTIC_RE = re.compile(
+#   bmb-brain:qwen3-14b-ctx16k, qwen3:14b, claude-opus-4-6
+_NOUS_BMB_NON_AGENTIC_RE = re.compile(
     r"(?:^|[/:])hermes[-_ ]?[34](?:[-_.:]|$)",
     re.IGNORECASE,
 )
 
 
 def is_nous_hermes_non_agentic(model_name: str) -> bool:
-    """Return True if *model_name* is a real Nous Hermes 3/4 chat model.
+    """Return True if *model_name* is a real Nous BMB 3/4 chat model.
 
     Used to decide whether to surface the non-agentic warning at startup.
     Callers in :mod:`cli.py` and here should go through this single helper
@@ -81,13 +81,13 @@ def is_nous_hermes_non_agentic(model_name: str) -> bool:
     """
     if not model_name:
         return False
-    return bool(_NOUS_HERMES_NON_AGENTIC_RE.search(model_name))
+    return bool(_NOUS_BMB_NON_AGENTIC_RE.search(model_name))
 
 
 def _check_hermes_model_warning(model_name: str) -> str:
-    """Return a warning string if *model_name* is a Nous Hermes 3/4 chat model."""
+    """Return a warning string if *model_name* is a Nous BMB 3/4 chat model."""
     if is_nous_hermes_non_agentic(model_name):
-        return _HERMES_MODEL_WARNING
+        return _BMB_MODEL_WARNING
     return ""
 
 
@@ -1157,7 +1157,7 @@ def list_authenticated_providers(
             live = [current_model]
         curated["lmstudio"] = live
 
-    # --- 1. Check Hermes-mapped providers ---
+    # --- 1. Check BMB-mapped providers ---
     for hermes_id, mdev_id in PROVIDER_TO_MODELS_DEV.items():
         # Skip aliases that map to the same models.dev provider (e.g.
         # kimi-coding and kimi-coding-cn both → kimi-for-coding).
@@ -1173,7 +1173,7 @@ def list_authenticated_providers(
         # minimax-cn → MINIMAX_API_KEY instead of MINIMAX_CN_API_KEY).
         pconfig = PROVIDER_REGISTRY.get(hermes_id)
         # Skip non-API-key auth providers here — they are handled in
-        # section 2 (HERMES_OVERLAYS) with proper auth store checking.
+        # section 2 (BMB_OVERLAYS) with proper auth store checking.
         if pconfig and pconfig.auth_type != "api_key":
             continue
         if pconfig and pconfig.api_key_env_vars:
@@ -1199,7 +1199,7 @@ def list_authenticated_providers(
         # Use curated list, falling back to models.dev if no curated list.
         # For preferred providers, merge models.dev entries into the curated
         # catalog so newly released models (e.g. mimo-v2.5-pro on opencode-go)
-        # show up in the picker without requiring a Hermes release.
+        # show up in the picker without requiring a BMB release.
         model_ids = curated.get(hermes_id, [])
         if hermes_id in _MODELS_DEV_PREFERRED:
             model_ids = _merge_with_models_dev(hermes_id, model_ids)
@@ -1223,21 +1223,21 @@ def list_authenticated_providers(
         seen_mdev_ids.add(mdev_id)
         _record_builtin_endpoint(slug)
 
-    # --- 2. Check Hermes-only providers (nous, openai-codex, copilot, opencode-go) ---
-    from bmb_cli.providers import HERMES_OVERLAYS
+    # --- 2. Check BMB-only providers (nous, openai-codex, copilot, opencode-go) ---
+    from bmb_cli.providers import BMB_OVERLAYS
     from bmb_cli.auth import PROVIDER_REGISTRY as _auth_registry
 
-    # Build reverse mapping: models.dev ID → Hermes provider ID.
-    # HERMES_OVERLAYS keys may be models.dev IDs (e.g. "github-copilot")
-    # while _PROVIDER_MODELS and config.yaml use Hermes IDs ("copilot").
+    # Build reverse mapping: models.dev ID → BMB provider ID.
+    # BMB_OVERLAYS keys may be models.dev IDs (e.g. "github-copilot")
+    # while _PROVIDER_MODELS and config.yaml use BMB IDs ("copilot").
     _mdev_to_hermes = {v: k for k, v in PROVIDER_TO_MODELS_DEV.items()}
 
-    for pid, overlay in HERMES_OVERLAYS.items():
+    for pid, overlay in BMB_OVERLAYS.items():
         if pid.lower() in seen_slugs:
             continue
 
-        # Resolve Hermes slug — e.g. "github-copilot" → "copilot"
-        hermes_slug = _mdev_to_hermes.get(pid, pid)
+        # Resolve BMB slug — e.g. "github-copilot" → "copilot"
+        hermes_slug = _mdev_to_bmb.get(pid, pid)
         if hermes_slug.lower() in seen_slugs:
             continue
 
@@ -1315,7 +1315,7 @@ def list_authenticated_providers(
             except Exception:
                 model_ids = curated.get(hermes_slug, []) or curated.get(pid, [])
         else:
-            # Use curated list — look up by Hermes slug, fall back to overlay key
+            # Use curated list — look up by BMB slug, fall back to overlay key
             model_ids = curated.get(hermes_slug, []) or curated.get(pid, [])
             # Merge with models.dev for preferred providers (same rationale as above).
             if hermes_slug in _MODELS_DEV_PREFERRED:
@@ -1338,7 +1338,7 @@ def list_authenticated_providers(
 
     # --- 2b. Cross-check canonical provider list ---
     # Catches providers that are in CANONICAL_PROVIDERS but weren't found
-    # in PROVIDER_TO_MODELS_DEV or HERMES_OVERLAYS (keeps /model in sync
+    # in PROVIDER_TO_MODELS_DEV or BMB_OVERLAYS (keeps /model in sync
     # with `bmb model`).
     try:
         from bmb_cli.models import CANONICAL_PROVIDERS as _canon_provs
@@ -1425,7 +1425,7 @@ def list_authenticated_providers(
             if ep_name.lower() in seen_slugs:
                 continue
             display_name = ep_cfg.get("name", "") or ep_name
-            # ``base_url`` is Hermes's canonical write key (matches
+            # ``base_url`` is BMB's canonical write key (matches
             # custom_providers and _save_custom_provider); ``api`` / ``url``
             # remain as fallbacks for hand-edited / legacy configs.
             api_url = (
@@ -1443,7 +1443,7 @@ def list_authenticated_providers(
             if default_model:
                 models_list.append(default_model)
             # Also include the full models list from config.
-            # Hermes writes ``models:`` as a dict keyed by model id
+            # BMB writes ``models:`` as a dict keyed by model id
             # (see bmb_cli/main.py::_save_custom_provider); older
             # configs or hand-edited files may still use a list.
             cfg_models = ep_cfg.get("models", [])
@@ -1544,7 +1544,7 @@ def list_authenticated_providers(
             if group_key not in groups:
                 # Strip per-model suffix so "Ollama — GLM 5.1" becomes
                 # "Ollama" for the grouped row. Em dash is the convention
-                # Hermes's own writer uses; a hyphen variant is accepted
+                # BMB's own writer uses; a hyphen variant is accepted
                 # for hand-edited configs.
                 display_name = raw_name
                 for sep in ("—", " - "):
@@ -1578,7 +1578,7 @@ def list_authenticated_providers(
                 }
 
             # The singular ``model:`` field only holds the currently
-            # active model. Hermes's own writer (main.py::_save_custom_provider)
+            # active model. BMB's own writer (main.py::_save_custom_provider)
             # stores every configured model as a dict under ``models:``;
             # downstream readers (agent/models_dev.py, gateway/run.py,
             # run_agent.py, bmb_cli/config.py) already consume that dict.

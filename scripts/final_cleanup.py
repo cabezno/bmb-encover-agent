@@ -4,7 +4,7 @@ import os
 import re
 
 BMB = "/opt/bmb-encover"
-EXCLUDE = {'venv', 'node_modules', '.git', '__pycache__', '.hermes'}
+EXCLUDE = {'venv', 'node_modules', '.git', '__pycache__', '.bmb'}
 
 def should_exclude(path):
     parts = path.replace(BMB, '').lstrip('/').split('/')
@@ -33,7 +33,7 @@ patterns = [
     (r'bmb_procs\b', 'bmb_procs'),
     (r'bmb_node_bin\b', 'bmb_node_bin'),
     
-    # Strings con hermes (en comillas simples o dobles que son nombres internos)
+    # Strings con bmb (en comillas simples o dobles que son nombres internos)
     (r'"bmb_', '"bmb_'),
     (r"'bmb_", "'bmb_"),
     (r'`bmb_', '`bmb_'),
@@ -84,7 +84,7 @@ patterns = [
 
     # Archivos .md con comandos
     (r'^hermes ', 'bmb '),
-    (r'^/hermes', '/bmb'),
+    (r'^/bmb', '/bmb'),
     
     # URLs de gateway
     (r'source=bmb', 'source=bmb'),
@@ -96,7 +96,7 @@ patterns = [
     (r'hermes\.api_server', 'bmb.api_server'),
     (r'hermes\.run', 'bmb.run'),
     
-    # Después de todo, cambiar "hermes" suelto que no sea parte de otra palabra
+    # Después de todo, cambiar "bmb" suelto que no sea parte de otra palabra
     # Solo en strings y comentarios, no en nombres de variables largos
 ]
 
@@ -156,12 +156,12 @@ for root, dirs, files in os.walk(BMB):
         try:
             with open(path, 'r', encoding='utf-8', errors='ignore') as f:
                 for i, line in enumerate(f, 1):
-                    if 'hermes' in line.lower():
+                    if 'bmb' in line.lower():
                         # Saltar falsos positivos obvios
                         lower = line.lower()
                         if any(x in lower for x in ['bmb', 'encover', 'hermesito', 'bmb_tools',
-                                                      '@bmbproject', 'hermesproject', 'hermes.dev',
-                                                      'hermes-parser', 'hermes-estree', 'hermes-ink',
+                                                      '@bmbproject', 'hermesproject', 'bmb.dev',
+                                                      'bmb-parser', 'bmb-estree', 'bmb-ink',
                                                       'bmb_ink', 'bmb_estree', 'bmb_parser',
                                                       '_bmb_', 'bmb_agent']):
                             continue

@@ -12,7 +12,7 @@ _profile_fallback_warned: bool = False
 
 
 def get_bmb_home() -> Path:
-    """Return the Hermes home directory (default: ~/.bmb).
+    """Return the BMB home directory (default: ~/.bmb).
 
     Reads BMB_ENCOVER_HOME env var, falls back to ~/.bmb.
     This is the single source of truth — all other copies should import this.
@@ -25,7 +25,7 @@ def get_bmb_home() -> Path:
     callers that import this at load time.  Subprocess spawners are
     expected to propagate ``BMB_ENCOVER_HOME`` explicitly (see the systemd
     template in ``bmb_cli/gateway.py`` and the kanban dispatcher in
-    ``bmb_cli/kanban_db.py``).  See https://github.com/Encover/bmb-encover/issues/18594.
+    ``bmb_cli/kanban_db.py``).  See https://github.com/cabezno/bmb-encover-agent/issues/18594.
     """
     val = os.environ.get("BMB_ENCOVER_HOME", "").strip()
     if val:
@@ -39,7 +39,7 @@ def get_bmb_home() -> Path:
             # Inline the default-root resolution from get_default_bmb_root()
             # to stay import-safe (this function is called from module scope
             # in 30+ files; we cannot afford to trigger logging setup here).
-            active_path = (Path.home() / ".hermes" / "active_profile")
+            active_path = (Path.home() / ".bmb" / "active_profile")
             active = active_path.read_text().strip() if active_path.exists() else ""
         except (UnicodeDecodeError, OSError):
             active = ""
@@ -65,11 +65,11 @@ def get_bmb_home() -> Path:
             except Exception:
                 pass
 
-    return Path.home() / ".hermes"
+    return Path.home() / ".bmb"
 
 
 def get_default_bmb_root() -> Path:
-    """Return the root Hermes directory for profile-level operations.
+    """Return the root BMB directory for profile-level operations.
 
     In standard deployments this is ``~/.bmb``.
 
@@ -84,7 +84,7 @@ def get_default_bmb_root() -> Path:
 
     Import-safe — no dependencies beyond stdlib.
     """
-    native_home = Path.home() / ".hermes"
+    native_home = Path.home() / ".bmb"
     env_home = os.environ.get("BMB_ENCOVER_HOME", "")
     if not env_home:
         return native_home
@@ -111,9 +111,9 @@ def get_optional_skills_dir(default: Path | None = None) -> Path:
     """Return the optional-skills directory, honoring package-manager wrappers.
 
     Packaged installs may ship ``optional-skills`` outside the Python package
-    tree and expose it via ``HERMES_OPTIONAL_SKILLS``.
+    tree and expose it via ``BMB_OPTIONAL_SKILLS``.
     """
-    override = os.getenv("HERMES_OPTIONAL_SKILLS", "").strip()
+    override = os.getenv("BMB_OPTIONAL_SKILLS", "").strip()
     if override:
         return Path(override)
     if default is not None:
@@ -122,7 +122,7 @@ def get_optional_skills_dir(default: Path | None = None) -> Path:
 
 
 def get_bmb_dir(new_subpath: str, old_name: str) -> Path:
-    """Resolve a Hermes subdirectory with backward compatibility.
+    """Resolve a BMB subdirectory with backward compatibility.
 
     New installs get the consolidated layout (e.g. ``cache/images``).
     Existing installs that already have the old path (e.g. ``image_cache``)
@@ -149,7 +149,7 @@ def display_bmb_home() -> str:
 
         default:  ``~/.bmb``
         profile:  ``~/.bmb/profiles/coder``
-        custom:   ``/opt/hermes-custom``
+        custom:   ``/opt/bmb-custom``
 
     Use this in **user-facing** print/log messages instead of hardcoding
     ``~/.bmb``.  For code that needs a real ``Path``, use
@@ -167,7 +167,7 @@ def get_subprocess_home() -> str | None:
 
     When ``{BMB_ENCOVER_HOME}/home/`` exists on disk, subprocesses should use it
     as ``HOME`` so system tools (git, ssh, gh, npm …) write their configs
-    inside the Hermes data directory instead of the OS-level ``/root`` or
+    inside the BMB data directory instead of the OS-level ``/root`` or
     ``~/``.  This provides:
 
     * **Docker persistence** — tool configs land inside the persistent volume.

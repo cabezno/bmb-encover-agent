@@ -1,5 +1,5 @@
 name: "🔧 Setup / Installation Help"
-description: Having trouble installing or configuring Hermes? Ask here.
+description: Having trouble installing or configuring BMB? Ask here.
 title: "[Setup]: "
 labels: ["setup"]
 body:
@@ -12,7 +12,7 @@ body:
         - Run `hermes debug share` and paste the links in the Debug Report section below
         - If you're in a chat session, you can use `/debug` instead — it does the same thing
         - Try `bmb update` to get the latest version
-        - Check the [README troubleshooting section](https://github.com/Encover/bmb-encover#troubleshooting)
+        - Check the [README troubleshooting section](https://github.com/cabezno/bmb-encover-agent#troubleshooting)
         - For general questions, consider the [Encover Discord](https://discord.gg/Encover) for faster help
 
   - type: textarea
@@ -68,9 +68,9 @@ body:
       placeholder: "3.11.9"
 
   - type: input
-    id: hermes-version
+    id: bmb-version
     attributes:
-      label: Hermes Version
+      label: BMB Version
       description: Output of `hermes version` (if install got that far)
       placeholder: "2.1.0"
 

@@ -66,7 +66,7 @@ AUTH_LOCK_TIMEOUT_SECONDS = 15.0
 # Nous Portal defaults
 DEFAULT_NOUS_PORTAL_URL = "https://portal.blackmagicbox.com"
 DEFAULT_NOUS_INFERENCE_URL = "https://inference-api.blackmagicbox.com/v1"
-DEFAULT_NOUS_CLIENT_ID = "hermes-cli"
+DEFAULT_NOUS_CLIENT_ID = "bmb-cli"
 DEFAULT_NOUS_SCOPE = "inference:mint_agent_key"
 DEFAULT_AGENT_KEY_MIN_TTL_SECONDS = 30 * 60  # 30 minutes
 ACCESS_TOKEN_REFRESH_SKEW_SECONDS = 120       # refresh 2 min before expiry
@@ -706,7 +706,7 @@ def _token_fingerprint(token: Any) -> Optional[str]:
 
 
 def _oauth_trace_enabled() -> bool:
-    raw = os.getenv("HERMES_OAUTH_TRACE", "").strip().lower()
+    raw = os.getenv("BMB_OAUTH_TRACE", "").strip().lower()
     return raw in {"1", "true", "yes", "on"}
 
 
@@ -732,7 +732,8 @@ def _auth_file_path() -> Path:
     # hermetic conftest, or sandbox escapes via threads/subprocesses. In
     # production (no PYTEST_CURRENT_TEST) this is a single dict lookup.
     if os.environ.get("PYTEST_CURRENT_TEST"):
-        real_home_auth = (Path.home() / ".hermes" / "auth.json").resolve(strict=False)
+        # Legacy Nous Hermes auth location for migration
+        real_home_auth = (Path.home() / ".bmb" / "auth.json").resolve(strict=False)
         try:
             resolved = path.resolve(strict=False)
         except Exception:
@@ -1048,7 +1049,7 @@ def is_provider_explicitly_configured(provider_id: str) -> bool:
 
     # 3. Check provider-specific env vars
     # Exclude CLAUDE_CODE_OAUTH_TOKEN — it's set by Claude Code itself,
-    # not by the user explicitly configuring anthropic in Hermes.
+    # not by the user explicitly configuring anthropic in BMB.
     _IMPLICIT_ENV_VARS = {"CLAUDE_CODE_OAUTH_TOKEN"}
     pconfig = PROVIDER_REGISTRY.get(normalized)
     if pconfig and pconfig.auth_type == "api_key":
@@ -1468,7 +1469,7 @@ def resolve_qwen_runtime_credentials(
             code="qwen_access_token_missing",
         )
 
-    base_url = os.getenv("HERMES_QWEN_BASE_URL", "").strip().rstrip("/") or DEFAULT_QWEN_BASE_URL
+    base_url = os.getenv("BMB_QWEN_BASE_URL", "").strip().rstrip("/") or DEFAULT_QWEN_BASE_URL
     return {
         "provider": "qwen-oauth",
         "base_url": base_url,
@@ -1600,7 +1601,7 @@ def _spotify_client_id(
 
     candidates = (
         explicit,
-        get_env_value("HERMES_SPOTIFY_CLIENT_ID"),
+        get_env_value("BMB_SPOTIFY_CLIENT_ID"),
         get_env_value("SPOTIFY_CLIENT_ID"),
         state.get("client_id") if isinstance(state, dict) else None,
     )
@@ -1609,7 +1610,7 @@ def _spotify_client_id(
         if cleaned:
             return cleaned
     raise AuthError(
-        "Spotify client_id is required. Set HERMES_SPOTIFY_CLIENT_ID or pass --client-id.",
+        "Spotify client_id is required. Set BMB_SPOTIFY_CLIENT_ID or pass --client-id.",
         provider="spotify",
         code="spotify_client_id_missing",
     )
@@ -1623,7 +1624,7 @@ def _spotify_redirect_uri(
 
     candidates = (
         explicit,
-        get_env_value("HERMES_SPOTIFY_REDIRECT_URI"),
+        get_env_value("BMB_SPOTIFY_REDIRECT_URI"),
         get_env_value("SPOTIFY_REDIRECT_URI"),
         state.get("redirect_uri") if isinstance(state, dict) else None,
         DEFAULT_SPOTIFY_REDIRECT_URI,
@@ -1639,7 +1640,7 @@ def _spotify_api_base_url(state: Optional[Dict[str, Any]] = None) -> str:
     from bmb_cli.config import get_env_value
 
     candidates = (
-        get_env_value("HERMES_SPOTIFY_API_BASE_URL"),
+        get_env_value("BMB_SPOTIFY_API_BASE_URL"),
         state.get("api_base_url") if isinstance(state, dict) else None,
         DEFAULT_SPOTIFY_API_BASE_URL,
     )
@@ -1654,7 +1655,7 @@ def _spotify_accounts_base_url(state: Optional[Dict[str, Any]] = None) -> str:
     from bmb_cli.config import get_env_value
 
     candidates = (
-        get_env_value("HERMES_SPOTIFY_ACCOUNTS_BASE_URL"),
+        get_env_value("BMB_SPOTIFY_ACCOUNTS_BASE_URL"),
         state.get("accounts_base_url") if isinstance(state, dict) else None,
         DEFAULT_SPOTIFY_ACCOUNTS_BASE_URL,
     )
@@ -2060,14 +2061,14 @@ def _spotify_interactive_setup(redirect_uri_hint: str) -> str:
         raise SystemExit("Spotify setup cancelled: empty Client ID.")
 
     # Persist so subsequent `bmb auth spotify` runs skip the wizard.
-    save_env_value("HERMES_SPOTIFY_CLIENT_ID", raw)
+    save_env_value("BMB_SPOTIFY_CLIENT_ID", raw)
     # Only persist the redirect URI if it's non-default, to avoid pinning
     # users to a value the default might later change to.
     if redirect_uri_hint and redirect_uri_hint != DEFAULT_SPOTIFY_REDIRECT_URI:
-        save_env_value("HERMES_SPOTIFY_REDIRECT_URI", redirect_uri_hint)
+        save_env_value("BMB_SPOTIFY_REDIRECT_URI", redirect_uri_hint)
 
     print()
-    print("Saved HERMES_SPOTIFY_CLIENT_ID to ~/.bmb/.env")
+    print("Saved BMB_SPOTIFY_CLIENT_ID to ~/.bmb/.env")
     print()
     return raw
 
@@ -2077,7 +2078,7 @@ def login_spotify_command(args) -> None:
 
     # Interactive wizard: if no client_id is configured anywhere, walk the
     # user through creating the Spotify developer app instead of crashing
-    # with "HERMES_SPOTIFY_CLIENT_ID is required".
+    # with "BMB_SPOTIFY_CLIENT_ID is required".
     explicit_client_id = getattr(args, "client_id", None)
     try:
         client_id = _spotify_client_id(explicit_client_id, existing_state)
@@ -2111,7 +2112,7 @@ def login_spotify_command(args) -> None:
     print(f"Redirect URI: {redirect_uri}")
     print("Make sure this redirect URI is allow-listed in your Spotify app settings.")
     print()
-    print("Open this URL to authorize Hermes:")
+    print("Open this URL to authorize BMB:")
     print(authorize_url)
     print()
     print(f"Full setup guide: {SPOTIFY_DOCS_URL}")
@@ -2176,13 +2177,13 @@ def _is_remote_session() -> bool:
 # =============================================================================
 # OpenAI Codex auth — tokens stored in ~/.bmb/auth.json (not ~/.codex/)
 #
-# Hermes maintains its own Codex OAuth session separate from the Codex CLI
+# BMB maintains its own Codex OAuth session separate from the Codex CLI
 # and VS Code extension. This prevents refresh token rotation conflicts
 # where one app's refresh invalidates the other's session.
 # =============================================================================
 
 def _read_codex_tokens(*, _lock: bool = True) -> Dict[str, Any]:
-    """Read Codex OAuth tokens from Hermes auth store (~/.bmb/auth.json).
+    """Read Codex OAuth tokens from BMB auth store (~/.bmb/auth.json).
     
     Returns dict with 'tokens' (access_token, refresh_token) and 'last_refresh'.
     Raises AuthError if no Codex tokens are stored.
@@ -2231,7 +2232,7 @@ def _read_codex_tokens(*, _lock: bool = True) -> Dict[str, Any]:
 
 
 def _save_codex_tokens(tokens: Dict[str, str], last_refresh: str = None) -> None:
-    """Save Codex OAuth tokens to Hermes auth store (~/.bmb/auth.json)."""
+    """Save Codex OAuth tokens to BMB auth store (~/.bmb/auth.json)."""
     if last_refresh is None:
         last_refresh = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
     with _auth_store_lock():
@@ -2250,7 +2251,7 @@ def refresh_codex_oauth_pure(
     *,
     timeout_seconds: float = 20.0,
 ) -> Dict[str, Any]:
-    """Refresh Codex OAuth tokens without mutating Hermes auth state."""
+    """Refresh Codex OAuth tokens without mutating BMB auth state."""
     del access_token  # Access token is only used by callers to decide whether to refresh.
     if not isinstance(refresh_token, str) or not refresh_token.strip():
         raise AuthError(
@@ -2354,7 +2355,7 @@ def _refresh_codex_auth_tokens(
 ) -> Dict[str, str]:
     """Refresh Codex access token using the refresh token.
     
-    Saves the new tokens to Hermes auth store automatically.
+    Saves the new tokens to BMB auth store automatically.
     """
     refreshed = refresh_codex_oauth_pure(
         str(tokens.get("access_token", "") or ""),
@@ -2409,17 +2410,17 @@ def resolve_codex_runtime_credentials(
     refresh_if_expiring: bool = True,
     refresh_skew_seconds: int = CODEX_ACCESS_TOKEN_REFRESH_SKEW_SECONDS,
 ) -> Dict[str, Any]:
-    """Resolve runtime credentials from Hermes's own Codex token store."""
+    """Resolve runtime credentials from BMB's own Codex token store."""
     data = _read_codex_tokens()
     tokens = dict(data["tokens"])
     access_token = str(tokens.get("access_token", "") or "").strip()
-    refresh_timeout_seconds = float(os.getenv("HERMES_CODEX_REFRESH_TIMEOUT_SECONDS", "20"))
+    refresh_timeout_seconds = float(os.getenv("BMB_CODEX_REFRESH_TIMEOUT_SECONDS", "20"))
 
     should_refresh = bool(force_refresh)
     if (not should_refresh) and refresh_if_expiring:
         should_refresh = _codex_access_token_is_expiring(access_token, refresh_skew_seconds)
     if should_refresh:
-        # Re-read under lock to avoid racing with other Hermes processes
+        # Re-read under lock to avoid racing with other BMB processes
         with _auth_store_lock(timeout_seconds=max(float(AUTH_LOCK_TIMEOUT_SECONDS), refresh_timeout_seconds + 5.0)):
             data = _read_codex_tokens(_lock=False)
             tokens = dict(data["tokens"])
@@ -2434,7 +2435,7 @@ def resolve_codex_runtime_credentials(
                 access_token = str(tokens.get("access_token", "") or "").strip()
 
     base_url = (
-        os.getenv("HERMES_CODEX_BASE_URL", "").strip().rstrip("/")
+        os.getenv("BMB_CODEX_BASE_URL", "").strip().rstrip("/")
         or DEFAULT_CODEX_BASE_URL
     )
 
@@ -2442,7 +2443,7 @@ def resolve_codex_runtime_credentials(
         "provider": "openai-codex",
         "base_url": base_url,
         "api_key": access_token,
-        "source": "hermes-auth-store",
+        "source": "bmb-auth-store",
         "last_refresh": data.get("last_refresh"),
         "auth_mode": "chatgpt",
     }
@@ -2486,7 +2487,7 @@ def _resolve_verify(
     effective_ca = (
         ca_bundle
         or tls_state.get("ca_bundle")
-        or os.getenv("HERMES_CA_BUNDLE")
+        or os.getenv("BMB_CA_BUNDLE")
         or os.getenv("SSL_CERT_FILE")
         or os.getenv("REQUESTS_CA_BUNDLE")
     )
@@ -2594,7 +2595,7 @@ def _poll_for_token(
 # so a new `bmb --profile <name> auth add nous --type oauth` can one-tap
 # import instead of running the full device-code flow every time.
 #
-# File lives at ${HERMES_SHARED_AUTH_DIR}/nous_auth.json, defaulting to
+# File lives at ${BMB_SHARED_AUTH_DIR}/nous_auth.json, defaulting to
 # ~/.bmb/shared/nous_auth.json. It is OUTSIDE any named profile's
 # BMB_ENCOVER_HOME so named profiles (which typically live under
 # ~/.bmb/profiles/<name>/) all see the same file.
@@ -2611,27 +2612,30 @@ NOUS_SHARED_STORE_FILENAME = "nous_auth.json"
 def _nous_shared_auth_dir() -> Path:
     """Resolve the directory that holds the shared Nous token store.
 
-    Honors ``HERMES_SHARED_AUTH_DIR`` so tests can redirect it to a tmp
+    Honors ``BMB_SHARED_AUTH_DIR`` so tests can redirect it to a tmp
     path without touching the real user's home. Defaults to
     ``~/.bmb/shared/``.
     """
-    override = os.getenv("HERMES_SHARED_AUTH_DIR", "").strip()
+    override = os.getenv("BMB_SHARED_AUTH_DIR", "").strip()
     if override:
         return Path(override).expanduser()
-    return Path.home() / ".hermes" / "shared"
+    # Check legacy Nous Hermes shared store
+    legacy_shared_dir = Path.home() / ".bmb" / "shared"
+    if legacy_shared_dir.exists():
+        return legacy_shared_dir
 
 
 def _nous_shared_store_path() -> Path:
     path = _nous_shared_auth_dir() / NOUS_SHARED_STORE_FILENAME
     # Seat belt: if pytest is running and this resolves to a path under the
     # real user's home, refuse rather than silently corrupt cross-profile
-    # state. Tests must set HERMES_SHARED_AUTH_DIR to a tmp_path (conftest
+    # state. Tests must set BMB_SHARED_AUTH_DIR to a tmp_path (conftest
     # does not do this automatically — mirror the _auth_file_path() guard
     # so forgetting to set it fails loudly instead of writing to the real
     # shared store).
     if os.environ.get("PYTEST_CURRENT_TEST"):
         real_home_shared = (
-            Path.home() / ".hermes" / "shared" / NOUS_SHARED_STORE_FILENAME
+            Path.home() / ".bmb" / "shared" / NOUS_SHARED_STORE_FILENAME
         ).resolve(strict=False)
         try:
             resolved = path.resolve(strict=False)
@@ -2640,7 +2644,7 @@ def _nous_shared_store_path() -> Path:
         if resolved == real_home_shared:
             raise RuntimeError(
                 f"Refusing to touch real user shared Nous auth store during test run: "
-                f"{path}. Set HERMES_SHARED_AUTH_DIR to a tmp_path in your test fixture."
+                f"{path}. Set BMB_SHARED_AUTH_DIR to a tmp_path in your test fixture."
             )
     return path
 
@@ -2827,19 +2831,19 @@ def _refresh_access_token(
     # Detect the OAuth 2.1 "refresh token reuse" signal from the Nous portal
     # server and surface an actionable message.  This fires when an external
     # process (health-check script, monitoring tool, custom self-heal hook)
-    # called POST /api/oauth/token with Hermes's refresh_token without
+    # called POST /api/oauth/token with BMB's refresh_token without
     # persisting the rotated token back to auth.json — the server then
-    # retires the original RT, Hermes's next refresh uses it, and the whole
+    # retires the original RT, BMB's next refresh uses it, and the whole
     # session chain gets revoked as a token-theft signal (#15099).
     lowered = description.lower()
     if "reuse" in lowered or "reuse detected" in lowered:
         description = (
             "Nous Portal detected refresh-token reuse and revoked this session.\n"
             "This usually means an external process (monitoring script, "
-            "custom self-heal hook, or another Hermes install sharing "
-            "~/.bmb/auth.json) called POST /api/oauth/token with Hermes's "
+            "custom self-heal hook, or another BMB install sharing "
+            "~/.bmb/auth.json) called POST /api/oauth/token with BMB's "
             "refresh token without persisting the rotated token back.\n"
-            "Nous refresh tokens are single-use — only Hermes may call the "
+            "Nous refresh tokens are single-use — only BMB may call the "
             "refresh endpoint. For health checks, use `bmb auth status` "
             "instead.\n"
             "Re-authenticate with: bmb auth add nous"
@@ -2917,7 +2921,7 @@ def fetch_nous_models(
         model_id = item.get("id")
         if isinstance(model_id, str) and model_id.strip():
             mid = model_id.strip()
-            # Skip Hermes models — they're not reliable for agentic tool-calling
+            # Skip BMB models — they're not reliable for agentic tool-calling
             if "bmb" in mid.lower():
                 continue
             model_ids.append(mid)
@@ -2959,14 +2963,14 @@ def resolve_nous_access_token(
 
         if not state:
             raise AuthError(
-                "Hermes is not logged into Nous Portal.",
+                "BMB is not logged into Nous Portal.",
                 provider="nous",
                 relogin_required=True,
             )
 
         portal_base_url = (
             _optional_base_url(state.get("portal_base_url"))
-            or os.getenv("HERMES_PORTAL_BASE_URL")
+            or os.getenv("BMB_PORTAL_BASE_URL")
             or os.getenv("NOUS_PORTAL_BASE_URL")
             or DEFAULT_NOUS_PORTAL_URL
         ).rstrip("/")
@@ -3126,7 +3130,7 @@ def refresh_nous_oauth_from_state(
     return refresh_nous_oauth_pure(
         state.get("access_token", ""),
         state.get("refresh_token", ""),
-        state.get("client_id", "hermes-cli"),
+        state.get("client_id", "bmb-cli"),
         state.get("portal_base_url", DEFAULT_NOUS_PORTAL_URL),
         state.get("inference_base_url", DEFAULT_NOUS_INFERENCE_URL),
         token_type=state.get("token_type", "Bearer"),
@@ -3232,12 +3236,12 @@ def resolve_nous_runtime_credentials(
         state = _load_provider_state(auth_store, "nous")
 
         if not state:
-            raise AuthError("Hermes is not logged into Nous Portal.",
+            raise AuthError("BMB is not logged into Nous Portal.",
                             provider="nous", relogin_required=True)
 
         portal_base_url = (
             _optional_base_url(state.get("portal_base_url"))
-            or os.getenv("HERMES_PORTAL_BASE_URL")
+            or os.getenv("BMB_PORTAL_BASE_URL")
             or os.getenv("NOUS_PORTAL_BASE_URL")
             or DEFAULT_NOUS_PORTAL_URL
         ).rstrip("/")
@@ -3663,11 +3667,11 @@ def get_external_process_provider_status(provider_id: str) -> Dict[str, Any]:
         return {"configured": False}
 
     command = (
-        os.getenv("HERMES_COPILOT_ACP_COMMAND", "").strip()
+        os.getenv("BMB_COPILOT_ACP_COMMAND", "").strip()
         or os.getenv("COPILOT_CLI_PATH", "").strip()
         or "copilot"
     )
-    raw_args = os.getenv("HERMES_COPILOT_ACP_ARGS", "").strip()
+    raw_args = os.getenv("BMB_COPILOT_ACP_ARGS", "").strip()
     args = shlex.split(raw_args) if raw_args else ["--acp", "--stdio"]
     base_url = os.getenv(pconfig.base_url_env_var, "").strip() if pconfig.base_url_env_var else ""
     if not base_url:
@@ -3775,17 +3779,17 @@ def resolve_external_process_provider_credentials(provider_id: str) -> Dict[str,
         base_url = pconfig.inference_base_url
 
     command = (
-        os.getenv("HERMES_COPILOT_ACP_COMMAND", "").strip()
+        os.getenv("BMB_COPILOT_ACP_COMMAND", "").strip()
         or os.getenv("COPILOT_CLI_PATH", "").strip()
         or "copilot"
     )
-    raw_args = os.getenv("HERMES_COPILOT_ACP_ARGS", "").strip()
+    raw_args = os.getenv("BMB_COPILOT_ACP_ARGS", "").strip()
     args = shlex.split(raw_args) if raw_args else ["--acp", "--stdio"]
     resolved_command = shutil.which(command) if command else None
     if not resolved_command and not base_url.startswith("acp+tcp://"):
         raise AuthError(
             f"Could not find the Copilot CLI command '{command}'. "
-            "Install GitHub Copilot CLI or set HERMES_COPILOT_ACP_COMMAND/COPILOT_CLI_PATH.",
+            "Install GitHub Copilot CLI or set BMB_COPILOT_ACP_COMMAND/COPILOT_CLI_PATH.",
             provider=provider_id,
             code="missing_copilot_cli",
         )
@@ -4140,7 +4144,7 @@ def _login_openai_codex(
 
     del args, pconfig  # kept for parity with other provider login helpers
 
-    # Check for existing Hermes-owned credentials
+    # Check for existing BMB-owned credentials
     if not force_new_login:
         try:
             existing = resolve_codex_runtime_credentials()
@@ -4150,7 +4154,7 @@ def _login_openai_codex(
             # the user "Login successful!".
             _resolved_key = existing.get("api_key", "")
             if isinstance(_resolved_key, str) and _resolved_key and not _codex_access_token_is_expiring(_resolved_key, 60):
-                print("Existing Codex credentials found in Hermes auth store.")
+                print("Existing Codex credentials found in BMB auth store.")
                 try:
                     reuse = input("Use existing credentials? [Y/n]: ").strip().lower()
                 except (EOFError, KeyboardInterrupt):
@@ -4171,30 +4175,30 @@ def _login_openai_codex(
         cli_tokens = _import_codex_cli_tokens()
         if cli_tokens:
             print("Found existing Codex CLI credentials at ~/.codex/auth.json")
-            print("Hermes will create its own session to avoid conflicts with Codex CLI / VS Code.")
+            print("BMB will create its own session to avoid conflicts with Codex CLI / VS Code.")
             try:
                 do_import = input("Import these credentials? (a separate login is recommended) [y/N]: ").strip().lower()
             except (EOFError, KeyboardInterrupt):
                 do_import = "n"
             if do_import in ("y", "yes"):
                 _save_codex_tokens(cli_tokens)
-                base_url = os.getenv("HERMES_CODEX_BASE_URL", "").strip().rstrip("/") or DEFAULT_CODEX_BASE_URL
+                base_url = os.getenv("BMB_CODEX_BASE_URL", "").strip().rstrip("/") or DEFAULT_CODEX_BASE_URL
                 config_path = _update_config_for_provider("openai-codex", base_url)
                 print()
                 print("Credentials imported. Note: if Codex CLI refreshes its token,")
-                print("Hermes will keep working independently with its own session.")
+                print("BMB will keep working independently with its own session.")
                 print(f"  Config updated: {config_path} (model.provider=openai-codex)")
                 return
 
-    # Run a fresh device code flow — Hermes gets its own OAuth session
+    # Run a fresh device code flow — BMB gets its own OAuth session
     print()
     print("Signing in to OpenAI Codex...")
-    print("(Hermes creates its own session — won't affect Codex CLI or VS Code)")
+    print("(BMB creates its own session — won't affect Codex CLI or VS Code)")
     print()
 
     creds = _codex_device_code_login()
 
-    # Save tokens to Hermes auth store
+    # Save tokens to BMB auth store
     _save_codex_tokens(creds["tokens"], creds.get("last_refresh"))
     config_path = _update_config_for_provider("openai-codex", creds.get("base_url", DEFAULT_CODEX_BASE_URL))
     print()
@@ -4333,7 +4337,7 @@ def _codex_device_code_login() -> Dict[str, Any]:
 
     # Return tokens for the caller to persist (no longer writes to ~/.codex/)
     base_url = (
-        os.getenv("HERMES_CODEX_BASE_URL", "").strip().rstrip("/")
+        os.getenv("BMB_CODEX_BASE_URL", "").strip().rstrip("/")
         or DEFAULT_CODEX_BASE_URL
     )
 
@@ -4467,7 +4471,7 @@ def _minimax_poll_token(
 
 
 def _minimax_save_auth_state(auth_state: Dict[str, Any]) -> None:
-    """Persist MiniMax OAuth state to Hermes auth store (~/.bmb/auth.json)."""
+    """Persist MiniMax OAuth state to BMB auth store (~/.bmb/auth.json)."""
     with _auth_store_lock():
         auth_store = _load_auth_store()
         _save_provider_state(auth_store, "minimax-oauth", auth_state)
@@ -4492,7 +4496,7 @@ def _minimax_oauth_login(
     if _is_remote_session():
         open_browser = False
 
-    print(f"Starting Hermes login via MiniMax ({region}) OAuth...")
+    print(f"Starting BMB login via MiniMax ({region}) OAuth...")
     print(f"Portal: {portal_base_url}")
 
     with httpx.Client(timeout=httpx.Timeout(timeout_seconds),
@@ -4687,7 +4691,7 @@ def _nous_device_code_login(
     pconfig = PROVIDER_REGISTRY["nous"]
     portal_base_url = (
         portal_base_url
-        or os.getenv("HERMES_PORTAL_BASE_URL")
+        or os.getenv("BMB_PORTAL_BASE_URL")
         or os.getenv("NOUS_PORTAL_BASE_URL")
         or pconfig.portal_base_url
     ).rstrip("/")
@@ -4704,7 +4708,7 @@ def _nous_device_code_login(
     if _is_remote_session():
         open_browser = False
 
-    print(f"Starting Hermes login via {pconfig.name}...")
+    print(f"Starting BMB login via {pconfig.name}...")
     print(f"Portal: {portal_base_url}")
     if insecure:
         print("TLS verification: disabled (--insecure)")
@@ -4808,7 +4812,7 @@ def _login_nous(args, pconfig: ProviderConfig) -> None:
     insecure = bool(getattr(args, "insecure", False))
     ca_bundle = (
         getattr(args, "ca_bundle", None)
-        or os.getenv("HERMES_CA_BUNDLE")
+        or os.getenv("BMB_CA_BUNDLE")
         or os.getenv("SSL_CERT_FILE")
     )
 
@@ -4987,8 +4991,8 @@ def logout_command(args) -> None:
         _reset_config_provider()
         print(f"Logged out of {provider_name}.")
         if os.getenv("OPENROUTER_API_KEY"):
-            print("Hermes will use OpenRouter for inference.")
+            print("BMB will use OpenRouter for inference.")
         else:
-            print("Run `bmb model` or configure an API key to use Hermes.")
+            print("Run `bmb model` or configure an API key to use BMB.")
     else:
         print(f"No auth state found for {provider_name}.")

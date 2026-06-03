@@ -184,7 +184,7 @@ def _best_effort_sweep_expired_pastes() -> None:
 
 _PRIVACY_NOTICE = """\
 ⚠️  This will upload the following to a public paste service:
-  • System info (OS, Python version, Hermes version, provider, which API keys
+  • System info (OS, Python version, BMB version, provider, which API keys
     are configured — NOT the actual keys)
   • Recent log lines (agent.log, errors.log, gateway.log — may contain
     conversation fragments and file paths)
@@ -687,7 +687,7 @@ def run_debug_share(args):
     # Manual delete fallback
     print(f"To delete now:  bmb debug delete <url>")
 
-    print(f"\nShare these links with the Hermes team for support.")
+    print(f"\nShare these links with the BMB team for support.")
 
 
 def run_debug_delete(args):

@@ -1,7 +1,7 @@
 """SQLite-backed Kanban board for multi-profile, multi-project collaboration.
 
 In a fresh install the board lives at ``<root>/kanban.db`` where
-``<root>`` is the **shared Hermes root** (the parent of any active
+``<root>`` is the **shared BMB root** (the parent of any active
 profile). Profiles intentionally collapse onto a shared board: it IS
 the cross-profile coordination primitive. A worker spawned with
 ``bmb -p <profile>`` joins the same board as the dispatcher that
@@ -12,7 +12,7 @@ claimed the task. The same applies to ``<root>/kanban/workspaces/`` and
 separate unrelated streams of work (e.g. one per project / repo / domain).
 Each board is a directory under ``<root>/kanban/boards/<slug>/`` with
 its own ``kanban.db``, ``workspaces/``, and ``logs/``. All boards share
-the profile's Hermes home but are otherwise isolated: a worker spawned
+the profile's BMB home but are otherwise isolated: a worker spawned
 for a task on board ``atm10-server`` sees only that board's tasks,
 cannot enumerate other boards, and its dispatcher ticks don't touch
 other boards' DBs.
@@ -27,9 +27,9 @@ Board resolution order (highest precedence first, all optional):
 * ``board=`` argument passed directly to :func:`connect` / :func:`init_db`
   (explicit — used by the CLI ``--board`` flag and the dashboard
   ``?board=...`` query param).
-* ``HERMES_KANBAN_BOARD`` env var (used by the dispatcher to pin workers
+* ``BMB_KANBAN_BOARD`` env var (used by the dispatcher to pin workers
   to the board their task lives on — workers cannot see other boards).
-* ``HERMES_KANBAN_DB`` env var (pins the DB file path directly — legacy
+* ``BMB_KANBAN_DB`` env var (pins the DB file path directly — legacy
   override still honoured; highest precedence when the file path itself
   is what the caller wants to force).
 * ``<root>/kanban/current`` — a one-line text file holding the slug of
@@ -38,16 +38,16 @@ Board resolution order (highest precedence first, all optional):
 
 In standard installs ``<root>`` is ``~/.bmb``. In Docker / custom
 deployments where ``BMB_ENCOVER_HOME`` points outside ``~/.bmb`` (e.g.
-``/opt/hermes``), ``<root>`` is ``BMB_ENCOVER_HOME``. Legacy env-var
+``/opt/bmb``), ``<root>`` is ``BMB_ENCOVER_HOME``. Legacy env-var
 overrides still work:
 
-* ``HERMES_KANBAN_DB`` — pin the database file path directly.
-* ``HERMES_KANBAN_WORKSPACES_ROOT`` — pin the workspaces root directly.
-* ``HERMES_KANBAN_HOME`` — pin the umbrella root that anchors kanban
+* ``BMB_KANBAN_DB`` — pin the database file path directly.
+* ``BMB_KANBAN_WORKSPACES_ROOT`` — pin the workspaces root directly.
+* ``BMB_KANBAN_HOME`` — pin the umbrella root that anchors kanban
   paths. Useful for tests and unusual deployments.
 
-The dispatcher injects ``HERMES_KANBAN_DB``,
-``HERMES_KANBAN_WORKSPACES_ROOT``, and ``HERMES_KANBAN_BOARD`` into
+The dispatcher injects ``BMB_KANBAN_DB``,
+``BMB_KANBAN_WORKSPACES_ROOT``, and ``BMB_KANBAN_BOARD`` into
 worker subprocess env so workers converge on the exact DB the
 dispatcher used to claim their task — even under unusual symlink or
 Docker layouts.
@@ -55,7 +55,7 @@ Docker layouts.
 Schema is intentionally small: tasks, task_links, task_comments,
 task_events.  The ``workspace_kind`` field decouples coordination from git
 worktrees so that research / ops / digital-twin workloads work alongside
-coding workloads.  See ``docs/hermes-kanban-v1-spec.pdf`` for the full
+coding workloads.  See ``docs/bmb-kanban-v1-spec.pdf`` for the full
 design specification.
 
 Concurrency strategy: WAL mode + ``BEGIN IMMEDIATE`` for write
@@ -139,11 +139,11 @@ def _normalize_board_slug(slug: Optional[str]) -> Optional[str]:
 
 
 def kanban_home() -> Path:
-    """Return the shared Hermes root that anchors the kanban board.
+    """Return the shared BMB root that anchors the kanban board.
 
     Resolution order:
 
-    1. ``HERMES_KANBAN_HOME`` env var when set and non-empty (explicit
+    1. ``BMB_KANBAN_HOME`` env var when set and non-empty (explicit
        override for tests and unusual deployments).
     2. ``get_default_bmb_root()``, which already returns ``<root>``
        when ``BMB_ENCOVER_HOME`` is ``<root>/profiles/<name>``, and returns
@@ -154,7 +154,7 @@ def kanban_home() -> Path:
     profile's ``BMB_ENCOVER_HOME`` would silently fork the board per profile,
     which breaks the dispatcher / worker handoff.
     """
-    override = os.environ.get("HERMES_KANBAN_HOME", "").strip()
+    override = os.environ.get("BMB_KANBAN_HOME", "").strip()
     if override:
         return Path(override).expanduser()
     from bmb_constants import get_default_bmb_root
@@ -187,7 +187,7 @@ def get_current_board() -> str:
 
     Order (highest precedence first):
 
-    1. ``HERMES_KANBAN_BOARD`` env var (set by the dispatcher on worker
+    1. ``BMB_KANBAN_BOARD`` env var (set by the dispatcher on worker
        spawn, or manually for ad-hoc overrides).
     2. ``<root>/kanban/current`` on disk (set by ``bmb kanban boards
        switch``).
@@ -197,7 +197,7 @@ def get_current_board() -> str:
     best-effort warning — the dispatcher must never crash because a user
     hand-edited a file.
     """
-    env = os.environ.get("HERMES_KANBAN_BOARD", "").strip()
+    env = os.environ.get("BMB_KANBAN_BOARD", "").strip()
     if env:
         try:
             normed = _normalize_board_slug(env)
@@ -279,7 +279,7 @@ def kanban_db_path(board: Optional[str] = None) -> Path:
 
     Resolution (highest precedence first):
 
-    1. ``HERMES_KANBAN_DB`` env var — pins the path directly. Honoured for
+    1. ``BMB_KANBAN_DB`` env var — pins the path directly. Honoured for
        back-compat and for the dispatcher→worker handoff (defense in
        depth: dispatcher injects this into worker env so workers are
        immune to any path-resolution disagreement).
@@ -288,7 +288,7 @@ def kanban_db_path(board: Optional[str] = None) -> Path:
     3. Board ``default`` → ``<root>/kanban.db`` (back-compat path).
        Other boards → ``<root>/kanban/boards/<slug>/kanban.db``.
     """
-    override = os.environ.get("HERMES_KANBAN_DB", "").strip()
+    override = os.environ.get("BMB_KANBAN_DB", "").strip()
     if override:
         return Path(override).expanduser()
     slug = _normalize_board_slug(board)
@@ -303,14 +303,14 @@ def workspaces_root(board: Optional[str] = None) -> Path:
     """Return the directory under which ``scratch`` workspaces are created.
 
     Anchored per-board so workspaces don't leak between projects.
-    ``HERMES_KANBAN_WORKSPACES_ROOT`` pins the path directly (highest
+    ``BMB_KANBAN_WORKSPACES_ROOT`` pins the path directly (highest
     precedence) — the dispatcher injects this into worker env.
 
     ``default`` keeps the legacy path ``<root>/kanban/workspaces/`` so
     that existing scratch workspaces from before the boards feature are
     preserved. Other boards use ``<root>/kanban/boards/<slug>/workspaces/``.
     """
-    override = os.environ.get("HERMES_KANBAN_WORKSPACES_ROOT", "").strip()
+    override = os.environ.get("BMB_KANBAN_WORKSPACES_ROOT", "").strip()
     if override:
         return Path(override).expanduser()
     slug = _normalize_board_slug(board)
@@ -862,7 +862,7 @@ def connect(
     * ``db_path`` explicit → used as-is (legacy callers, tests).
     * ``board`` explicit → resolves to that board's DB.
     * Neither → :func:`kanban_db_path` resolves via
-      ``HERMES_KANBAN_DB`` env → ``HERMES_KANBAN_BOARD`` env →
+      ``BMB_KANBAN_DB`` env → ``BMB_KANBAN_BOARD`` env →
       ``<root>/kanban/current`` → ``default``.
     """
     if db_path is not None:
@@ -2590,7 +2590,7 @@ def _default_spawn(
     the PID check is a safety net for crashes, OOM kills, and Ctrl+C.
 
     ``board`` pins the child's kanban context to that board: the child's
-    ``HERMES_KANBAN_DB`` / ``HERMES_KANBAN_BOARD`` / workspaces_root env
+    ``BMB_KANBAN_DB`` / ``BMB_KANBAN_BOARD`` / workspaces_root env
     vars all resolve to the same board the dispatcher claimed the task
     from. Workers cannot accidentally see other boards.
     """
@@ -2605,27 +2605,27 @@ def _default_spawn(
     prompt = f"work kanban task {task.id}"
     env = dict(os.environ)
     if task.tenant:
-        env["HERMES_TENANT"] = task.tenant
-    env["HERMES_KANBAN_TASK"] = task.id
-    env["HERMES_KANBAN_WORKSPACE"] = workspace
+        env["BMB_TENANT"] = task.tenant
+    env["BMB_KANBAN_TASK"] = task.id
+    env["BMB_KANBAN_WORKSPACE"] = workspace
     # Pin the shared board + workspaces root the dispatcher resolved, so
     # that even when the worker activates a profile (`bmb -p <name>`
     # rewrites BMB_ENCOVER_HOME), its kanban paths still match the
     # dispatcher's. Belt-and-braces with the `get_default_bmb_root()`
     # resolution in `kanban_home()` — symmetric resolution is the norm,
     # but unusual symlink / Docker layouts are caught here too.
-    env["HERMES_KANBAN_DB"] = str(kanban_db_path(board=board))
-    env["HERMES_KANBAN_WORKSPACES_ROOT"] = str(workspaces_root(board=board))
+    env["BMB_KANBAN_DB"] = str(kanban_db_path(board=board))
+    env["BMB_KANBAN_WORKSPACES_ROOT"] = str(workspaces_root(board=board))
     # Board slug — the final defense-in-depth pin. If the worker ever
     # resolves kanban paths without the DB / workspaces env vars, the
     # board slug still forces it to the right directory.
     resolved_board = _normalize_board_slug(board) or get_current_board()
-    env["HERMES_KANBAN_BOARD"] = resolved_board
-    # HERMES_PROFILE is the author the kanban_comment tool defaults to.
+    env["BMB_KANBAN_BOARD"] = resolved_board
+    # BMB_PROFILE is the author the kanban_comment tool defaults to.
     # `bmb -p <assignee>` activates the profile, but the env var is
     # what the tool reads — set it explicitly here so comments are
     # attributed correctly regardless of how the child loads config.
-    env["HERMES_PROFILE"] = profile_arg
+    env["BMB_PROFILE"] = profile_arg
 
     cmd = [
         "bmb",

@@ -15,7 +15,7 @@ Rules:
   - chrome-profile→ prompt after 14 days (deep only)
   - >500 MB files → prompt always (deep only)
 
-Scope: strictly BMB_ENCOVER_HOME and /tmp/hermes-*
+Scope: strictly BMB_ENCOVER_HOME and /tmp/bmb-*
 Never touches: ~/.bmb/logs/ or any system directory.
 """
 
@@ -35,7 +35,7 @@ except Exception:  # pragma: no cover — plugin may load before constants resol
 
     def get_bmb_home() -> Path:  # type: ignore[no-redef]
         val = (os.environ.get("BMB_ENCOVER_HOME") or "").strip()
-        return Path(val).resolve() if val else (Path.home() / ".hermes").resolve()
+        return Path(val).resolve() if val else (Path.home() / ".bmb").resolve()
 
 
 logger = logging.getLogger(__name__)
@@ -64,7 +64,7 @@ def get_log_file() -> Path:
 # ---------------------------------------------------------------------------
 
 def is_safe_path(path: Path) -> bool:
-    """Accept only paths under BMB_ENCOVER_HOME or ``/tmp/hermes-*``.
+    """Accept only paths under BMB_ENCOVER_HOME or ``/tmp/bmb-*``.
 
     Rejects Windows mounts (``/mnt/c`` etc.) and any system directory.
     """
@@ -74,9 +74,9 @@ def is_safe_path(path: Path) -> bool:
         return True
     except (ValueError, OSError):
         pass
-    # Allow /tmp/hermes-* explicitly
+    # Allow /tmp/bmb-* explicitly
     parts = path.parts
-    if len(parts) >= 3 and parts[1] == "tmp" and parts[2].startswith("hermes-"):
+    if len(parts) >= 3 and parts[1] == "tmp" and parts[2].startswith("bmb-"):
         return True
     return False
 
@@ -485,7 +485,7 @@ def guess_category(path: Path) -> Optional[str]:
         if top == "cache":
             return "temp"
     except ValueError:
-        # Path isn't under BMB_ENCOVER_HOME (e.g. /tmp/hermes-*) — fall through.
+        # Path isn't under BMB_ENCOVER_HOME (e.g. /tmp/bmb-*) — fall through.
         pass
 
     name = path.name

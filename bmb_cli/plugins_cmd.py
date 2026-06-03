@@ -367,7 +367,7 @@ def _install_plugin_core(identifier: str, *, force: bool) -> tuple[Path, dict, s
                 raise PluginOperationError(
                     f"Plugin '{plugin_name}' requires manifest_version {mv}, "
                     f"but this installer only supports up to {_SUPPORTED_MANIFEST_VERSION}. "
-                    f"Run {recommended_update_command()} to update Hermes.",
+                    f"Run {recommended_update_command()} to update BMB.",
                 ) from None
 
         if target.exists():
@@ -437,7 +437,7 @@ def cmd_install(
     ).exists():
         console.print(
             f"[yellow]Warning:[/yellow] {installed_name} doesn't contain plugin.yaml "
-            f"or __init__.py. It may not be a valid Hermes plugin.",
+            f"or __init__.py. It may not be a valid BMB plugin.",
         )
 
     _prompt_plugin_env_vars(installed_manifest, console)
@@ -654,7 +654,7 @@ def _plugin_exists(name: str) -> bool:
             manifest = _read_manifest(child)
             if manifest.get("name") == name:
                 return True
-    # Bundled: <repo>/plugins/<name>/ (or HERMES_BUNDLED_PLUGINS on Nix).
+    # Bundled: <repo>/plugins/<name>/ (or BMB_BUNDLED_PLUGINS on Nix).
     from bmb_cli.plugins import get_bundled_plugins_dir
     repo_plugins = get_bundled_plugins_dir()
     if repo_plugins.is_dir():

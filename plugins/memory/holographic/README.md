@@ -19,7 +19,7 @@ bmb config set memory.provider holographic
 
 ## Config
 
-Config in `config.yaml` under `plugins.hermes-memory-store`:
+Config in `config.yaml` under `plugins.bmb-memory-store`:
 
 | Key | Default | Description |
 |-----|---------|-------------|

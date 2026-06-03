@@ -107,7 +107,7 @@ def _get_subagent_approval_callback():
 
 # Build a description fragment listing toolsets available for subagents.
 # Excludes toolsets where ALL tools are blocked, composite/platform toolsets
-# (hermes-* prefixed), and scenario toolsets.
+# (bmb-* prefixed), and scenario toolsets.
 #
 # NOTE: "delegation" is in this exclusion set so the subagent-facing
 # capability hint string (_TOOLSET_LIST_STR) doesn't advertise it as a
@@ -119,7 +119,7 @@ _SUBAGENT_TOOLSETS = sorted(
     name
     for name, defn in TOOLSETS.items()
     if name not in _EXCLUDED_TOOLSET_NAMES
-    and not name.startswith("hermes-")
+    and not name.startswith("bmb-")
     and not all(t in DELEGATE_BLOCKED_TOOLS for t in defn.get("tools", []))
 )
 _TOOLSET_LIST_STR = ", ".join(f"'{n}'" for n in _SUBAGENT_TOOLSETS)

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Build the Hermes Model Catalog — a centralized JSON manifest of curated models.
+"""Build the BMB Model Catalog — a centralized JSON manifest of curated models.
 
 This script reads the in-repo hardcoded curated lists (``OPENROUTER_MODELS``,
 ``_PROVIDER_MODELS["nous"]``) and writes them to a JSON manifest that the
-Hermes CLI fetches at runtime. Publishing the catalog through the docs site
-lets maintainers update model lists without shipping a Hermes release.
+BMB CLI fetches at runtime. Publishing the catalog through the docs site
+lets maintainers update model lists without shipping a BMB release.
 
 The runtime fetcher falls back to the same in-repo hardcoded lists if the
 manifest is unreachable, so this script is a convenience for keeping the
@@ -31,7 +31,7 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, REPO_ROOT)
 
 # Ensure BMB_ENCOVER_HOME is set for imports that touch it at module level.
-os.environ.setdefault("BMB_ENCOVER_HOME", os.path.join(os.path.expanduser("~"), ".hermes"))
+os.environ.setdefault("BMB_ENCOVER_HOME", os.path.join(os.path.expanduser("~"), ".bmb"))
 
 from bmb_cli.models import OPENROUTER_MODELS, _PROVIDER_MODELS  # noqa: E402
 

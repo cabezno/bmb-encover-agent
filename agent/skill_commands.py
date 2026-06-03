@@ -34,8 +34,8 @@ def _resolve_skill_commands_platform() -> Optional[str]:
     :func:`get_skill_commands` can drop a stale cache that was populated
     for a different platform's ``skills.platform_disabled`` view (#14536).
 
-    Resolves from (in order) ``HERMES_PLATFORM`` env var and
-    ``HERMES_SESSION_PLATFORM`` from the gateway session context. Returns
+    Resolves from (in order) ``BMB_PLATFORM`` env var and
+    ``BMB_SESSION_PLATFORM`` from the gateway session context. Returns
     ``None`` when no platform scope is active (e.g. classic CLI, RL
     rollouts, standalone scripts).
     """
@@ -43,11 +43,11 @@ def _resolve_skill_commands_platform() -> Optional[str]:
         from gateway.session_context import get_session_env
 
         resolved_platform = (
-            os.getenv("HERMES_PLATFORM")
-            or get_session_env("HERMES_SESSION_PLATFORM")
+            os.getenv("BMB_PLATFORM")
+            or get_session_env("BMB_SESSION_PLATFORM")
         )
     except Exception:
-        resolved_platform = os.getenv("HERMES_PLATFORM")
+        resolved_platform = os.getenv("BMB_PLATFORM")
     return resolved_platform or None
 
 def _load_skill_payload(skill_identifier: str, task_id: str | None = None) -> tuple[dict[str, Any], Path | None, str] | None:
@@ -99,7 +99,7 @@ def _load_skill_payload(skill_identifier: str, task_id: str | None = None) -> tu
 def _inject_skill_config(loaded_skill: dict[str, Any], parts: list[str]) -> None:
     """Resolve and inject skill-declared config values into the message parts.
 
-    If the loaded skill's frontmatter declares ``metadata.hermes.config``
+    If the loaded skill's frontmatter declares ``metadata.bmb.config``
     entries, their current values (from config.yaml or defaults) are appended
     as a ``[Skill config: ...]`` block so the agent knows the configured values
     without needing to read config.yaml itself.

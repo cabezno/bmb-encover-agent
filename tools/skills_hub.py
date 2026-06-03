@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Skills Hub — Source adapters and hub state management for the Hermes Skills Hub.
+Skills Hub — Source adapters and hub state management for the BMB Skills Hub.
 
 This is a library module (not an agent tool). It provides:
   - GitHubAuth: Shared GitHub API authentication (PAT, gh CLI, GitHub App)
@@ -2297,7 +2297,7 @@ class LobeHubSource(SkillSource):
             f"name: {identifier}",
             f"description: {description[:500]}",
             "metadata:",
-            "  hermes:",
+            "  bmb:",
             f"    tags: [{', '.join(str(t) for t in tag_list)}]",
             "  lobehub:",
             "    source: lobehub",
@@ -2874,39 +2874,39 @@ def check_for_skill_updates(
 
 
 # ---------------------------------------------------------------------------
-# Hermes centralized index source
+# BMB centralized index source
 # ---------------------------------------------------------------------------
 
-HERMES_INDEX_URL = "https://bmb-encover.blackmagicbox.com/docs/api/skills-index.json"
-HERMES_INDEX_CACHE_FILE = INDEX_CACHE_DIR / "hermes-index.json"
-HERMES_INDEX_TTL = 6 * 3600  # 6 hours
+BMB_INDEX_URL = "https://bmb-encover.blackmagicbox.com/docs/api/skills-index.json"
+BMB_INDEX_CACHE_FILE = INDEX_CACHE_DIR / "bmb-index.json"
+BMB_INDEX_TTL = 6 * 3600  # 6 hours
 
 
 def _load_hermes_index() -> Optional[dict]:
     """Fetch the centralized skills index, with local cache.
 
     The index is a JSON file hosted on the docs site, rebuilt daily by CI.
-    We cache it locally for HERMES_INDEX_TTL seconds to avoid repeated
+    We cache it locally for BMB_INDEX_TTL seconds to avoid repeated
     downloads within a session.
     """
     # Check local cache
-    if HERMES_INDEX_CACHE_FILE.exists():
+    if BMB_INDEX_CACHE_FILE.exists():
         try:
-            age = time.time() - HERMES_INDEX_CACHE_FILE.stat().st_mtime
-            if age < HERMES_INDEX_TTL:
-                return json.loads(HERMES_INDEX_CACHE_FILE.read_text())
+            age = time.time() - BMB_INDEX_CACHE_FILE.stat().st_mtime
+            if age < BMB_INDEX_TTL:
+                return json.loads(BMB_INDEX_CACHE_FILE.read_text())
         except (OSError, json.JSONDecodeError):
             pass
 
     # Fetch from docs site
     try:
-        resp = httpx.get(HERMES_INDEX_URL, timeout=15, follow_redirects=True)
+        resp = httpx.get(BMB_INDEX_URL, timeout=15, follow_redirects=True)
         if resp.status_code != 200:
-            logger.debug("Hermes index fetch returned %d", resp.status_code)
+            logger.debug("BMB index fetch returned %d", resp.status_code)
             return _load_stale_index_cache()
         data = resp.json()
     except (httpx.HTTPError, json.JSONDecodeError) as e:
-        logger.debug("Hermes index fetch failed: %s", e)
+        logger.debug("BMB index fetch failed: %s", e)
         return _load_stale_index_cache()
 
     # Validate structure
@@ -2915,8 +2915,8 @@ def _load_hermes_index() -> Optional[dict]:
 
     # Cache locally
     try:
-        HERMES_INDEX_CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)
-        HERMES_INDEX_CACHE_FILE.write_text(json.dumps(data))
+        BMB_INDEX_CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)
+        BMB_INDEX_CACHE_FILE.write_text(json.dumps(data))
     except OSError:
         pass
 
@@ -2925,16 +2925,16 @@ def _load_hermes_index() -> Optional[dict]:
 
 def _load_stale_index_cache() -> Optional[dict]:
     """Fall back to stale cache when the network fetch fails."""
-    if HERMES_INDEX_CACHE_FILE.exists():
+    if BMB_INDEX_CACHE_FILE.exists():
         try:
-            return json.loads(HERMES_INDEX_CACHE_FILE.read_text())
+            return json.loads(BMB_INDEX_CACHE_FILE.read_text())
         except (OSError, json.JSONDecodeError):
             pass
     return None
 
 
-class HermesIndexSource(SkillSource):
-    """Skill source backed by the centralized Hermes Skills Index.
+class BMBIndexSource(SkillSource):
+    """Skill source backed by the centralized BMB Skills Index.
 
     The index is a JSON catalog published to the docs site and rebuilt
     daily by CI.  It contains metadata + resolved GitHub paths for every
@@ -2965,7 +2965,7 @@ class HermesIndexSource(SkillSource):
         return self._github
 
     def source_id(self) -> str:
-        return "hermes-index"
+        return "bmb-index"
 
     @property
     def is_available(self) -> bool:
@@ -3019,7 +3019,7 @@ class HermesIndexSource(SkillSource):
         if resolved:
             bundle = self._get_github().fetch(resolved)
             if bundle:
-                bundle.source = entry.get("source", "hermes-index")
+                bundle.source = entry.get("source", "bmb-index")
                 bundle.identifier = identifier
                 return bundle
 
@@ -3030,7 +3030,7 @@ class HermesIndexSource(SkillSource):
             github_id = f"{repo}/{path}"
             bundle = self._get_github().fetch(github_id)
             if bundle:
-                bundle.source = entry.get("source", "hermes-index")
+                bundle.source = entry.get("source", "bmb-index")
                 bundle.identifier = identifier
                 return bundle
 
@@ -3079,7 +3079,7 @@ class HermesIndexSource(SkillSource):
         return SkillMeta(
             name=entry.get("name", ""),
             description=entry.get("description", ""),
-            source=entry.get("source", "hermes-index"),
+            source=entry.get("source", "bmb-index"),
             identifier=entry.get("identifier", ""),
             trust_level=entry.get("trust_level", "community"),
             repo=entry.get("repo"),
@@ -3102,7 +3102,7 @@ def create_source_router(auth: Optional[GitHubAuth] = None) -> List[SkillSource]
 
     sources: List[SkillSource] = [
         OptionalSkillSource(),        # Official optional skills (highest priority)
-        HermesIndexSource(auth=auth), # Centralized index (search + resolved install paths)
+        BMBIndexSource(auth=auth), # Centralized index (search + resolved install paths)
         SkillsShSource(auth=auth),
         WellKnownSkillSource(),
         UrlSource(),                  # Direct HTTP(S) URL to a SKILL.md file
@@ -3155,7 +3155,7 @@ def parallel_search_sources(
                                   "claude-marketplace", "lobehub", "well-known"})
     if source_filter == "all":
         for src in sources:
-            if (src.source_id() == "hermes-index"
+            if (src.source_id() == "bmb-index"
                     and getattr(src, "is_available", False)):
                 _index_available = True
                 break

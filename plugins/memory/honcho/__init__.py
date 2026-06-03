@@ -372,7 +372,7 @@ class HonchoMemoryProvider(MemoryProvider):
                 gateway_session_key=gateway_session_key,
             )
             or session_id
-            or "hermes-default"
+            or "bmb-default"
         )
         logger.debug("Honcho session key resolved: %s", self._session_key)
 
@@ -381,7 +381,7 @@ class HonchoMemoryProvider(MemoryProvider):
         self._session_initialized = True
 
         # ----- B6: Memory file migration (one-time, for new sessions) -----
-        # Skip under per-session strategy: every Hermes run creates a fresh
+        # Skip under per-session strategy: every BMB run creates a fresh
         # Honcho session by design, so uploading MEMORY.md/USER.md/SOUL.md to
         # each one would flood the backend with short-lived duplicates instead
         # of performing a one-time migration.
@@ -454,7 +454,7 @@ class HonchoMemoryProvider(MemoryProvider):
         try:
             self._do_session_init(
                 self._config,
-                self._lazy_init_session_id or "hermes-default",
+                self._lazy_init_session_id or "bmb-default",
                 **self._lazy_init_kwargs,
             )
             # Clear lazy refs

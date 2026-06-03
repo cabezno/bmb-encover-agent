@@ -6,7 +6,7 @@ author: 0xbyt4, BlackMagicBox Encover Agent
 license: MIT
 dependencies: []
 metadata:
-  hermes:
+  bmb:
     tags: [ASCII, Art, Banners, Creative, Unicode, Text-Art, pyfiglet, figlet, cowsay, boxes]
     related_skills: [excalidraw]
 

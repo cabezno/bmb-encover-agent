@@ -77,7 +77,7 @@ class _ProviderEntry:
 
 
 # ---------------------------------------------------------------------------
-# HermesMCPOAuthProvider — OAuthClientProvider subclass with disk-watch
+# BMBMCPOAuthProvider — OAuthClientProvider subclass with disk-watch
 # ---------------------------------------------------------------------------
 
 
@@ -92,7 +92,7 @@ def _make_hermes_provider_class() -> Optional[type]:
     except ImportError:  # pragma: no cover — SDK required in CI
         return None
 
-    class HermesMCPOAuthProvider(OAuthClientProvider):
+    class BMBMCPOAuthProvider(OAuthClientProvider):
         """OAuthClientProvider with pre-flow disk-mtime reload.
 
         Before every ``async_auth_flow`` invocation, asks the manager to
@@ -273,11 +273,11 @@ def _make_hermes_provider_class() -> Optional[type]:
             except StopAsyncIteration:
                 return
 
-    return HermesMCPOAuthProvider
+    return BMBMCPOAuthProvider
 
 
 # Cached at import time. Tested and used by :class:`MCPOAuthManager`.
-_HERMES_PROVIDER_CLS: Optional[type] = _make_hermes_provider_class()
+_BMB_PROVIDER_CLS: Optional[type] = _make_hermes_provider_class()
 
 
 # ---------------------------------------------------------------------------
@@ -348,7 +348,7 @@ class MCPOAuthManager:
 
         Returns None if the MCP SDK's OAuth support is unavailable.
         """
-        if _HERMES_PROVIDER_CLS is None:
+        if _BMB_PROVIDER_CLS is None:
             logger.warning(
                 "MCP OAuth '%s': SDK auth module unavailable", server_name,
             )
@@ -356,7 +356,7 @@ class MCPOAuthManager:
 
         # Local imports avoid circular deps at module import time.
         from tools.mcp_oauth import (
-            HermesTokenStorage,
+            BMBTokenStorage,
             _OAUTH_AVAILABLE,
             _build_client_metadata,
             _configure_callback_port,
@@ -370,7 +370,7 @@ class MCPOAuthManager:
             return None
 
         cfg = dict(entry.oauth_config or {})
-        storage = HermesTokenStorage(server_name)
+        storage = BMBTokenStorage(server_name)
 
         if not _is_interactive() and not storage.has_cached_tokens():
             logger.warning(
@@ -384,7 +384,7 @@ class MCPOAuthManager:
         client_metadata = _build_client_metadata(cfg)
         _maybe_preregister_client(storage, cfg, client_metadata)
 
-        return _HERMES_PROVIDER_CLS(
+        return _BMB_PROVIDER_CLS(
             server_name=server_name,
             server_url=entry.server_url,
             client_metadata=client_metadata,

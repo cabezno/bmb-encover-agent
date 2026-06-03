@@ -1,4 +1,4 @@
-"""Persistent slash-command worker — one HermesCLI per TUI session.
+"""Persistent slash-command worker — one EncoverCLI per TUI session.
 
 Protocol: reads JSON lines from stdin {id, command}, writes {id, ok, output|error} to stdout.
 """
@@ -11,11 +11,11 @@ import os
 import sys
 
 import cli as cli_mod
-from cli import HermesCLI
+from cli import EncoverCLI
 from rich.console import Console
 
 
-def _run(cli: HermesCLI, command: str) -> str:
+def _run(cli: EncoverCLI, command: str) -> str:
     cmd = (command or "").strip()
     if not cmd:
         return ""
@@ -49,8 +49,8 @@ def main():
     p.add_argument("--model", default="")
     args = p.parse_args()
 
-    os.environ["HERMES_SESSION_KEY"] = args.session_key
-    os.environ["HERMES_INTERACTIVE"] = "1"
+    os.environ["BMB_SESSION_KEY"] = args.session_key
+    os.environ["BMB_INTERACTIVE"] = "1"
 
     with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
         cli = EncoverCLI(model=args.model or None, compact=True, resume=args.session_key, verbose=False)

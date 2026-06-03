@@ -125,7 +125,7 @@ C:\bmb-encover\
 │   ├── build/             ← Compilados
 │   └── run_windows.bat    ← Menu de inicio
 ├── skills/                ← Skills
-├── tools/                 ← Tools Hermes
+├── tools/                 ← Tools BMB
 ├── gateway/               ← Gateway
 └── venv/                  ← Python virtualenv
 ```

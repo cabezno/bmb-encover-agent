@@ -2,7 +2,7 @@
 
 Renders any content as colored ASCII character video. Audio, video, images, text, or pure math in, MP4/GIF/PNG sequence out. Full RGB color per character cell, 1080p 24fps default. No GPU.
 
-Built for [BlackMagicBox Encover Agent](https://github.com/Encover/bmb-encover). Usable in any coding agent. Canonical source lives here; synced to [`Encover/bmb-encover/skills/creative/ascii-video`](https://github.com/Encover/bmb-encover/tree/main/skills/creative/ascii-video) via PR.
+Built for [BlackMagicBox Encover Agent](https://github.com/cabezno/bmb-encover-agent). Usable in any coding agent. Canonical source lives here; synced to [`Encover/bmb-encover/skills/creative/ascii-video`](https://github.com/cabezno/bmb-encover-agent/tree/main/skills/creative/ascii-video) via PR.
 
 ## What this is
 

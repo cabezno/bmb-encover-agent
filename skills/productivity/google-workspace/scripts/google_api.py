@@ -2,7 +2,7 @@
 """Google Workspace API CLI for BlackMagicBox Encover Agent.
 
 Uses the Google Workspace CLI (`gws`) when available, but preserves the
-existing Hermes-facing JSON contract and falls back to the Python client
+existing BMB-facing JSON contract and falls back to the Python client
 libraries if `gws` is not installed.
 
 Usage:
@@ -80,7 +80,7 @@ def _stored_token_scopes() -> list[str]:
 
 
 def _gws_binary() -> str | None:
-    override = os.getenv("HERMES_GWS_BIN")
+    override = os.getenv("BMB_GWS_BIN")
     if override:
         return override
     return shutil.which("gws")

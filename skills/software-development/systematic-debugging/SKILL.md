@@ -5,7 +5,7 @@ version: 1.1.0
 author: BlackMagicBox Encover Agent (adapted from obra/superpowers)
 license: MIT
 metadata:
-  hermes:
+  bmb:
     tags: [debugging, troubleshooting, problem-solving, root-cause, investigation]
     related_skills: [test-driven-development, writing-plans, subagent-driven-development]
 ---
@@ -318,7 +318,7 @@ If you catch yourself thinking:
 
 ### Investigation Tools
 
-Use these Hermes tools during Phase 1:
+Use these BMB tools during Phase 1:
 
 - **`search_files`** — Find error strings, trace function calls, locate patterns
 - **`read_file`** — Read source code with line numbers for precise analysis

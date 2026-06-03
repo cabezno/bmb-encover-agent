@@ -332,7 +332,7 @@
     "name": "bmb-encover",
     "description": "Configure, extend, or contribute to BlackMagicBox Encover Agent.",
     "tags": [
-      "hermes",
+      "bmb",
       "setup",
       "configuration",
       "multi-agent",
@@ -575,7 +575,7 @@
   },
   {
     "name": "debugging-bmb-tui-commands",
-    "description": "Debug Hermes TUI slash commands: Python, gateway, Ink UI.",
+    "description": "Debug BMB TUI slash commands: Python, gateway, Ink UI.",
     "tags": [
       "debugging",
       "bmb-encover",
@@ -588,17 +588,17 @@
     "source": "built-in"
   },
   {
-    "name": "debugging-hermes-tui-commands",
-    "description": "Debug Hermes TUI slash commands: Python, gateway, Ink UI.",
+    "name": "debugging-bmb-tui-commands",
+    "description": "Debug BMB TUI slash commands: Python, gateway, Ink UI.",
     "tags": [
       "debugging",
-      "hermes-agent",
+      "bmb-agent",
       "tui",
       "slash-commands",
       "typescript",
       "python"
     ],
-    "path": "software-development/debugging-hermes-tui-commands/SKILL.md",
+    "path": "software-development/debugging-bmb-tui-commands/SKILL.md",
     "source": "installed"
   },
   {
@@ -1149,10 +1149,10 @@
     "source": "installed"
   },
   {
-    "name": "hermes-agent",
-    "description": "Configure, extend, or contribute to Hermes Agent. Also covers the BMB Encover Agent fork (cloned and rebranded).",
+    "name": "bmb-agent",
+    "description": "Configure, extend, or contribute to BMB Agent. Also covers the BMB Encover Agent fork (cloned and rebranded).",
     "tags": [
-      "hermes",
+      "bmb",
       "setup",
       "configuration",
       "multi-agent",
@@ -1162,27 +1162,27 @@
       "development",
       "bmb"
     ],
-    "path": "autonomous-ai-agents/hermes-agent/SKILL.md",
+    "path": "autonomous-ai-agents/bmb-agent/SKILL.md",
     "source": "installed"
   },
   {
-    "name": "hermes-agent-skill-authoring",
+    "name": "bmb-agent-skill-authoring",
     "description": "Author in-repo SKILL.md: frontmatter, validator, structure.",
     "tags": [
       "skills",
       "authoring",
-      "hermes-agent",
+      "bmb-agent",
       "conventions",
       "skill-md"
     ],
-    "path": "software-development/hermes-agent-skill-authoring/SKILL.md",
+    "path": "software-development/bmb-agent-skill-authoring/SKILL.md",
     "source": "installed"
   },
   {
-    "name": "hermes-gateway-messaging",
-    "description": "Configure Hermes Agent gateway for messaging platforms (Telegram, WhatsApp) with custom auto-responder logic, contact databases, and tiered message handling.",
+    "name": "bmb-gateway-messaging",
+    "description": "Configure BMB Undercover Agent gateway for messaging platforms (Telegram, WhatsApp) with custom auto-responder logic, contact databases, and tiered message handling.",
     "tags": [
-      "hermes",
+      "bmb",
       "gateway",
       "telegram",
       "whatsapp",
@@ -1190,7 +1190,7 @@
       "auto-responder",
       "messaging"
     ],
-    "path": "autonomous-ai-agents/hermes-gateway-messaging/SKILL.md",
+    "path": "autonomous-ai-agents/bmb-gateway-messaging/SKILL.md",
     "source": "installed"
   },
   {
@@ -1383,7 +1383,7 @@
   },
   {
     "name": "kanban-worker",
-    "description": "Pitfalls, examples, and edge cases for Hermes Kanban workers. The lifecycle itself is auto-injected into every worker's system prompt as KANBAN_GUIDANCE (from agent/prompt_builder.py); this skill is what you load when you want deeper detail on specific scenarios.",
+    "description": "Pitfalls, examples, and edge cases for BMB Kanban workers. The lifecycle itself is auto-injected into every worker's system prompt as KANBAN_GUIDANCE (from agent/prompt_builder.py); this skill is what you load when you want deeper detail on specific scenarios.",
     "tags": [
       "kanban",
       "multi-agent",
@@ -1396,7 +1396,7 @@
   },
   {
     "name": "kanban-worker",
-    "description": "Pitfalls, examples, and edge cases for Hermes Kanban workers. The lifecycle itself is auto-injected into every worker's system prompt as KANBAN_GUIDANCE (from agent/prompt_builder.py); this skill is what you load when you want deeper detail on specific scenarios.",
+    "description": "Pitfalls, examples, and edge cases for BMB Kanban workers. The lifecycle itself is auto-injected into every worker's system prompt as KANBAN_GUIDANCE (from agent/prompt_builder.py); this skill is what you load when you want deeper detail on specific scenarios.",
     "tags": [
       "kanban",
       "multi-agent",
@@ -1975,7 +1975,7 @@
   },
   {
     "name": "plan",
-    "description": "Plan mode: write markdown plan to .hermes/plans/, no exec.",
+    "description": "Plan mode: write markdown plan to .bmb/plans/, no exec.",
     "tags": [
       "planning",
       "plan-mode",
@@ -1987,7 +1987,7 @@
   },
   {
     "name": "plan",
-    "description": "Plan mode: write markdown plan to .hermes/plans/, no exec.",
+    "description": "Plan mode: write markdown plan to .bmb/plans/, no exec.",
     "tags": [
       "planning",
       "plan-mode",

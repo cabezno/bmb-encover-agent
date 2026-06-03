@@ -155,7 +155,7 @@
     },
     {
       "id": "devops/kanban-worker",
-      "text": "kanban-worker: Pitfalls, examples, and edge cases for Hermes Kanban workers. The lifecycle itself is auto-injected into every worker's system prompt as KANBAN_GUIDANCE (from agent/prompt_builder.py); this skill is w [kanban, multi-agent, collaboration, workflow, pitfalls]",
+      "text": "kanban-worker: Pitfalls, examples, and edge cases for BMB Kanban workers. The lifecycle itself is auto-injected into every worker's system prompt as KANBAN_GUIDANCE (from agent/prompt_builder.py); this skill is w [kanban, multi-agent, collaboration, workflow, pitfalls]",
       "name": "kanban-worker"
     },
     {
@@ -380,7 +380,7 @@
     },
     {
       "id": "software-development/debugging-bmb-tui-commands",
-      "text": "debugging-bmb-tui-commands: Debug Hermes TUI slash commands: Python, gateway, Ink UI. [debugging, bmb-encover, tui, slash-commands, typescript, python]",
+      "text": "debugging-bmb-tui-commands: Debug BMB TUI slash commands: Python, gateway, Ink UI. [debugging, bmb-encover, tui, slash-commands, typescript, python]",
       "name": "debugging-bmb-tui-commands"
     },
     {
@@ -390,7 +390,7 @@
     },
     {
       "id": "software-development/plan",
-      "text": "plan: Plan mode: write markdown plan to .hermes/plans/, no exec. [planning, plan-mode, implementation, workflow]",
+      "text": "plan: Plan mode: write markdown plan to .bmb/plans/, no exec. [planning, plan-mode, implementation, workflow]",
       "name": "plan"
     },
     {

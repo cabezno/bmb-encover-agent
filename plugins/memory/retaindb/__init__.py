@@ -187,7 +187,7 @@ class _Client:
         h = {
             "Authorization": f"Bearer {token}",
             "Content-Type": "application/json",
-            "x-sdk-runtime": "hermes-plugin",
+            "x-sdk-runtime": "bmb-plugin",
         }
         if path.startswith(("/v1/memory", "/v1/context")):
             h["X-API-Key"] = token
@@ -286,7 +286,7 @@ class _Client:
         import requests
         url = f"{self.base_url}/v1/files"
         token = self.api_key.replace("Bearer ", "").strip()
-        headers = {"Authorization": f"Bearer {token}", "x-sdk-runtime": "hermes-plugin"}
+        headers = {"Authorization": f"Bearer {token}", "x-sdk-runtime": "bmb-plugin"}
         fields = {"path": remote_path, "scope": scope.upper()}
         if project_id:
             fields["project_id"] = project_id
@@ -307,7 +307,7 @@ class _Client:
         import requests
         token = self.api_key.replace("Bearer ", "").strip()
         url = f"{self.base_url}/v1/files/{quote(file_id, safe='')}/content"
-        resp = requests.get(url, headers={"Authorization": f"Bearer {token}", "x-sdk-runtime": "hermes-plugin"}, timeout=30, allow_redirects=True)
+        resp = requests.get(url, headers={"Authorization": f"Bearer {token}", "x-sdk-runtime": "bmb-plugin"}, timeout=30, allow_redirects=True)
         resp.raise_for_status()
         return resp.content
 
@@ -490,7 +490,7 @@ class RetainDBMemoryProvider(MemoryProvider):
         api_key = os.environ.get("RETAINDB_API_KEY", "")
         base_url = re.sub(r"/+$", "", os.environ.get("RETAINDB_BASE_URL", _DEFAULT_BASE_URL))
 
-        # Project resolution: RETAINDB_PROJECT > hermes-<profile> > "default"
+        # Project resolution: RETAINDB_PROJECT > bmb-<profile> > "default"
         # If unset, the API auto-creates and uses the "default" project — no config required.
         explicit = os.environ.get("RETAINDB_PROJECT")
         if explicit:
@@ -498,7 +498,7 @@ class RetainDBMemoryProvider(MemoryProvider):
         else:
             bmb_home = str(kwargs.get("bmb_home", ""))
             profile_name = os.path.basename(bmb_home) if bmb_home else ""
-            project = f"hermes-{profile_name}" if (profile_name and profile_name not in {"", ".hermes"}) else "default"
+            project = f"bmb-{profile_name}" if (profile_name and profile_name not in {"", ".bmb"}) else "default"
 
         self._client = _Client(api_key, base_url, project)
         self._session_id = session_id

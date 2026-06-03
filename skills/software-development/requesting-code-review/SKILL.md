@@ -5,7 +5,7 @@ version: 2.0.0
 author: BlackMagicBox Encover Agent (adapted from obra/superpowers + MorAlekss)
 license: MIT
 metadata:
-  hermes:
+  bmb:
     tags: [code-review, security, verification, quality, pre-commit, auto-fix]
     related_skills: [subagent-driven-development, writing-plans, test-driven-development, github-code-review]
 ---

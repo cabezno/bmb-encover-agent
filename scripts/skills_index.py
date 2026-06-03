@@ -3,7 +3,7 @@
 
 Escanea:
   1) /opt/bmb-encover/skills/   (built-in)
-  2) /root/.hermes/skills/       (instaladas)
+  2) /root/.bmb/skills/       (instaladas)
 
 Para cada skill lee SKILL.md, extrae name, description, tags del frontmatter YAML,
 y genera /opt/bmb-encover/skills/index.json con una lista ordenada de objetos
@@ -22,7 +22,7 @@ from pathlib import Path
 
 # ── Rutas fijas ──────────────────────────────────────────────────────
 BUILTIN_DIR = Path("/opt/bmb-encover/skills")
-INSTALLED_DIR = Path("/root/.hermes/skills")
+INSTALLED_DIR = Path("/root/.bmb/skills")
 OUTPUT_PATH = BUILTIN_DIR / "index.json"
 
 
@@ -170,12 +170,12 @@ def extract_tags(frontmatter: dict) -> list:
     if isinstance(tags, str) and tags:
         return [tags]
 
-    # 3) metadata.hermes.tags
+    # 3) metadata.bmb.tags
     metadata = frontmatter.get("metadata", {})
     if isinstance(metadata, dict):
-        hermes = metadata.get("hermes", {})
+        bmb = metadata.get("bmb", {})
         if isinstance(hermes, dict):
-            htags = hermes.get("tags", [])
+            htags = bmb.get("tags", [])
             if isinstance(htags, list) and len(htags) > 0:
                 return htags
             if isinstance(htags, str) and htags:

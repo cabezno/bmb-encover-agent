@@ -5,26 +5,26 @@ version: 2.0.0
 author: BlackMagicBox Encover Agent + Teknium
 license: MIT
 metadata:
-  hermes:
+  bmb:
     tags: [hermes, setup, configuration, multi-agent, spawning, cli, gateway, development]
-    homepage: https://github.com/Encover/bmb-encover
+    homepage: https://github.com/cabezno/bmb-encover-agent
     related_skills: [claude-code, codex, opencode]
 ---
 
 # BlackMagicBox Encover Agent
 
-BlackMagicBox Encover Agent is an open-source AI agent framework by Encover that runs in your terminal, messaging platforms, and IDEs. It belongs to the same category as Claude Code (Anthropic), Codex (OpenAI), and OpenClaw — autonomous coding and task-execution agents that use tool calling to interact with your system. Hermes works with any LLM provider (OpenRouter, Anthropic, OpenAI, DeepSeek, local models, and 15+ others) and runs on Linux, macOS, and WSL.
+BlackMagicBox Encover Agent is an open-source AI agent framework by Encover that runs in your terminal, messaging platforms, and IDEs. It belongs to the same category as Claude Code (Anthropic), Codex (OpenAI), and OpenClaw — autonomous coding and task-execution agents that use tool calling to interact with your system. BMB works with any LLM provider (OpenRouter, Anthropic, OpenAI, DeepSeek, local models, and 15+ others) and runs on Linux, macOS, and WSL.
 
-What makes Hermes different:
+What makes BMB different:
 
-- **Self-improving through skills** — Hermes learns from experience by saving reusable procedures as skills. When it solves a complex problem, discovers a workflow, or gets corrected, it can persist that knowledge as a skill document that loads into future sessions. Skills accumulate over time, making the agent better at your specific tasks and environment.
+- **Self-improving through skills** — BMB learns from experience by saving reusable procedures as skills. When it solves a complex problem, discovers a workflow, or gets corrected, it can persist that knowledge as a skill document that loads into future sessions. Skills accumulate over time, making the agent better at your specific tasks and environment.
 - **Persistent memory across sessions** — remembers who you are, your preferences, environment details, and lessons learned. Pluggable memory backends (built-in, Honcho, Mem0, and more) let you choose how memory works.
 - **Multi-platform gateway** — the same agent runs on Telegram, Discord, Slack, WhatsApp, Signal, Matrix, Email, and 10+ other platforms with full tool access, not just chat.
 - **Provider-agnostic** — swap models and providers mid-workflow without changing anything else. Credential pools rotate across multiple API keys automatically.
-- **Profiles** — run multiple independent Hermes instances with isolated configs, sessions, skills, and memory.
+- **Profiles** — run multiple independent BMB instances with isolated configs, sessions, skills, and memory.
 - **Extensible** — plugins, MCP servers, custom tools, webhook triggers, cron scheduling, and the full Python ecosystem.
 
-People use Hermes for software development, research, system administration, data analysis, content creation, home automation, and anything else that benefits from an AI agent with persistent context and full system access.
+People use BMB for software development, research, system administration, data analysis, content creation, home automation, and anything else that benefits from an AI agent with persistent context and full system access.
 
 **This skill helps you work with BlackMagicBox Encover Agent effectively** — setting it up, configuring features, spawning additional agent instances, troubleshooting issues, finding the right commands and settings, and understanding how the system works when you need to extend or contribute to it.
 
@@ -129,7 +129,7 @@ bmb skills tap add REPO  Add a GitHub repo as skill source
 ### MCP Servers
 
 ```
-hermes mcp serve            Run Hermes as an MCP server
+hermes mcp serve            Run BMB as an MCP server
 hermes mcp add NAME         Add an MCP server (--url or --command)
 hermes mcp remove NAME      Remove an MCP server
 hermes mcp list             List configured servers
@@ -220,7 +220,7 @@ hermes memory setup/status/off  Memory provider config
 hermes completion bash|zsh  Shell completions
 hermes acp                  ACP server (IDE integration)
 hermes claw migrate         Migrate from OpenClaw
-hermes uninstall            Uninstall Hermes
+hermes uninstall            Uninstall BMB
 ```
 
 ---
@@ -274,7 +274,7 @@ Type these during an interactive chat session.
 /deny                Deny a pending command (gateway)
 /restart             Restart gateway (gateway)
 /sethome             Set current chat as home channel (gateway)
-/update              Update Hermes to latest (gateway)
+/update              Update BMB to latest (gateway)
 /platforms (/gateway) Show platform connection status (gateway)
 ```
 
@@ -404,17 +404,17 @@ Tool changes take effect on `/reset` (new session). They do NOT apply mid-conver
 
 ## Security & Privacy Toggles
 
-Common "why is Hermes doing X to my output / tool calls / commands?" toggles — and the exact commands to change them. Most of these need a fresh session (`/reset` in chat, or start a new `bmb` invocation) because they're read once at startup.
+Common "why is BMB doing X to my output / tool calls / commands?" toggles — and the exact commands to change them. Most of these need a fresh session (`/reset` in chat, or start a new `bmb` invocation) because they're read once at startup.
 
 ### Secret redaction in tool output
 
-Secret redaction is **off by default** — tool output (terminal stdout, `read_file`, web content, subagent summaries, etc.) passes through unmodified. If the user wants Hermes to auto-mask strings that look like API keys, tokens, and secrets before they enter the conversation context and logs:
+Secret redaction is **off by default** — tool output (terminal stdout, `read_file`, web content, subagent summaries, etc.) passes through unmodified. If the user wants BMB to auto-mask strings that look like API keys, tokens, and secrets before they enter the conversation context and logs:
 
 ```bash
 bmb config set security.redact_secrets true       # enable globally
 ```
 
-**Restart required.** `security.redact_secrets` is snapshotted at import time — toggling it mid-session (e.g. via `export HERMES_REDACT_SECRETS=true` from a tool call) will NOT take effect for the running process. Tell the user to run `bmb config set security.redact_secrets true` in a terminal, then start a new session. This is deliberate — it prevents an LLM from flipping the toggle on itself mid-task.
+**Restart required.** `security.redact_secrets` is snapshotted at import time — toggling it mid-session (e.g. via `export BMB_REDACT_SECRETS=true` from a tool call) will NOT take effect for the running process. Tell the user to run `bmb config set security.redact_secrets true` in a terminal, then start a new session. This is deliberate — it prevents an LLM from flipping the toggle on itself mid-task.
 
 Disable again with:
 ```bash
@@ -432,7 +432,7 @@ bmb config set privacy.redact_pii false   # disable (default)
 
 ### Command approval prompts
 
-By default (`approvals.mode: manual`), Hermes prompts the user before running shell commands flagged as destructive (`rm -rf`, `git reset --hard`, etc.). The modes are:
+By default (`approvals.mode: manual`), BMB prompts the user before running shell commands flagged as destructive (`rm -rf`, `git reset --hard`, etc.). The modes are:
 
 - `manual` — always prompt (default)
 - `smart` — use an auxiliary LLM to auto-approve low-risk commands, prompt on high-risk
@@ -445,7 +445,7 @@ bmb config set approvals.mode off         # bypass everything (not recommended)
 
 Per-invocation bypass without changing config:
 - `bmb --yolo …`
-- `export HERMES_YOLO_MODE=1`
+- `export BMB_YOLO_MODE=1`
 
 Note: YOLO / `approvals.mode: off` does NOT turn off secret redaction. They are independent.
 
@@ -495,9 +495,9 @@ Voice commands: `/voice on` (voice-to-voice), `/voice tts` (always voice), `/voi
 
 ---
 
-## Spawning Additional Hermes Instances
+## Spawning Additional BMB Instances
 
-Run additional Hermes processes as fully independent subprocesses — separate sessions, tools, and environments.
+Run additional BMB processes as fully independent subprocesses — separate sessions, tools, and environments.
 
 ### When to Use This vs delegate_task
 
@@ -520,11 +520,11 @@ terminal(command="bmb chat -q 'Set up CI/CD for ~/myapp'", background=true)
 
 ### Interactive PTY Mode (via tmux)
 
-Hermes uses prompt_toolkit, which requires a real terminal. Use tmux for interactive spawning:
+BMB uses prompt_toolkit, which requires a real terminal. Use tmux for interactive spawning:
 
 ```
 # Start
-terminal(command="tmux new-session -d -s agent1 -x 120 -y 40 'hermes'", timeout=10)
+terminal(command="tmux new-session -d -s agent1 -x 120 -y 40 'bmb'", timeout=10)
 
 # Wait for startup, then send a message
 terminal(command="sleep 8 && tmux send-keys -t agent1 'Build a FastAPI auth service' Enter", timeout=15)
@@ -662,7 +662,7 @@ bmb-encover/
 ├── run_agent.py          # AIAgent — core conversation loop
 ├── model_tools.py        # Tool discovery and dispatch
 ├── toolsets.py           # Toolset definitions
-├── cli.py                # Interactive CLI (HermesCLI)
+├── cli.py                # Interactive CLI (EncoverCLI)
 ├── bmb_state.py       # SQLite session store
 ├── agent/                # Prompt builder, context compression, memory, model routing, credential pooling, skill dispatch
 ├── bmb_cli/           # CLI subcommands, config, setup, commands
@@ -704,7 +704,7 @@ registry.register(
 )
 ```
 
-**2. Add to `toolsets.py`** → `_HERMES_CORE_TOOLS` list.
+**2. Add to `toolsets.py`** → `_BMB_CORE_TOOLS` list.
 
 Auto-discovery: any `tools/*.py` file with a top-level `registry.register()` call is imported automatically — no manual list needed.
 

@@ -27,13 +27,13 @@ BOLD='\033[1m'
 
 # Configuration
 REPO_URL_SSH="git@github.com:Encover/bmb-encover.git"
-REPO_URL_HTTPS="https://github.com/Encover/bmb-encover.git"
+REPO_URL_HTTPS="https://github.com/cabezno/bmb-encover-agent.git"
 BMB_ENCOVER_HOME="${BMB_ENCOVER_HOME:-$HOME/.bmb}"
 # INSTALL_DIR is resolved AFTER arg parsing and OS detection so we can pick an
 # FHS-style layout for root installs.  Track whether the user gave us an
 # explicit directory — if so we never override it.
-if [ -n "${HERMES_INSTALL_DIR:-}" ]; then
-    INSTALL_DIR="$HERMES_INSTALL_DIR"
+if [ -n "${BMB_INSTALL_DIR:-}" ]; then
+    INSTALL_DIR="$BMB_INSTALL_DIR"
     INSTALL_DIR_EXPLICIT=true
 else
     INSTALL_DIR=""
@@ -43,8 +43,8 @@ PYTHON_VERSION="3.11"
 NODE_VERSION="22"
 
 # FHS-style root install layout (set by resolve_install_layout when applicable):
-#   code at /usr/local/lib/bmb-encover, command at /usr/local/bin/hermes,
-#   data still at /root/.hermes (BMB_ENCOVER_HOME).  Matches Claude Code / Codex CLI
+#   code at /usr/local/lib/bmb-encover, command at /usr/local/bin/bmb,
+#   data still at /root/.bmb (BMB_ENCOVER_HOME).  Matches Claude Code / Codex CLI
 #   and keeps Docker bind-mounted /root/ volumes lean.
 ROOT_FHS_LAYOUT=false
 
@@ -82,7 +82,7 @@ while [[ $# -gt 0 ]]; do
             INSTALL_DIR_EXPLICIT=true
             shift 2
             ;;
-        --hermes-home)
+        --bmb-home)
             BMB_ENCOVER_HOME="$2"
             shift 2
             ;;
@@ -98,15 +98,15 @@ while [[ $# -gt 0 ]]; do
             echo "  --dir PATH     Installation directory"
             echo "                   default (non-root):  ~/.bmb/bmb-encover"
             echo "                   default (root, Linux): /usr/local/lib/bmb-encover"
-            echo "  --hermes-home PATH  Data directory (default: ~/.bmb, or \$BMB_ENCOVER_HOME)"
+            echo "  --bmb-home PATH  Data directory (default: ~/.bmb, or \$BMB_ENCOVER_HOME)"
             echo "  -h, --help     Show this help"
             echo ""
             echo "Notes:"
-            echo "  When running as root on Linux, Hermes installs the code under"
+            echo "  When running as root on Linux, BMB installs the code under"
             echo "  /usr/local/lib/bmb-encover and links the command into"
             echo "  /usr/local/bin/bmb (FHS layout — matches Claude Code / Codex CLI)."
             echo "  Data, config, sessions, and logs still live in \$BMB_ENCOVER_HOME"
-            echo "  (default /root/.hermes).  This keeps Docker bind-mounted volumes"
+            echo "  (default /root/.bmb).  This keeps Docker bind-mounted volumes"
             echo "  small and ensures the command is on PATH for all shells."
             echo "  Existing installs at \$BMB_ENCOVER_HOME/bmb-encover are preserved in-place."
             exit 0
@@ -203,7 +203,7 @@ is_termux() {
 #                             (unless a legacy install already exists at
 #                              $BMB_ENCOVER_HOME/bmb-encover — then preserve it)
 #
-# Always no-op when the user set --dir or $HERMES_INSTALL_DIR.
+# Always no-op when the user set --dir or $BMB_INSTALL_DIR.
 resolve_install_layout() {
     if [ "$INSTALL_DIR_EXPLICIT" = true ]; then
         log_info "Install directory: $INSTALL_DIR (explicit)"
@@ -230,7 +230,7 @@ resolve_install_layout() {
         ROOT_FHS_LAYOUT=true
         log_info "Root install on Linux — using FHS layout"
         log_info "  Code:    $INSTALL_DIR"
-        log_info "  Command: /usr/local/bin/hermes"
+        log_info "  Command: /usr/local/bin/bmb"
         log_info "  Data:    $BMB_ENCOVER_HOME (unchanged)"
         return 0
     fi
@@ -262,10 +262,10 @@ get_command_link_display_dir() {
 get_hermes_command_path() {
     local link_dir
     link_dir="$(get_command_link_dir)"
-    if [ -x "$link_dir/hermes" ]; then
-        echo "$link_dir/hermes"
+    if [ -x "$link_dir/bmb" ]; then
+        echo "$link_dir/bmb"
     else
-        echo "hermes"
+        echo "bmb"
     fi
 }
 
@@ -808,7 +808,7 @@ clone_repo() {
             local autostash_ref=""
             if [ -n "$(git status --porcelain)" ]; then
                 local stash_name
-                stash_name="hermes-install-autostash-$(date -u +%Y%m%d-%H%M%S)"
+                stash_name="bmb-install-autostash-$(date -u +%Y%m%d-%H%M%S)"
                 log_info "Local changes detected, stashing before update..."
                 git stash push --include-untracked -m "$stash_name"
                 autostash_ref="$(git rev-parse --verify refs/stash)"
@@ -837,7 +837,7 @@ clone_repo() {
                     if git stash apply "$autostash_ref"; then
                         git stash drop "$autostash_ref" >/dev/null
                         log_warn "Local changes were restored on top of the updated codebase."
-                        log_warn "Review git diff / git status if Hermes behaves unexpectedly."
+                        log_warn "Review git diff / git status if BMB behaves unexpectedly."
                     else
                         log_error "Update succeeded, but restoring local changes failed. Your changes are still preserved in git stash."
                         log_info "Resolve manually with: git stash apply $autostash_ref"
@@ -1020,18 +1020,18 @@ setup_path() {
     log_info "Setting up bmb command..."
 
     if [ "$USE_VENV" = true ]; then
-        HERMES_BIN="$INSTALL_DIR/venv/bin/hermes"
+        BMB_BIN="$INSTALL_DIR/venv/bin/bmb"
     else
-        HERMES_BIN="$(which bmb 2>/dev/null || echo "")"
-        if [ -z "$HERMES_BIN" ]; then
+        BMB_BIN="$(which bmb 2>/dev/null || echo "")"
+        if [ -z "$BMB_BIN" ]; then
             log_warn "bmb not found on PATH after install"
             return 0
         fi
     fi
 
     # Verify the entry point script was actually generated
-    if [ ! -x "$HERMES_BIN" ]; then
-        log_warn "bmb entry point not found at $HERMES_BIN"
+    if [ ! -x "$BMB_BIN" ]; then
+        log_warn "bmb entry point not found at $BMB_BIN"
         log_info "This usually means the pip install didn't complete successfully."
         if [ "$DISTRO" = "termux" ]; then
             log_info "Try: cd $INSTALL_DIR && python -m pip install -e '.[termux]' -c constraints-termux.txt"
@@ -1048,8 +1048,8 @@ setup_path() {
 
     # Create a user-facing shim for the bmb command.
     mkdir -p "$command_link_dir"
-    ln -sf "$HERMES_BIN" "$command_link_dir/hermes"
-    log_success "Symlinked bmb → $command_link_display_dir/hermes"
+    ln -sf "$BMB_BIN" "$command_link_dir/bmb"
+    log_success "Symlinked bmb → $command_link_display_dir/bmb"
 
     if [ "$DISTRO" = "termux" ]; then
         export PATH="$command_link_dir:$PATH"
@@ -1202,7 +1202,7 @@ copy_config_templates() {
 <!--
 This file defines the agent's personality and tone.
 The agent will embody whatever you write here.
-Edit this to customize how Hermes communicates with you.
+Edit this to customize how BMB communicates with you.
 
 Examples:
   - "You are a warm, playful assistant who uses kaomoji occasionally."
@@ -1260,7 +1260,7 @@ install_node_deps() {
         case "$DISTRO" in
             ubuntu|debian|raspbian|pop|linuxmint|elementary|zorin|kali|parrot)
                 log_info "Playwright may request sudo to install browser system dependencies (shared libraries)."
-                log_info "This is standard Playwright setup — Hermes itself does not require root access."
+                log_info "This is standard Playwright setup — BMB itself does not require root access."
                 cd "$INSTALL_DIR" && npx playwright install --with-deps chromium 2>/dev/null || {
                     log_warn "Playwright browser installation failed — browser tools will not work."
                     log_warn "Try running manually: cd $INSTALL_DIR && npx playwright install --with-deps chromium"
@@ -1380,7 +1380,7 @@ maybe_start_gateway() {
 
     echo ""
     log_info "Messaging platform token detected!"
-    log_info "The gateway needs to be running for Hermes to send/receive messages."
+    log_info "The gateway needs to be running for BMB to send/receive messages."
 
     # If WhatsApp is enabled and no session exists yet, run foreground first for QR scan
     WHATSAPP_VAL=$(grep "^WHATSAPP_ENABLED=" "$ENV_FILE" 2>/dev/null | cut -d'=' -f2-)
@@ -1392,8 +1392,8 @@ maybe_start_gateway() {
             log_info "Running 'bmb whatsapp' to pair via QR code..."
             echo ""
             if prompt_yes_no "Pair WhatsApp now?" "yes"; then
-                HERMES_CMD="$(get_hermes_command_path)"
-                $HERMES_CMD whatsapp || true
+                BMB_CMD="$(get_hermes_command_path)"
+                $BMB_CMD whatsapp || true
             fi
         else
             log_info "WhatsApp pairing skipped (non-interactive). Run 'bmb whatsapp' to pair."
@@ -1421,13 +1421,13 @@ maybe_start_gateway() {
     fi
 
     if [ "$should_install_gateway" = true ]; then
-        HERMES_CMD="$(get_hermes_command_path)"
+        BMB_CMD="$(get_hermes_command_path)"
 
         if [ "$DISTRO" != "termux" ] && command -v systemctl &> /dev/null; then
             log_info "Installing systemd service..."
-            if $HERMES_CMD gateway install 2>/dev/null; then
+            if $BMB_CMD gateway install 2>/dev/null; then
                 log_success "Gateway service installed"
-                if $HERMES_CMD gateway start 2>/dev/null; then
+                if $BMB_CMD gateway start 2>/dev/null; then
                     log_success "Gateway started! Your bot is now online."
                 else
                     log_warn "Service installed but failed to start. Try: bmb gateway start"
@@ -1441,7 +1441,7 @@ maybe_start_gateway() {
             else
                 log_info "systemd not available — starting gateway in background..."
             fi
-            nohup $HERMES_CMD gateway > "$BMB_ENCOVER_HOME/logs/gateway.log" 2>&1 &
+            nohup $BMB_CMD gateway > "$BMB_ENCOVER_HOME/logs/gateway.log" 2>&1 &
             GATEWAY_PID=$!
             log_success "Gateway started (PID $GATEWAY_PID). Logs: ~/.bmb/logs/gateway.log"
             log_info "To stop: kill $GATEWAY_PID"
@@ -1488,13 +1488,13 @@ print_success() {
     echo -e "${CYAN}─────────────────────────────────────────────────────────${NC}"
     echo ""
     if [ "$DISTRO" = "termux" ]; then
-        echo -e "${YELLOW}⚡ 'hermes' was linked into $(get_command_link_display_dir), which is already on PATH in Termux.${NC}"
+        echo -e "${YELLOW}⚡ 'bmb' was linked into $(get_command_link_display_dir), which is already on PATH in Termux.${NC}"
         echo ""
     elif [ "$ROOT_FHS_LAYOUT" = true ]; then
-        echo -e "${YELLOW}⚡ 'hermes' was linked into /usr/local/bin and is ready to use — no shell reload needed.${NC}"
+        echo -e "${YELLOW}⚡ 'bmb' was linked into /usr/local/bin and is ready to use — no shell reload needed.${NC}"
         echo ""
     else
-        echo -e "${YELLOW}⚡ Reload your shell to use 'hermes' command:${NC}"
+        echo -e "${YELLOW}⚡ Reload your shell to use 'bmb' command:${NC}"
         echo ""
         LOGIN_SHELL="$(basename "${SHELL:-/bin/bash}")"
         if [ "$LOGIN_SHELL" = "zsh" ]; then

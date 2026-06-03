@@ -48,6 +48,7 @@ import io
 import struct
 from pathlib import Path
 from typing import Optional
+from bmb_cli.voice_call_server import get_call_server
 
 # ─── Configurar path para que funcione en Windows ────────────────
 _BMB_DIR = Path(__file__).parent.resolve()
@@ -68,7 +69,7 @@ logging.basicConfig(
 logger = logging.getLogger("bmb-app-server")
 
 DEFAULT_HOST = "0.0.0.0"
-DEFAULT_PORT = 8643
+DEFAULT_PORT = 8644
 AUTH_FILE = Path(os.path.expanduser("~/.bmb/app_auth.json"))
 ENV_FILE = Path(os.path.expanduser("~/.bmb/.env"))
 CONFIG_FILE = Path(os.path.expanduser("~/.bmb/config.yaml"))
@@ -139,13 +140,15 @@ class AppServer:
         self.app.router.add_get("/api/pair/devices", self.handle_pair_devices)
         self.app.router.add_post("/api/pair/revoke", self.handle_pair_revoke)
         self.app.router.add_get("/ws", self.handle_websocket_chat)
-        self.app.router.add_get("/ws/voice", self.handle_websocket_voice)
+self.app.router.add_get("/ws/voice", self.handle_websocket_voice)
+self.app.router.add_get("/ws/call", self.handle_websocket_call)
         # ─── Android endpoints ───────────────────
         self.app.router.add_post("/api/image", self.handle_image)
         self.app.router.add_post("/api/audio", self.handle_audio)
         self.app.router.add_get("/api/tts", self.handle_tts_get)
         self.app.router.add_post("/api/call/start", self.handle_call_start)
         self.app.router.add_post("/api/call/audio", self.handle_call_audio)
+        self.app.router.add_get("/api/call/status", self.handle_call_status)
         # ─── File transfer endpoints ──────────────
         self.app.router.add_post("/api/upload", self.handle_upload)
         self.app.router.add_get("/api/files", self.handle_list_files)
@@ -733,6 +736,59 @@ class AppServer:
             logger.error(f"❌ Whisper error: {e}")
             return ""
 
+    # ─── WebSocket de llamadas (Flutter Windows/Android) ─────
+
+    async def handle_websocket_call(self, request):
+        """WebSocket para llamadas de voz en tiempo real con apps Flutter.
+        
+        Protocolo:
+        - Cliente envía PCM 16kHz 16-bit mono en mensajes binary
+        - Servidor procesa VAD → STT → LLM → TTS → envía audio de vuelta
+        - Mensajes JSON para control (start_call, end_call, state)
+        """
+        ws = web.WebSocketResponse()
+        await ws.prepare(request)
+        
+        call_server = get_call_server()
+        device_id = request.query.get("device", "unknown")
+        
+        import uuid as _uuid
+        session_id = str(_uuid.uuid4())[:8]
+        logger.info(f"📞 Call WS conectado: {session_id} (device: {device_id})")
+        
+        # Crear sesión
+        from bmb_cli.voice_call_server import CallSession
+        session = CallSession(session_id, device_id)
+        session.ws = ws
+        call_server.sessions[session.session_id] = session
+        
+        await ws.send_json({
+            "type": "connected",
+            "session_id": session.session_id,
+            "sample_rate": 16000,
+        })
+        
+        try:
+            async for msg in ws:
+                if msg.type == web.WSMsgType.BINARY:
+                    await session.process_audio_chunk(msg.data)
+                elif msg.type == web.WSMsgType.TEXT:
+                    data = json.loads(msg.data)
+                    cmd = data.get("type", "")
+                    if cmd == "start_call":
+                        session.state = CallSession.State.LISTENING
+                    elif cmd == "end_call":
+                        break
+                    elif cmd == "ping":
+                        await ws.send_json({"type": "pong"})
+        except Exception as e:
+            logger.error(f"Call WS error {session_id}: {e}")
+        finally:
+            call_server.sessions.pop(session.session_id, None)
+            logger.info(f"📞 Call WS cerrado: {session_id}")
+        
+        return ws
+
     # ─── Android: Imagen ─────────────────────────────────────
 
     async def handle_image(self, request):
@@ -756,8 +812,14 @@ class AppServer:
             else:
                 desc = f"Imagen recibida: {filename}"
             return web.json_response({"status": "ok", "filename": filename, "description": desc})
+
+    async def handle_call_status(self, request):
+        """Estado de las llamadas activas."""
+        try:
+            call_server = get_call_server()
+            return web.json_response(call_server.get_status())
         except Exception as e:
-            logger.error(f"❌ Image error: {e}")
+            logger.error(f"❌ Call status error: {e}")
             return web.json_response({"error": str(e)}, status=500)
 
     # ─── Android: Audio grabado ──────────────────────────────
@@ -886,7 +948,7 @@ class AppServer:
                 "transcripcion": texto,
                 "respuesta": respuesta,
                 "audio_respuesta": audio_respuesta,
-                "upload_url": f"http://localhost:8643/uploads/{audio_respuesta}" if audio_respuesta else "",
+                "upload_url": f"http://localhost:8644/uploads/{audio_respuesta}" if audio_respuesta else "",
             })
         except Exception as e:
             logger.error(f"❌ Call error: {e}")

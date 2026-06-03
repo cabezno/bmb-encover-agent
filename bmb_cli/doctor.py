@@ -30,7 +30,7 @@ if _env_path.exists():
 load_dotenv(PROJECT_ROOT / ".env", override=False, encoding="utf-8")
 
 from bmb_cli.colors import Colors, color
-from bmb_cli.models import _HERMES_USER_AGENT
+from bmb_cli.models import _BMB_USER_AGENT
 from bmb_cli.vercel_auth import describe_vercel_auth
 from bmb_constants import OPENROUTER_MODELS_URL
 from utils import base_url_host_matches
@@ -181,7 +181,7 @@ def run_doctor(args):
 
     # Doctor runs from the interactive CLI, so CLI-gated tool availability
     # checks (like cronjob management) should see the same context as `bmb`.
-    os.environ.setdefault("HERMES_INTERACTIVE", "1")
+    os.environ.setdefault("BMB_INTERACTIVE", "1")
     
     issues = []
     manual_issues = []  # issues that can't be auto-fixed
@@ -189,7 +189,7 @@ def run_doctor(args):
     
     print()
     print(color("┌─────────────────────────────────────────────────────────┐", Colors.CYAN))
-    print(color("│                 🩺 Hermes Doctor                        │", Colors.CYAN))
+    print(color("│                 🩺 BMB Doctor                        │", Colors.CYAN))
     print(color("└─────────────────────────────────────────────────────────┘", Colors.CYAN))
     
     # =========================================================================
@@ -593,7 +593,7 @@ def run_doctor(args):
     if _safe_which("codex"):
         check_ok("codex CLI")
     else:
-        # Native OAuth uses Hermes' own device-code flow — the Codex CLI is
+        # Native OAuth uses BMB' own device-code flow — the Codex CLI is
         # only needed if you want to import existing tokens from
         # ~/.codex/auth.json.  Downgrade to info so users running
         # `bmb auth openai-codex` aren't told they're missing something.
@@ -644,13 +644,13 @@ def run_doctor(args):
         else:
             check_info(f"{_DHH}/SOUL.md exists but is empty — edit it to customize personality")
     else:
-        check_warn(f"{_DHH}/SOUL.md not found", "(create it to give Hermes a custom personality)")
+        check_warn(f"{_DHH}/SOUL.md not found", "(create it to give BMB a custom personality)")
         if should_fix:
             soul_path.parent.mkdir(parents=True, exist_ok=True)
             soul_path.write_text(
                 "# BlackMagicBox Encover Agent Persona\n\n"
-                "<!-- Edit this file to customize how Hermes communicates. -->\n\n"
-                "You are Hermes, a helpful AI assistant.\n",
+                "<!-- Edit this file to customize how BMB communicates. -->\n\n"
+                "You are BMB, a helpful AI assistant.\n",
                 encoding="utf-8",
             )
             check_ok(f"Created {_DHH}/SOUL.md with basic template")
@@ -1139,7 +1139,7 @@ def run_doctor(args):
                 _url = (_base.rstrip("/") + "/models") if _base else _default_url
                 _headers = {
                     "Authorization": f"Bearer {_key}",
-                    "User-Agent": _HERMES_USER_AGENT,
+                    "User-Agent": _BMB_USER_AGENT,
                 }
                 if base_url_host_matches(_base, "api.kimi.com"):
                     _headers["User-Agent"] = "claude-code/0.1.0"

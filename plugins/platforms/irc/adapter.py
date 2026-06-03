@@ -2,7 +2,7 @@
 IRC Platform Adapter for BlackMagicBox Encover Agent.
 
 A plugin-based gateway adapter that connects to an IRC server and relays
-messages to/from the Hermes agent.  Zero external dependencies — uses
+messages to/from the BMB agent.  Zero external dependencies — uses
 Python's stdlib asyncio for the IRC protocol.
 
 Configuration in config.yaml::
@@ -14,7 +14,7 @@ Configuration in config.yaml::
           extra:
             server: irc.libera.chat
             port: 6697
-            nickname: hermes-bot
+            nickname: bmb-bot
             channel: "#bmb"
             use_tls: true
             server_password: ""       # optional server password
@@ -114,7 +114,7 @@ class IRCAdapter(BasePlatformAdapter):
         # Connection settings (env vars override config.yaml)
         self.server = os.getenv("IRC_SERVER") or extra.get("server", "")
         self.port = int(os.getenv("IRC_PORT") or extra.get("port", 6697))
-        self.nickname = os.getenv("IRC_NICKNAME") or extra.get("nickname", "hermes-bot")
+        self.nickname = os.getenv("IRC_NICKNAME") or extra.get("nickname", "bmb-bot")
         self.channel = os.getenv("IRC_CHANNEL") or extra.get("channel", "")
         self.use_tls = (
             os.getenv("IRC_USE_TLS", "").lower() in ("1", "true", "yes")
@@ -562,7 +562,7 @@ def interactive_setup() -> None:
         if not prompt_yes_no("Reconfigure IRC?", False):
             return
 
-    print_info("Connect Hermes to an IRC network. Uses Python stdlib — no extra packages needed.")
+    print_info("Connect BMB to an IRC network. Uses Python stdlib — no extra packages needed.")
     print_info("   Works with Libera.Chat, OFTC, your own ZNC/InspIRCd, etc.")
     print()
 
@@ -587,7 +587,7 @@ def interactive_setup() -> None:
         save_env_value("IRC_PORT", "")
 
     nickname = prompt(
-        "Bot nickname (e.g. hermes-bot)",
+        "Bot nickname (e.g. bmb-bot)",
         default=get_env_value("IRC_NICKNAME") or "",
     )
     if not nickname:
@@ -654,7 +654,7 @@ def is_connected(config) -> bool:
 
 
 def register(ctx):
-    """Plugin entry point — called by the Hermes plugin system."""
+    """Plugin entry point — called by the BMB plugin system."""
     ctx.register_platform(
         name="irc",
         label="IRC",
