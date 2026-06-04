@@ -1,6 +1,6 @@
-# QUICKSTART WINDOWS
+﻿# QUICKSTART WINDOWS
 
-Guia rapida para levantar BMB App Server en Windows.
+Guia rapida para levantar BAG App Server en Windows.
 
 ## 1) Clonar repo
 
@@ -54,3 +54,4 @@ Valida venv, dependencias clave, health y endpoint QR.
 - Leer guia completa: README_WINDOWS_PORTABLE.md
 - Verificar Python 3.11+ en PATH
 - Reintentar setup: .\setup_windows_portable.bat
+

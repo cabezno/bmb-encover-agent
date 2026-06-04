@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/connection_provider.dart';
 import '../../providers/settings_provider.dart';
+import '../../themes/app_theme.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -20,8 +21,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           appBar: AppBar(
             backgroundColor: const Color(0xFF0D0D0D),
             elevation: 0,
-            title: const Text(
-              'Configuración',
+            title: Text(
+              AppTheme.section('Configuracion'),
               style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
             ),
             leading: IconButton(
@@ -32,7 +33,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           body: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             children: [
-              _buildSectionHeader('Conexión'),
+              _buildSectionHeader('Conexion'),
               _buildConnectionCard(connProv),
               const SizedBox(height: 24),
 
@@ -44,7 +45,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _buildDisplaySettings(settings),
               const SizedBox(height: 24),
 
-              _buildSectionHeader('Información'),
+              _buildSectionHeader('Informacion'),
               _buildAboutSection(),
             ],
           ),
@@ -57,7 +58,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Text(
-        title,
+        AppTheme.section(title),
         style: const TextStyle(
           fontSize: 13,
           fontWeight: FontWeight.w600,
@@ -120,7 +121,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               },
               icon: const Icon(Icons.link_off, color: Colors.red, size: 18),
               label: const Text(
-                'Desconectar y Olvidar',
+                '[CMD] DESCONECTAR Y OLVIDAR',
                 style: TextStyle(color: Colors.red),
               ),
               style: OutlinedButton.styleFrom(

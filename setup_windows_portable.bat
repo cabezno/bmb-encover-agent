@@ -1,9 +1,9 @@
-@echo off
+﻿@echo off
 setlocal EnableExtensions
 cd /d "%~dp0"
 
 echo =========================================
-echo   BMB Encover - Setup Windows Portable
+echo   BAG - Setup Windows Portable
 echo =========================================
 echo.
 
@@ -52,9 +52,9 @@ if not exist "%USERPROFILE%\.bmb\.env" (
     (
         echo # Completa con tu API key real
         echo DEEPSEEK_API_KEY=
-        echo BMB_ACCESS_TOKEN=
-        echo BMB_TTS_VOICE=es-AR-ElenaNeural
-        echo BMB_WHISPER_MODEL=tiny
+        echo BAG_ACCESS_TOKEN=
+        echo BAG_TTS_VOICE=es-AR-ElenaNeural
+        echo BAG_WHISPER_MODEL=tiny
     ) > "%USERPROFILE%\.bmb\.env"
     echo [OK] Se creo %USERPROFILE%\.bmb\.env
 ) else (
@@ -66,3 +66,4 @@ echo Setup completado.
 echo Siguiente paso: ejecutar start_windows_portable.bat
 echo.
 pause
+

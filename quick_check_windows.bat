@@ -1,4 +1,4 @@
-@echo off
+﻿@echo off
 setlocal EnableExtensions
 cd /d "%~dp0"
 
@@ -6,7 +6,7 @@ set "PASS=0"
 set "FAIL=0"
 
 echo =========================================
-echo   BMB Encover - Quick Check (Windows)
+echo   BAG - Quick Check (Windows)
 echo =========================================
 echo.
 
@@ -103,3 +103,4 @@ if %FAIL% gtr 0 (
 
 echo Quick check completado sin errores.
 exit /b 0
+

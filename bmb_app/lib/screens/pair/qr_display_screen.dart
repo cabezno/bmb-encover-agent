@@ -107,14 +107,14 @@ class _QRDisplayScreenState extends State<QRDisplayScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.darkBg,
+      backgroundColor: AppTheme.cBg,
       appBar: AppBar(
-        title: const Text('Vincular Dispositivo'),
-        backgroundColor: AppTheme.darkBg,
+        title: Text(AppTheme.section('Vincular Dispositivo')),
+        backgroundColor: AppTheme.cBg,
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh, color: Colors.white70),
-            tooltip: 'Refrescar QR',
+            tooltip: AppTheme.cmd('Refrescar QR'),
             onPressed: _refreshQR,
           ),
         ],
@@ -153,7 +153,7 @@ class _QRDisplayScreenState extends State<QRDisplayScreen> {
                 ),
                 const SizedBox(height: 20),
                 const Text(
-                  'Escanea este código QR',
+                  '  ESCANEA ESTE CODIGO QR',
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w600,
@@ -162,7 +162,7 @@ class _QRDisplayScreenState extends State<QRDisplayScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Usa la app móvil BMB para escanear\nel código y vincular tu dispositivo.',
+                  'USA LA APP MOVIL BAG PARA ESCANEAR\nEL CODIGO Y VINCULAR TU DISPOSITIVO.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 14,
@@ -179,14 +179,12 @@ class _QRDisplayScreenState extends State<QRDisplayScreen> {
                     height: 48,
                     child: CircularProgressIndicator(
                       strokeWidth: 3,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        Color(0xFF8300e9),
-                      ),
+                      valueColor: AlwaysStoppedAnimation<Color>(AppTheme.cCyan),
                     ),
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Conectando al servidor...',
+                    '[CMD] CONECTANDO AL SERVIDOR...',
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.white.withOpacity(0.6),
@@ -229,7 +227,7 @@ class _QRDisplayScreenState extends State<QRDisplayScreen> {
                         });
                         _connectAndFetch();
                       },
-                      child: const Text('Reintentar'),
+                      child: Text(AppTheme.cmd('Reintentar')),
                     ),
                   ),
                 ] else if (_serverBaseUrl != null) ...[
@@ -238,21 +236,14 @@ class _QRDisplayScreenState extends State<QRDisplayScreen> {
                     width: 300,
                     height: 300,
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
+                      color: AppTheme.cS1,
+                      borderRadius: BorderRadius.zero,
                       border: Border.all(
-                        color: Colors.white.withOpacity(0.1),
+                        color: AppTheme.cBorder,
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFF8300e9).withOpacity(0.15),
-                          blurRadius: 32,
-                          spreadRadius: 4,
-                        ),
-                      ],
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.zero,
                       child: Image.network(
                         _qrImageUrl,
                         width: 300,
@@ -268,7 +259,7 @@ class _QRDisplayScreenState extends State<QRDisplayScreen> {
                                   : null,
                               strokeWidth: 3,
                               valueColor: const AlwaysStoppedAnimation<Color>(
-                                Color(0xFF8300e9),
+                                AppTheme.cCyan,
                               ),
                             ),
                           );
@@ -284,7 +275,7 @@ class _QRDisplayScreenState extends State<QRDisplayScreen> {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                'No se pudo cargar el QR',
+                                'NO SE PUDO CARGAR EL QR',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey.withOpacity(0.5),
@@ -323,7 +314,7 @@ class _QRDisplayScreenState extends State<QRDisplayScreen> {
                               ),
                               const SizedBox(width: 8),
                               Text(
-                                'Servidor',
+                                AppTheme.section('Servidor'),
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
@@ -347,7 +338,7 @@ class _QRDisplayScreenState extends State<QRDisplayScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'El QR se actualiza automáticamente cada 10 segundos',
+                      'EL QR SE ACTUALIZA AUTOMATICAMENTE CADA 10 SEGUNDOS',
                       style: TextStyle(
                         fontSize: 11,
                         color: Colors.white.withOpacity(0.3),
@@ -378,7 +369,7 @@ class _QRDisplayScreenState extends State<QRDisplayScreen> {
                       const SizedBox(width: 10),
                       Expanded(
                         child: Text(
-                          'Asegúrate de que el dispositivo móvil esté en la misma red WiFi que este equipo.',
+                          'ASEGURATE DE QUE EL DISPOSITIVO MOVIL ESTE EN LA MISMA RED WIFI QUE ESTE EQUIPO.',
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.white.withOpacity(0.4),

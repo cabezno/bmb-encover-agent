@@ -1,4 +1,4 @@
-# BMB Encover Agent — Setup Windows
+﻿# BAG Agent â€” Setup Windows
 
 ## Flujo recomendado (portable)
 
@@ -13,22 +13,22 @@ Este flujo evita rutas hardcodeadas y usa un `venv` local dentro del repo.
 
 ## Requisitos
 
-1. **Python 3.11+** — [Descargar](https://www.python.org/downloads/)
-   - Marcar "Add Python to PATH" durante la instalación
+1. **Python 3.11+** â€” [Descargar](https://www.python.org/downloads/)
+   - Marcar "Add Python to PATH" durante la instalaciÃ³n
 
-2. **Flutter 3.x+** — [Descargar](https://docs.flutter.dev/get-started/install/windows)
-   - Seguir la guía de instalación
+2. **Flutter 3.x+** â€” [Descargar](https://docs.flutter.dev/get-started/install/windows)
+   - Seguir la guÃ­a de instalaciÃ³n
    - Verificar con `flutter doctor`
 
-3. **Git** (opcional) — [Descargar](https://git-scm.com/download/win)
+3. **Git** (opcional) â€” [Descargar](https://git-scm.com/download/win)
 
-4. **Tailscale** (opcional, para conexión remota) — [Descargar](https://tailscale.com/download)
+4. **Tailscale** (opcional, para conexiÃ³n remota) â€” [Descargar](https://tailscale.com/download)
 
 ---
 
-## Instalación
+## InstalaciÃ³n
 
-### 1. Copiar BMB a Windows
+### 1. Copiar BAG a Windows
 
 ```powershell
 # Desde esta PC (Linux):
@@ -103,8 +103,8 @@ C:\bmb-encover\bmb_app\build\app\outputs\flutter-apk\app-release.apk
 
 ## Conexion Remota (Tailscale)
 
-1. Instalar Tailscale en PC y móvil
-2. Iniciar sesión con la misma cuenta en ambos
+1. Instalar Tailscale en PC y mÃ³vil
+2. Iniciar sesiÃ³n con la misma cuenta en ambos
 3. La PC tiene IP tipo `100.x.x.x`
 4. En la app, conectar a `ws://100.x.x.x:8643/ws`
 
@@ -131,17 +131,17 @@ El token expira en 5 minutos. Usar desde la app con "Escanear QR".
 
 ```
 C:\bmb-encover\
-├── app_server.py          ← Servidor para apps
-├── run_agent.py           ← Core BMB
-├── bmb_cli/               ← CLI
-├── bmb_app/               ← App Flutter
-│   ├── lib/               ← Código Dart
-│   ├── build/             ← Compilados
-│   └── run_windows.bat    ← Menu de inicio
-├── skills/                ← Skills
-├── tools/                 ← Tools BMB
-├── gateway/               ← Gateway
-└── venv/                  ← Python virtualenv
+â”œâ”€â”€ app_server.py          â† Servidor para apps
+â”œâ”€â”€ run_agent.py           â† Core BMB
+â”œâ”€â”€ bmb_cli/               â† CLI
+â”œâ”€â”€ bmb_app/               â† App Flutter
+â”‚   â”œâ”€â”€ lib/               â† CÃ³digo Dart
+â”‚   â”œâ”€â”€ build/             â† Compilados
+â”‚   â””â”€â”€ run_windows.bat    â† Menu de inicio
+â”œâ”€â”€ skills/                â† Skills
+â”œâ”€â”€ tools/                 â† Tools BMB
+â”œâ”€â”€ gateway/               â† Gateway
+â””â”€â”€ venv/                  â† Python virtualenv
 ```
 
 ---
@@ -152,9 +152,10 @@ C:\bmb-encover\
 # Iniciar server
 cd C:\bmb-encover && .\venv\Scripts\python app_server.py --port 8643
 
-# Iniciar BMB CLI
+# Iniciar BAG CLI
 cd C:\bmb-encover && .\venv\Scripts\bmb
 
 # Compilar app
 cd C:\bmb-encover\bmb_app && flutter build windows
 ```
+

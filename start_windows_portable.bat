@@ -1,4 +1,4 @@
-@echo off
+﻿@echo off
 setlocal EnableExtensions
 cd /d "%~dp0"
 
@@ -13,5 +13,6 @@ if not exist "app_server.py" (
     exit /b 1
 )
 
-echo Iniciando BMB App Server en http://localhost:8643 ...
+echo Iniciando BAG App Server en http://localhost:8643 ...
 call "venv\Scripts\python.exe" app_server.py --port 8643 --verbose
+

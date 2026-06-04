@@ -1,4 +1,4 @@
-# BMB Encover - Instalacion Windows Portable
+﻿# BAG - Instalacion Windows Portable
 
 Este documento explica una instalacion simple para correr el App Server en Windows sin rutas hardcodeadas.
 
@@ -40,9 +40,9 @@ Variables minimas recomendadas:
 
 ```env
 DEEPSEEK_API_KEY=tu_api_key
-BMB_ACCESS_TOKEN=tu_token_opcional
-BMB_TTS_VOICE=es-AR-ElenaNeural
-BMB_WHISPER_MODEL=tiny
+BAG_ACCESS_TOKEN=tu_token_opcional
+BAG_TTS_VOICE=es-AR-ElenaNeural
+BAG_WHISPER_MODEL=tiny
 ```
 
 4. Iniciar el servidor:
@@ -84,3 +84,4 @@ curl http://localhost:8643/health
 .\venv\Scripts\python -m pip install --upgrade pip
 .\venv\Scripts\python -m pip install -e .[pty,cli,mcp,cron,acp]
 ```
+

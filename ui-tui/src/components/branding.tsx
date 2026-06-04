@@ -49,11 +49,11 @@ export function Banner({ t }: { t: Theme }) {
         <ArtLines lines={logoLines} />
       ) : (
         <Text bold color={t.color.primary}>
-          {t.brand.icon} BMB UNDERCOVER
+          {t.brand.icon} BAG BLACKMAGICBOX AGENT
         </Text>
       )}
 
-      <Text color={t.color.muted}>{t.brand.icon} Encover · Messenger of the Digital Gods</Text>
+      <Text color={t.color.muted}>{t.brand.icon}  COMMAND CONSOLE · DIGITAL OPERATIONS</Text>
     </Box>
   )
 }

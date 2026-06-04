@@ -235,13 +235,13 @@ function normalizeAnsiForeground(color: string): string {
 // ── Defaults ─────────────────────────────────────────────────────────
 
 const BRAND: ThemeBrand = {
-  name: 'BlackMagicBox Encover Agent',
+  name: 'BLACKMAGICBOX AGENT',
   icon: '⚕',
   prompt: '❯',
-  welcome: 'Type your message or /help for commands.',
-  goodbye: 'Goodbye! ⚕',
-  tool: '┊',
-  helpHeader: '(^_^)? Commands'
+  welcome: '[CMD] TYPE YOUR MESSAGE OR /HELP FOR COMMANDS.',
+  goodbye: 'SESSION CLOSED',
+  tool: '[CMD]',
+  helpHeader: '  COMMANDS'
 }
 
 const cleanPromptSymbol = (s: string | undefined, fallback: string) => {
@@ -254,44 +254,44 @@ const cleanPromptSymbol = (s: string | undefined, fallback: string) => {
 
 export const DARK_THEME: Theme = {
   color: {
-    primary: '#FFD700',
-    accent: '#FFBF00',
-    border: '#CD7F32',
-    text: '#FFF8DC',
-    muted: '#CC9B1F',
+    primary: '#00E5FF',
+    accent: '#E040FB',
+    border: '#1C1C1C',
+    text: '#FFFFFF',
+    muted: '#A3A3A3',
     // Bumped from the old `#B8860B` darkgoldenrod (~53% luminance) which
     // read as barely-visible on dark terminals for long body text.  The
     // new value sits ~60% luminance — readable without losing the "muted /
     // secondary" semantic.  Field labels still use `label` (65%) which
     // stays brighter so hierarchy holds.
-    completionBg: '#FFFFFF',
-    completionCurrentBg: mix('#FFFFFF', '#FFBF00', 0.25),
+    completionBg: '#141414',
+    completionCurrentBg: mix('#141414', '#00E5FF', 0.25),
 
-    label: '#DAA520',
-    ok: '#4caf50',
-    error: '#ef5350',
-    warn: '#ffa726',
+    label: '#FFD700',
+    ok: '#22C55E',
+    error: '#EF4444',
+    warn: '#FFD700',
 
-    prompt: '#FFF8DC',
+    prompt: '#00E5FF',
     // sessionLabel/sessionBorder intentionally track the `dim` value — they
     // are "same role, same colour" by design.  fromSkin's banner_dim fallback
     // relies on this pairing (#11300).
-    sessionLabel: '#CC9B1F',
-    sessionBorder: '#CC9B1F',
+    sessionLabel: '#2E2E2E',
+    sessionBorder: '#2E2E2E',
 
-    statusBg: '#1a1a2e',
-    statusFg: '#C0C0C0',
-    statusGood: '#8FBC8F',
+    statusBg: '#0E0E0E',
+    statusFg: '#E5E5E5',
+    statusGood: '#22C55E',
     statusWarn: '#FFD700',
-    statusBad: '#FF8C00',
-    statusCritical: '#FF6B6B',
-    selectionBg: '#3a3a55',
+    statusBad: '#EF4444',
+    statusCritical: '#E040FB',
+    selectionBg: '#141414',
 
     diffAdded: 'rgb(220,255,220)',
     diffRemoved: 'rgb(255,220,220)',
     diffAddedWord: 'rgb(36,138,61)',
     diffRemovedWord: 'rgb(207,34,46)',
-    shellDollar: '#4dabf7'
+    shellDollar: '#00E5FF'
   },
 
   brand: BRAND,
@@ -305,36 +305,36 @@ export const DARK_THEME: Theme = {
 // cleanly (#11300).
 export const LIGHT_THEME: Theme = {
   color: {
-    primary: '#8B6914',
-    accent: '#A0651C',
-    border: '#7A4F1F',
-    text: '#3D2F13',
-    muted: '#7A5A0F',
-    completionBg: '#F5F5F5',
-    completionCurrentBg: mix('#F5F5F5', '#A0651C', 0.25),
+    primary: '#00E5FF',
+    accent: '#E040FB',
+    border: '#1C1C1C',
+    text: '#FFFFFF',
+    muted: '#A3A3A3',
+    completionBg: '#141414',
+    completionCurrentBg: mix('#141414', '#00E5FF', 0.25),
 
-    label: '#7A5A0F',
-    ok: '#2E7D32',
-    error: '#C62828',
-    warn: '#E65100',
+    label: '#FFD700',
+    ok: '#22C55E',
+    error: '#EF4444',
+    warn: '#FFD700',
 
-    prompt: '#2B2014',
-    sessionLabel: '#7A5A0F',
-    sessionBorder: '#7A5A0F',
+    prompt: '#00E5FF',
+    sessionLabel: '#2E2E2E',
+    sessionBorder: '#2E2E2E',
 
-    statusBg: '#F5F5F5',
-    statusFg: '#333333',
-    statusGood: '#2E7D32',
-    statusWarn: '#8B6914',
-    statusBad: '#D84315',
-    statusCritical: '#B71C1C',
-    selectionBg: '#D4E4F7',
+    statusBg: '#0E0E0E',
+    statusFg: '#E5E5E5',
+    statusGood: '#22C55E',
+    statusWarn: '#FFD700',
+    statusBad: '#EF4444',
+    statusCritical: '#E040FB',
+    selectionBg: '#141414',
 
     diffAdded: 'rgb(200,240,200)',
     diffRemoved: 'rgb(240,200,200)',
     diffAddedWord: 'rgb(27,94,32)',
     diffRemovedWord: 'rgb(183,28,28)',
-    shellDollar: '#1565C0'
+    shellDollar: '#00E5FF'
   },
 
   brand: BRAND,

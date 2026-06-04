@@ -17,7 +17,7 @@ import type { DashboardTheme, ThemeTypography, ThemeLayout } from "./types";
 
 /** Default system stack — neutral, safe fallback for every platform. */
 const SYSTEM_SANS =
-  'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+  '"Cascadia Code", "Cascadia Mono", Consolas, "Lucida Console", monospace';
 const SYSTEM_MONO =
   'ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace';
 
@@ -30,7 +30,7 @@ const DEFAULT_TYPOGRAPHY: ThemeTypography = {
 };
 
 const DEFAULT_LAYOUT: ThemeLayout = {
-  radius: "0.5rem",
+  radius: "0",
   density: "comfortable",
 };
 
@@ -40,17 +40,28 @@ const DEFAULT_LAYOUT: ThemeLayout = {
 
 export const defaultTheme: DashboardTheme = {
   name: "default",
-  label: "BMB Teal",
-  description: "Classic dark teal — the canonical BMB look",
+  label: "BAG INDUSTRIAL",
+  description: "Industrial black and graphite with neon command accents",
   palette: {
-    background: { hex: "#041c1c", alpha: 1 },
-    midground: { hex: "#ffe6cb", alpha: 1 },
-    foreground: { hex: "#ffffff", alpha: 0 },
-    warmGlow: "rgba(255, 189, 56, 0.35)",
-    noiseOpacity: 1,
+    background: { hex: "#000000", alpha: 1 },
+    midground: { hex: "#E8E8E8", alpha: 1 },
+    foreground: { hex: "#FFFFFF", alpha: 1 },
+    warmGlow: "rgba(0, 229, 255, 0.18)",
+    noiseOpacity: 0.75,
   },
   typography: DEFAULT_TYPOGRAPHY,
   layout: DEFAULT_LAYOUT,
+  colorOverrides: {
+    primary: "#00E5FF",
+    accent: "#E040FB",
+    warning: "#FFD700",
+    success: "#22C55E",
+    destructive: "#EF4444",
+    border: "#1C1C1C",
+    input: "#141414",
+    card: "#0E0E0E",
+    muted: "#080808",
+  },
 };
 
 export const midnightTheme: DashboardTheme = {

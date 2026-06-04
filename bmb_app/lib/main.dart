@@ -52,9 +52,9 @@ class _BMBAppState extends State<BMBApp> {
     if (Platform.isWindows) {
       final started = await serverLauncher.start();
       if (started) {
-        debugPrint('✅ Servidor BMB iniciado en segundo plano');
+        debugPrint('[OK] Servidor BAG iniciado en segundo plano');
       } else {
-        debugPrint('⚠️  No se pudo iniciar servidor automáticamente');
+        debugPrint('[WARN] No se pudo iniciar servidor automaticamente');
       }
     }
   }
@@ -76,7 +76,7 @@ class _BMBAppState extends State<BMBApp> {
     final isDark = settings.isDarkMode;
 
     return MaterialApp(
-      title: 'BMB Encover Agent',
+      title: 'BAG - BLACKMAGICBOX AGENT',
       debugShowCheckedModeBanner: false,
       theme: isDark ? AppTheme.darkTheme : AppTheme.lightTheme,
       initialRoute: '/splash',
@@ -126,23 +126,23 @@ class _SplashScreenState extends State<_SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0D0D0D),
+      backgroundColor: AppTheme.cBg,
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'BMB',
+              'BAG',
               style: TextStyle(
                 fontSize: 48,
                 fontWeight: FontWeight.w700,
-                color: const Color(0xFF8300e9),
+                color: AppTheme.cCyan,
                 letterSpacing: 4,
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              'ENCOVER AGENT',
+              'BLACKMAGICBOX AGENT',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
@@ -156,7 +156,7 @@ class _SplashScreenState extends State<_SplashScreen> {
               height: 32,
               child: CircularProgressIndicator(
                 strokeWidth: 3,
-                valueColor: AlwaysStoppedAnimation<Color>(const Color(0xFF8300e9)),
+                valueColor: AlwaysStoppedAnimation<Color>(AppTheme.cCyan),
               ),
             ),
           ],

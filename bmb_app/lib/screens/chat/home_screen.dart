@@ -357,12 +357,12 @@ class _HomeScreenState extends State<HomeScreen> {
             title: Row(children: [
               Container(width: 8, height: 8, decoration: BoxDecoration(shape: BoxShape.circle, color: connProv.isConnected ? const Color(0xFF00E676) : Colors.red)),
               const SizedBox(width: 8),
-              Text(connProv.isConnected ? '${connProv.ip}:${connProv.port}' : 'Desconectado', style: const TextStyle(fontSize: 14, color: Colors.white70)),
+              Text(connProv.isConnected ? '${connProv.ip}:${connProv.port}' : 'DESCONECTADO', style: const TextStyle(fontSize: 14, color: Colors.white70)),
             ]),
             actions: [
-              IconButton(icon: const Icon(Icons.qr_code, color: Color(0xFF8300e9)), onPressed: connProv.isConnected ? _showQRCode : null, tooltip: 'Mostrar QR'),
-              IconButton(icon: const Icon(Icons.call, color: Color(0xFF8300e9)), onPressed: connProv.isConnected ? _openCall : null, tooltip: 'Llamar al agente'),
-              IconButton(icon: const Icon(Icons.settings, color: Colors.white54), onPressed: _openSettings, tooltip: 'Configuración'),
+              IconButton(icon: const Icon(Icons.qr_code, color: Color(0xFF00E5FF)), onPressed: connProv.isConnected ? _showQRCode : null, tooltip: '[CMD] MOSTRAR QR'),
+              IconButton(icon: const Icon(Icons.call, color: Color(0xFF00E5FF)), onPressed: connProv.isConnected ? _openCall : null, tooltip: '[CMD] LLAMAR AL AGENTE'),
+              IconButton(icon: const Icon(Icons.settings, color: Colors.white54), onPressed: _openSettings, tooltip: '[CMD] CONFIGURACION'),
             ],
           ),
           body: Stack(
@@ -384,7 +384,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               itemCount: chatProv.tabCount,
                               itemBuilder: (context, index) => TabScreen(tab: chatProv.tabs[index], scrollController: _scrollController),
                             )
-                          : const Center(child: Text('No hay tabs activos', style: TextStyle(color: Colors.white38))))
+                          : const Center(child: Text('NO HAY TABS ACTIVOS', style: TextStyle(color: Colors.white38))))
                       : _buildConnectScreen(connProv),
                 ),
                 if (connProv.isConnected) _buildInputBar(chatProv, connProv),
@@ -408,9 +408,9 @@ class _HomeScreenState extends State<HomeScreen> {
             child: const Icon(Icons.cloud_off_rounded, color: Color(0xFF8300e9), size: 40),
           ),
           const SizedBox(height: 24),
-          const Text('Sin conexión al servidor', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600)),
+          const Text('  SIN CONEXION AL SERVIDOR', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600)),
           const SizedBox(height: 8),
-          Text('Conéctate al agente BMB para empezar.', textAlign: TextAlign.center, style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 13)),
+          Text('CONECTATE AL AGENTE BAG PARA EMPEZAR.', textAlign: TextAlign.center, style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 13)),
           const SizedBox(height: 32),
           if (connProv.isPaired)
             Container(
@@ -430,15 +430,15 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: connProv.status == ConnectionStatus.connecting
                   ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
                   : const Icon(Icons.wifi_tethering),
-              label: Text(connProv.status == ConnectionStatus.connecting ? 'Conectando...' : 'Conectar al Servidor', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF8300e9), foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), elevation: 4),
+              label: Text(connProv.status == ConnectionStatus.connecting ? '[CMD] CONECTANDO...' : '[CMD] CONECTAR AL SERVIDOR', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF00E5FF), foregroundColor: Colors.black, shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), elevation: 0),
             ),
           ),
           if (!connProv.isPaired) ...[
             const SizedBox(height: 16),
             TextButton(
               onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil('/onboarding', (route) => false),
-              child: const Text('Configurar conexión', style: TextStyle(color: Color(0xFF8300e9), fontWeight: FontWeight.w500)),
+              child: const Text('[CMD] CONFIGURAR CONEXION', style: TextStyle(color: Color(0xFF00E5FF), fontWeight: FontWeight.w500)),
             ),
           ],
           if (connProv.status == ConnectionStatus.error && connProv.errorMessage.isNotEmpty) ...[

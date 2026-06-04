@@ -4,6 +4,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
 import '../../providers/connection_provider.dart';
 import '../../services/connection/qr_service.dart';
+import '../../themes/app_theme.dart';
 
 class QRScannerScreen extends StatefulWidget {
   const QRScannerScreen({super.key});
@@ -156,8 +157,8 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text(
-          'Escanear QR',
+        title: Text(
+          AppTheme.section('Escanear QR'),
           style: TextStyle(color: Colors.white),
         ),
         actions: [
@@ -167,7 +168,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
               color: Colors.white,
             ),
             onPressed: _toggleTorch,
-            tooltip: 'Linterna',
+            tooltip: AppTheme.cmd('Linterna'),
           ),
         ],
       ),
@@ -188,10 +189,10 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
               height: 280,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: const Color(0xFF8300e9).withOpacity(0.6),
+                  color: AppTheme.cCyan.withOpacity(0.6),
                   width: 2,
                 ),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.zero,
               ),
               child: Center(
                 child: Column(
@@ -204,7 +205,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Apunta al código QR',
+                      'APUNTA AL CODIGO QR',
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.5),
                         fontSize: 14,
@@ -225,11 +226,11 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     CircularProgressIndicator(
-                      color: Color(0xFF8300e9),
+                      color: AppTheme.cCyan,
                     ),
                     SizedBox(height: 16),
                     Text(
-                      'Conectando...',
+                      '[CMD] CONECTANDO...',
                       style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ],

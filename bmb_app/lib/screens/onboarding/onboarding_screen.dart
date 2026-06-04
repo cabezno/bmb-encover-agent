@@ -67,8 +67,8 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     final ip = _ipController.text.trim();
     final port = int.tryParse(_portController.text.trim()) ?? 8643;
     final deviceName = _deviceNameController.text.trim().isNotEmpty
-        ? _deviceNameController.text.trim()
-        : 'BMB Agent ${DateTime.now().millisecondsSinceEpoch}';
+      ? _deviceNameController.text.trim()
+      : 'BAG AGENT ${DateTime.now().millisecondsSinceEpoch}';
 
     final success = await connProv.pairViaQR(
       ip: ip,
@@ -161,7 +161,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0D0D0D),
+      backgroundColor: AppTheme.cBg,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -178,33 +178,24 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                       width: 100,
                       height: 100,
                       decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: const LinearGradient(
-                          colors: [Color(0xFF8300e9), Color(0xFF5a00a0)],
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0xFF8300e9).withOpacity(0.3),
-                            blurRadius: 30,
-                            spreadRadius: 5,
-                          ),
-                        ],
+                        color: AppTheme.cS2,
+                        border: Border.all(color: AppTheme.cBorderHi),
                       ),
                       child: const Center(
                         child: Text(
-                          'BMB',
+                          '⚕ BAG',
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.w700,
-                            color: Colors.white,
+                            color: AppTheme.cCyan,
                             letterSpacing: 2,
                           ),
                         ),
                       ),
                     ),
                     const SizedBox(height: 24),
-                    const Text(
-                      'BMB Encover Agent',
+                    Text(
+                      AppTheme.section('BLACKMAGICBOX AGENT'),
                       style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.w600,
@@ -214,7 +205,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Conecta con tu agente remoto',
+                      'CONECTA CON TU AGENTE REMOTO',
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.white.withOpacity(0.5),
@@ -253,8 +244,8 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                       // Scan QR Button
                       _buildActionButton(
                         icon: Icons.qr_code_scanner,
-                        label: 'Escanear Código QR',
-                        subtitle: 'Escanea el QR de la app de escritorio',
+                        label: 'ESCANEAR CODIGO QR',
+                        subtitle: 'ESCANEA EL QR DE LA APP DE ESCRITORIO',
                         onTap: () {
                           Navigator.of(context).pushNamed('/qr-scanner');
                         },
@@ -263,8 +254,8 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                       // O pegar QR manualmente
                       _buildActionButton(
                         icon: Icons.content_paste,
-                        label: 'Pegar código QR',
-                        subtitle: 'Pega la URL bmb:// del servidor',
+                        label: 'PEGAR CODIGO QR',
+                        subtitle: 'PEGA LA URL BMB:// DEL SERVIDOR',
                         onTap: () {
                           setState(() {
                             _showPasteQR = true;
@@ -281,7 +272,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                         },
                         icon: const Icon(Icons.keyboard, color: Colors.white54),
                         label: const Text(
-                          'Ingresar IP Manualmente',
+                          '[CMD] INGRESAR IP MANUALMENTE',
                           style: TextStyle(color: Colors.white54),
                         ),
                       ),
@@ -312,14 +303,14 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                   ),
-                                  child: const Text('Parsear y conectar'),
+                                  child: Text(AppTheme.cmd('Parsear y conectar')),
                                 ),
                               ),
                               const SizedBox(height: 16),
                               const Divider(color: Colors.white12),
                               const SizedBox(height: 8),
                               const Text(
-                                'O ingresá los datos manualmente:',
+                                'O INGRESA LOS DATOS MANUALMENTE:',
                                 style: TextStyle(color: Colors.white38, fontSize: 12),
                               ),
                               const SizedBox(height: 16),
@@ -392,7 +383,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                         ),
                                       )
                                     : const Text(
-                                        'Conectar',
+                                        '[CMD] CONECTAR',
                                         style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
@@ -422,14 +413,14 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   }) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.zero,
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.05),
-          borderRadius: BorderRadius.circular(16),
+          color: AppTheme.cS2,
+          borderRadius: BorderRadius.zero,
           border: Border.all(
-            color: Colors.white.withOpacity(0.1),
+            color: AppTheme.cBorder,
           ),
         ),
         child: Row(
@@ -438,10 +429,10 @@ class _OnboardingScreenState extends State<OnboardingScreen>
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: const Color(0xFF8300e9).withOpacity(0.2),
-                borderRadius: BorderRadius.circular(12),
+                color: AppTheme.cS3,
+                borderRadius: BorderRadius.zero,
               ),
-              child: Icon(icon, color: const Color(0xFF8300e9), size: 24),
+              child: Icon(icon, color: AppTheme.cCyan, size: 24),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -449,7 +440,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    label,
+                    AppTheme.cmd(label),
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -458,7 +449,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    subtitle,
+                    subtitle.toUpperCase(),
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.4),
                       fontSize: 12,
@@ -496,19 +487,19 @@ class _OnboardingScreenState extends State<OnboardingScreen>
         filled: true,
         fillColor: Colors.white.withOpacity(0.05),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.white.withOpacity(0.1)),
+          borderRadius: BorderRadius.zero,
+          borderSide: const BorderSide(color: AppTheme.cBorder),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.white.withOpacity(0.1)),
+          borderRadius: BorderRadius.zero,
+          borderSide: const BorderSide(color: AppTheme.cBorder),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF8300e9)),
+          borderRadius: BorderRadius.zero,
+          borderSide: const BorderSide(color: AppTheme.cBorderHi),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.zero,
           borderSide: const BorderSide(color: Colors.red),
         ),
       ),

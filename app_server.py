@@ -1110,13 +1110,14 @@ self.app.router.add_get("/ws/call", self.handle_websocket_call)
 <html><head><meta charset="utf-8"><title>BMB Emparejado</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-body { font-family: system-ui; max-width: 400px; margin: 40px auto; padding: 20px; text-align: center;
-       background: #0f0f0f; color: white; }
-.card { background: #1a1a2e; border-radius: 16px; padding: 24px; }
+body { font-family: "Cascadia Code", Consolas, monospace; text-transform: uppercase;
+    max-width: 400px; margin: 40px auto; padding: 20px; text-align: center;
+    background: #000000; color: white; }
+.card { background: #080808; border: 1px solid #1c1c1c; border-radius: 0; padding: 24px; }
 .success { color: #22c55e; }
 </style></head><body>
 <div class="card">
-<h1>🕵️ BMB Encover</h1>
+<h1>  BMB Encover</h1>
 <p class="success">✅ Emparejado</p>
 <p>App conectada al servidor</p>
 </div>
@@ -1132,23 +1133,25 @@ body { font-family: system-ui; max-width: 400px; margin: 40px auto; padding: 20p
 <html><head><meta charset="utf-8"><title>BMB Encover Server</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-body {{ font-family: system-ui; max-width: 600px; margin: 40px auto; padding: 20px; text-align: center; }}
-.card {{ background: #f5f5f5; border-radius: 16px; padding: 24px; margin: 16px 0; }}
-.btn {{ display: inline-block; background: #5865F2; color: white; padding: 14px 28px; border-radius: 12px;
+body {{ font-family: "Cascadia Code", Consolas, monospace; text-transform: uppercase;
+       max-width: 600px; margin: 40px auto; padding: 20px; text-align: center; background: #000000; color: #ffffff; }}
+.card {{ background: #0e0e0e; border: 1px solid #1c1c1c; border-radius: 0; padding: 24px; margin: 16px 0; }}
+.btn {{ display: inline-block; background: #00e5ff; color: #000000; padding: 14px 28px; border-radius: 0;
         text-decoration: none; font-size: 18px; margin: 8px; }}
-.qr-img {{ width: 280px; height: 280px; border-radius: 12px; }}
+.btn:hover {{ background: #e040fb; color: #ffffff; }}
+.qr-img {{ width: 280px; height: 280px; border-radius: 0; border: 1px solid #2e2e2e; }}
 .status {{ color: #22c55e; font-weight: bold; }}
 </style></head><body>
-<h1>🕵️ BMB Encover</h1>
+<h1>  BMB Encover</h1>
 <p>Servidor v0.5.0 funcionando</p>
 <div class="card">
 <p class="status">✅ Server activo</p>
 <p>🌐 Tunnel: {'<b>' + self.tunnel_url + '</b>' if self.tunnel_url else '⏳ Esperando tunnel...'}</p>
 <p>📱 Dispositivos: {len(self.devices)}</p>
 </div>
-<a class="btn" href="/qr" target="_blank">📱 Escanear QR</a>
-<a class="btn" href="/api/pair/token?format=png" target="_blank">🔲 QR PNG</a>
-<a class="btn" href="/health" target="_blank">💚 Health</a>
+<a class="btn" href="/qr" target="_blank">[CMD] ESCANEAR QR</a>
+<a class="btn" href="/api/pair/token?format=png" target="_blank">[CMD] QR PNG</a>
+<a class="btn" href="/health" target="_blank">[CMD] HEALTH</a>
 </body></html>"""
         )
 
@@ -1161,16 +1164,17 @@ body {{ font-family: system-ui; max-width: 600px; margin: 40px auto; padding: 20
 <html><head><meta charset="utf-8"><title>BMB QR - Escanear</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-body {{ font-family: system-ui; max-width: 500px; margin: 40px auto; padding: 20px; text-align: center;
-       background: #0f0f0f; color: white; }}
-h1 {{ color: #5865F2; }}
-.qr-box {{ background: white; padding: 20px; border-radius: 20px; display: inline-block; margin: 20px 0; }}
+body {{ font-family: "Cascadia Code", Consolas, monospace; text-transform: uppercase;
+    max-width: 500px; margin: 40px auto; padding: 20px; text-align: center;
+    background: #000000; color: white; }}
+h1 {{ color: #00e5ff; }}
+.qr-box {{ background: #080808; border: 1px solid #1c1c1c; padding: 20px; border-radius: 0; display: inline-block; margin: 20px 0; }}
 .qr-img {{ width: 300px; height: 300px; }}
-.info {{ background: #1a1a2e; padding: 16px; border-radius: 12px; margin: 16px 0; word-break: break-all; }}
+.info {{ background: #0e0e0e; border: 1px solid #1c1c1c; padding: 16px; border-radius: 0; margin: 16px 0; word-break: break-all; }}
 .token {{ color: #22c55e; font-size: 14px; }}
 .refresh {{ color: #888; font-size: 13px; margin-top: 20px; }}
 </style></head><body>
-<h1>📱 Escanea con BMB</h1>
+<h1>  ESCANEA CON BMB</h1>
 <div class="qr-box">
 <img class="qr-img" src="{qr_api_url}" alt="QR">
 </div>

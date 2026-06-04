@@ -1,6 +1,6 @@
-@echo off
+﻿@echo off
 REM ==========================================
-REM BMB Encover — Script de inicio rápido
+REM BAG â€” Script de inicio rÃ¡pido
 REM Para Windows (PowerShell recomendado)
 REM ==========================================
 setlocal EnableExtensions
@@ -11,14 +11,14 @@ set "PYTHON_EXE=%BMB_DIR%\venv\Scripts\python.exe"
 if not exist "%PYTHON_EXE%" set "PYTHON_EXE=python"
 
 echo.
-echo === BMB Encover Agent — Inicio rapido ===
+echo === BAG Agent â€” Inicio rapido ===
 echo [INFO] Repo: %BMB_DIR%
 echo.
 
 :menu
 echo.
-echo 1. Iniciar servidor BMB + App Server
-echo 2. Iniciar solo App Server (si BMB ya esta corriendo)
+echo 1. Iniciar servidor BAG + App Server
+echo 2. Iniciar solo App Server (si BAG ya esta corriendo)
 echo 3. Compilar app Flutter
 echo 4. Ver estado
 echo 5. Salir
@@ -34,9 +34,9 @@ goto menu
 
 :full
 echo.
-echo [INFO] Iniciando servidor BMB + App Server...
+echo [INFO] Iniciando servidor BAG + App Server...
 echo.
-start "BMB App Server" cmd /c "cd /d %BMB_DIR% && \"%PYTHON_EXE%\" app_server.py --port 8643"
+start "BAG App Server" cmd /c "cd /d %BMB_DIR% && \"%PYTHON_EXE%\" app_server.py --port 8643"
 echo [OK] App Server corriendo en http://localhost:8643
 echo.
 echo Dispositivos vinculados:
@@ -51,7 +51,7 @@ goto menu
 :server
 echo.
 echo [INFO] Iniciando solo App Server...
-start "BMB App Server" cmd /c "cd /d %BMB_DIR% && \"%PYTHON_EXE%\" app_server.py --port 8643"
+start "BAG App Server" cmd /c "cd /d %BMB_DIR% && \"%PYTHON_EXE%\" app_server.py --port 8643"
 echo [OK] App Server en http://localhost:8643
 pause
 goto menu
@@ -100,3 +100,4 @@ if %errorlevel% neq 0 (
 echo.
 pause
 goto menu
+
