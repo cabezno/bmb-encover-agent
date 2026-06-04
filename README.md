@@ -40,6 +40,8 @@ Works on Linux, macOS, WSL2, and Android via Termux. The installer handles the p
 > **Windows:** Native Windows is not supported. Please install [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) and run the command above.
 >
 > **Windows (portable community flow):** See [README_WINDOWS_PORTABLE.md](README_WINDOWS_PORTABLE.md) for an unofficial local setup path.
+>
+> **Quickstart (Windows):** See [QUICKSTART_WINDOWS.md](QUICKSTART_WINDOWS.md) for the 2-minute setup.
 
 After installation:
 
