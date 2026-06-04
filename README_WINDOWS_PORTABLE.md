@@ -61,6 +61,7 @@ curl http://localhost:8643/health
 
 - setup_windows_portable.bat: crea venv, instala dependencias y prepara .env
 - start_windows_portable.bat: inicia app_server.py con el python del venv local
+- quick_check_windows.bat: chequeo rapido de entorno, health y QR
 - bmb_app/run_windows.bat: menu interactivo actualizado con rutas relativas
 
 ## Solucion de problemas

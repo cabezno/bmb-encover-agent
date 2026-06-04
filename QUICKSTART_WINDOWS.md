@@ -41,6 +41,14 @@ curl http://localhost:8643/health
 
 Si responde `{"status":"ok"...}` ya esta funcionando.
 
+## 6) Diagnostico rapido (opcional)
+
+```powershell
+.\quick_check_windows.bat
+```
+
+Valida venv, dependencias clave, health y endpoint QR.
+
 ## Si algo falla
 
 - Leer guia completa: README_WINDOWS_PORTABLE.md
