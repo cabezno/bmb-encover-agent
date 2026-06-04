@@ -3,8 +3,16 @@ REM ==========================================
 REM BMB Encover — Script de inicio rápido
 REM Para Windows (PowerShell recomendado)
 REM ==========================================
+setlocal EnableExtensions
+for %%I in ("%~dp0..") do set "BMB_DIR=%%~fI"
+set "APP_DIR=%~dp0"
+
+set "PYTHON_EXE=%BMB_DIR%\venv\Scripts\python.exe"
+if not exist "%PYTHON_EXE%" set "PYTHON_EXE=python"
+
 echo.
 echo === BMB Encover Agent — Inicio rapido ===
+echo [INFO] Repo: %BMB_DIR%
 echo.
 
 :menu
@@ -28,7 +36,7 @@ goto menu
 echo.
 echo [INFO] Iniciando servidor BMB + App Server...
 echo.
-start "BMB App Server" cmd /c "cd /d C:\bmb-encover && venv\Scripts\python app_server.py --port 8643"
+start "BMB App Server" cmd /c "cd /d %BMB_DIR% && \"%PYTHON_EXE%\" app_server.py --port 8643"
 echo [OK] App Server corriendo en http://localhost:8643
 echo.
 echo Dispositivos vinculados:
@@ -43,7 +51,7 @@ goto menu
 :server
 echo.
 echo [INFO] Iniciando solo App Server...
-start "BMB App Server" cmd /c "cd /d C:\bmb-encover && venv\Scripts\python app_server.py --port 8643"
+start "BMB App Server" cmd /c "cd /d %BMB_DIR% && \"%PYTHON_EXE%\" app_server.py --port 8643"
 echo [OK] App Server en http://localhost:8643
 pause
 goto menu
@@ -52,7 +60,7 @@ goto menu
 echo.
 echo [INFO] Compilando app Flutter...
 echo.
-cd /d C:\bmb-encover\bmb_app
+cd /d "%APP_DIR%"
 call flutter pub get
 if %errorlevel% neq 0 (
     echo [ERROR] flutter pub get fallo. Tiene Flutter instalado?

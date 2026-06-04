@@ -1,5 +1,16 @@
 # BMB Encover Agent — Setup Windows
 
+## Flujo recomendado (portable)
+
+Desde la carpeta raiz del repo clonado (la que contiene `app_server.py`):
+
+```powershell
+.\setup_windows_portable.bat
+.\start_windows_portable.bat
+```
+
+Este flujo evita rutas hardcodeadas y usa un `venv` local dentro del repo.
+
 ## Requisitos
 
 1. **Python 3.11+** — [Descargar](https://www.python.org/downloads/)
@@ -43,6 +54,9 @@ pip install -e .[pty,cli,mcp,cron,acp]
 
 # Opcion B: Directo
 .\venv\Scripts\python app_server.py --port 8643
+
+# Opcion C: Script portable recomendado
+.\start_windows_portable.bat
 ```
 
 ### 4. Probar conexion

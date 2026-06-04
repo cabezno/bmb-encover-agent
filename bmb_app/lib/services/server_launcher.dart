@@ -8,27 +8,45 @@ class ServerLauncher {
 
   bool get isRunning => _isRunning;
 
+  String? _findFirstExisting(List<String> paths) {
+    for (final path in paths) {
+      if (File(path).existsSync()) {
+        return path;
+      }
+    }
+    return null;
+  }
+
   /// Inicia el servidor BMB en segundo plano (solo Windows)
   Future<bool> start() async {
     if (!Platform.isWindows) return false;
     if (_isRunning) return true;
 
-    // Ruta del servidor relativa al ejecutable
-    final scriptDir = Directory.current.path;
-    final serverScript = '$scriptDir\\app_server.py';
+    final currentDir = Directory.current.path;
+    final exeDir = File(Platform.resolvedExecutable).parent.path;
+    final userProfile = Platform.environment['USERPROFILE'] ?? '';
 
-    // Si no está en la misma carpeta, buscar en Desktop\BMB\
-    String actualScript = serverScript;
-    if (!File(serverScript).existsSync()) {
-      final homeDir = Platform.environment['USERPROFILE'] ?? 'C:\\Users\\Pc Nasa';
-      final altPath = '$homeDir\\Desktop\\BMB\\app_server.py';
-      if (File(altPath).existsSync()) {
-        actualScript = altPath;
-      } else {
-        print('[ServerLauncher] app_server.py no encontrado');
-        return false;
-      }
+    final actualScript = _findFirstExisting([
+      '$currentDir\\app_server.py',
+      '$currentDir\\..\\app_server.py',
+      '$exeDir\\app_server.py',
+      '$exeDir\\..\\app_server.py',
+      if (userProfile.isNotEmpty) '$userProfile\\Desktop\\BMB\\app_server.py',
+      r'C:\bmb-encover\app_server.py',
+    ]);
+
+    if (actualScript == null) {
+      print('[ServerLauncher] app_server.py no encontrado');
+      return false;
     }
+
+    final repoDir = File(actualScript).parent.path;
+    final pythonExe = _findFirstExisting([
+          '$repoDir\\venv\\Scripts\\python.exe',
+          '$currentDir\\venv\\Scripts\\python.exe',
+          '$exeDir\\venv\\Scripts\\python.exe',
+        ]) ??
+        'python';
 
     try {
       // Matar procesos python viejos (pero no a nosotros mismos)
@@ -38,7 +56,7 @@ class ServerLauncher {
 
       // Iniciar servidor oculto
       _serverProcess = await Process.start(
-        'python',
+        pythonExe,
         [actualScript, '--port', '8643', '--verbose'],
         runInShell: true,
         mode: ProcessStartMode.normal,
