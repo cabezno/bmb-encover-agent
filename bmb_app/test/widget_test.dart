@@ -5,6 +5,6 @@ import 'package:bmb_app/main.dart';
 void main() {
   testWidgets('App loads', (WidgetTester tester) async {
     await tester.pumpWidget(const BMBApp());
-    expect(find.text('Magent'), findsOneWidget);
+    expect(find.text('BAG'), findsOneWidget);
   });
 }
