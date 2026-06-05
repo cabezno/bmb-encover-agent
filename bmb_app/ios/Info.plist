@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>BMB Encover Agent</string>
+	<string>Magent</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -42,9 +42,9 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>BMB Encover Agent necesita acceso al micrófono para llamadas de voz con el agente remoto.</string>
+	<string>Magent necesita acceso al micrófono para llamadas de voz con el agente remoto.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>BMB Encover Agent necesita acceso a la cámara para escanear códigos QR de emparejamiento.</string>
+	<string>Magent necesita acceso a la cámara para escanear códigos QR de emparejamiento.</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

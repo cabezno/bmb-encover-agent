@@ -407,7 +407,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         children: [
           _buildInfoRow('Versión', '0.1.0'),
           const SizedBox(height: 8),
-          _buildInfoRow('App', 'BMB Encover Agent'),
+          _buildInfoRow('App', 'Magent'),
           const SizedBox(height: 8),
           _buildInfoRow('Framework', 'Flutter'),
           const SizedBox(height: 16),

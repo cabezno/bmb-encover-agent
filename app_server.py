@@ -1,7 +1,6 @@
-"""
-BMB Encover — App API Server v0.4.0
+Magent — App API Server v0.4.0
 
-Server WebSocket + REST para apps mobile/desktop de BMB.
+Server WebSocket + REST para apps mobile/desktop de Magent.
 Corre en Linux (WSL) y Windows nativo.
 
 Endpoints:
@@ -284,7 +283,7 @@ class AppServer:
         return web.json_response({
             "status": "ok",
             "version": "0.5.0",
-            "name": "BMB Encover App Server",
+            "name": "Magent App Server",
             "agent": agent_status,
             "stt": self.whisper_available,
             "tts": self.tts_available,
@@ -387,7 +386,7 @@ class AppServer:
             "status": "paired",
             "device_id": dev_id,
             "api_key": api_key,
-            "agent_name": "BMB Encover",
+            "agent_name": "Magent",
         })
 
     async def handle_chat_rest(self, request):
@@ -1122,7 +1121,7 @@ body { font-family: "Inter", sans-serif; font-weight: 900; text-transform: upper
 .success { color: #22c55e; }
 </style></head><body>
 <div class="card">
-<h1>  BMB Encover</h1>
+<h1>  Magent</h1>
 <p class="success">✅ Emparejado</p>
 <p>App conectada al servidor</p>
 </div>
@@ -1148,7 +1147,7 @@ body {{ font-family: "Inter", sans-serif; font-weight: 900; text-transform: uppe
 .qr-img {{ width: 280px; height: 280px; border-radius: 0; border: 1px solid #2e2e2e; }}
 .status {{ color: #22c55e; font-weight: bold; }}
 </style></head><body>
-<h1>  BMB Encover</h1>
+<h1>  Magent</h1>
 <p>Servidor v0.5.0 funcionando</p>
 <div class="card">
 <p class="status">✅ Server activo</p>
@@ -1233,7 +1232,7 @@ setInterval(function() {{
 
 def main():
     import argparse
-    parser = argparse.ArgumentParser(description="BMB Encover App Server v0.4.0")
+    parser = argparse.ArgumentParser(description="Magent App Server v0.4.0")
     parser.add_argument("--host", default=DEFAULT_HOST)
     parser.add_argument("--port", type=int, default=DEFAULT_PORT)
     parser.add_argument("--verbose", "-v", action="store_true", help="Logs detallados")
