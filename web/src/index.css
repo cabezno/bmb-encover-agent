@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import '@nous-research/ui/styles/globals.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap');
 
 /* Scan the published design-system bundle so its utility classes survive
    Tailwind's JIT purge. */
@@ -60,8 +61,8 @@
 
   /* Typography tokens — rewritten by ThemeProvider. Defaults match the
      system stack so themes that don't override look native. */
-  --theme-font-sans: "Cascadia Code", "Cascadia Mono", Consolas, "Lucida Console", monospace;
-  --theme-font-mono: "Cascadia Code", "Cascadia Mono", Consolas, "Lucida Console", monospace;
+  --theme-font-sans: 'Inter', sans-serif;
+  --theme-font-mono: 'Inter', sans-serif;
   --theme-font-display: var(--theme-font-sans);
   --theme-base-size: 15px;
   --theme-line-height: 1.55;
@@ -78,6 +79,7 @@
    the font stack, base size, and letter spacing without explicit calls. */
 html {
   font-family: var(--theme-font-sans);
+  font-weight: 900;
   font-size: var(--theme-base-size);
   line-height: var(--theme-line-height);
   letter-spacing: var(--theme-letter-spacing);
@@ -88,6 +90,7 @@ html {
 
 body {
   font-family: var(--theme-font-sans);
+  font-weight: 900;
   text-transform: uppercase;
   min-height: 0;
   height: 100%;

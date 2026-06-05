@@ -112,6 +112,7 @@ class AppServer:
         self._qr_data: str = ""
 
         _load_env()
+        (_BMB_DIR / "uploads").mkdir(parents=True, exist_ok=True)
         self.setup_routes()
         self._load_devices()
         self._init_stt()
@@ -140,8 +141,8 @@ class AppServer:
         self.app.router.add_get("/api/pair/devices", self.handle_pair_devices)
         self.app.router.add_post("/api/pair/revoke", self.handle_pair_revoke)
         self.app.router.add_get("/ws", self.handle_websocket_chat)
-self.app.router.add_get("/ws/voice", self.handle_websocket_voice)
-self.app.router.add_get("/ws/call", self.handle_websocket_call)
+        self.app.router.add_get("/ws/voice", self.handle_websocket_voice)
+        self.app.router.add_get("/ws/call", self.handle_websocket_call)
         # ─── Android endpoints ───────────────────
         self.app.router.add_post("/api/image", self.handle_image)
         self.app.router.add_post("/api/audio", self.handle_audio)
@@ -226,10 +227,10 @@ self.app.router.add_get("/ws/call", self.handle_websocket_call)
                 save_trajectories=False,
                 skip_memory=False,
                 platform="app",
-                ephemeral_system_prompt="Eres BMB Undercover Agent, un asistente de IA personal. Tu nombre es BMB. Nunca te presentes como Hermes ni menciones Nous Research. Respondes en español de forma natural y conversacional.",
+                ephemeral_system_prompt="Eres Magent, un asistente de IA personal. Tu nombre es Magent. Nunca te presentes como Hermes ni BMB ni menciones Nous Research. Respondes en español de forma natural y conversacional.",
             )
             self._agent_error = None
-            logger.info(f"✅ Agente BMB: model={model}")
+            logger.info(f"✅ Agente Magent: model={model}")
         except ImportError as e:
             self._agent_error = f"Error importando BMB: {e}. Asegurate de estar en la carpeta de BMB o tenerlo instalado."
             logger.error(f"❌ {self._agent_error}")
@@ -812,6 +813,9 @@ self.app.router.add_get("/ws/call", self.handle_websocket_call)
             else:
                 desc = f"Imagen recibida: {filename}"
             return web.json_response({"status": "ok", "filename": filename, "description": desc})
+        except Exception as e:
+            logger.error(f"❌ Image error: {e}")
+            return web.json_response({"error": str(e)}, status=500)
 
     async def handle_call_status(self, request):
         """Estado de las llamadas activas."""
@@ -1107,10 +1111,11 @@ self.app.router.add_get("/ws/call", self.handle_websocket_call)
         return web.Response(
             content_type="text/html",
             text="""<!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>BMB Emparejado</title>
+<html><head><meta charset="utf-8"><title>Magent Emparejado</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap">
 <style>
-body { font-family: "Cascadia Code", Consolas, monospace; text-transform: uppercase;
+body { font-family: "Inter", sans-serif; font-weight: 900; text-transform: uppercase;
     max-width: 400px; margin: 40px auto; padding: 20px; text-align: center;
     background: #000000; color: white; }
 .card { background: #080808; border: 1px solid #1c1c1c; border-radius: 0; padding: 24px; }
@@ -1130,10 +1135,11 @@ body { font-family: "Cascadia Code", Consolas, monospace; text-transform: upperc
         return web.Response(
             content_type="text/html",
             text=f"""<!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>BMB Encover Server</title>
+<html><head><meta charset="utf-8"><title>Magent Server</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap">
 <style>
-body {{ font-family: "Cascadia Code", Consolas, monospace; text-transform: uppercase;
+body {{ font-family: "Inter", sans-serif; font-weight: 900; text-transform: uppercase;
        max-width: 600px; margin: 40px auto; padding: 20px; text-align: center; background: #000000; color: #ffffff; }}
 .card {{ background: #0e0e0e; border: 1px solid #1c1c1c; border-radius: 0; padding: 24px; margin: 16px 0; }}
 .btn {{ display: inline-block; background: #00e5ff; color: #000000; padding: 14px 28px; border-radius: 0;
@@ -1161,10 +1167,11 @@ body {{ font-family: "Cascadia Code", Consolas, monospace; text-transform: upper
         return web.Response(
             content_type="text/html",
             text=f"""<!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>BMB QR - Escanear</title>
+<html><head><meta charset="utf-8"><title>Magent QR - Escanear</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap">
 <style>
-body {{ font-family: "Cascadia Code", Consolas, monospace; text-transform: uppercase;
+body {{ font-family: "Inter", sans-serif; font-weight: 900; text-transform: uppercase;
     max-width: 500px; margin: 40px auto; padding: 20px; text-align: center;
     background: #000000; color: white; }}
 h1 {{ color: #00e5ff; }}
@@ -1201,7 +1208,7 @@ setInterval(function() {{
 
     def run(self):
         logger.info("╔══════════════════════════════════════════════╗")
-        logger.info("║     BMB Encover — App API Server v0.5.0     ║")
+        logger.info("║       Magent — App API Server v0.5.0        ║")
         logger.info("╠══════════════════════════════════════════════╣")
         logger.info(f"║  REST: http://{self.host}:{self.port}/api/chat     ║")
         logger.info(f"║  WS:   ws://{self.host}:{self.port}/ws            ║")

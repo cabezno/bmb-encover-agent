@@ -8,13 +8,13 @@ class AppTheme {
   static const Color cBorder = Color(0xFF1C1C1C);
   static const Color cBorderHi = Color(0xFF2E2E2E);
 
-  static const Color cCyan = Color(0xFF00E5FF);
-  static const Color cMagenta = Color(0xFFE040FB);
+  static const Color cCyan = Color(0xFF00FFFF);
+  static const Color cMagenta = Color(0xFFFF00FF);
   static const Color cGold = Color(0xFFFFD700);
   static const Color cGreen = Color(0xFF22C55E);
   static const Color cRed = Color(0xFFEF4444);
 
-  static const String fontMono = 'Cascadia Code';
+  static const String fontMono = 'Inter';
 
   static String section(String text) => '  ${text.toUpperCase()}';
   static String cmd(String text) => '[CMD] ${text.toUpperCase()}';
@@ -42,9 +42,10 @@ class AppTheme {
       elevation: 0,
       centerTitle: false,
       titleTextStyle: TextStyle(
+        fontFamily: fontMono,
         color: Colors.white,
         fontSize: 16,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w900,
         letterSpacing: 0.4,
       ),
     ),
@@ -97,8 +98,8 @@ class AppTheme {
         borderRadius: BorderRadius.zero,
         borderSide: const BorderSide(color: cBorderHi),
       ),
-      labelStyle: const TextStyle(color: Colors.white70),
-      hintStyle: const TextStyle(color: Colors.white54),
+      labelStyle: const TextStyle(color: Colors.white70, fontWeight: FontWeight.w900),
+      hintStyle: const TextStyle(color: Colors.white54, fontWeight: FontWeight.w900),
     ),
     switchTheme: SwitchThemeData(
       thumbColor: WidgetStateProperty.resolveWith((states) {
@@ -118,7 +119,7 @@ class AppTheme {
       thumbColor: cGold,
       overlayColor: cCyan,
       valueIndicatorColor: cS1,
-      valueIndicatorTextStyle: const TextStyle(color: cGold),
+      valueIndicatorTextStyle: const TextStyle(color: cGold, fontWeight: FontWeight.w900),
     ),
     dividerColor: cBorder,
     textSelectionTheme: TextSelectionThemeData(
@@ -128,47 +129,58 @@ class AppTheme {
     ),
     textTheme: const TextTheme(
       headlineLarge: TextStyle(
+        fontFamily: fontMono,
         fontSize: 24,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.w900,
         color: Colors.white,
         letterSpacing: 0.5,
       ),
       headlineMedium: TextStyle(
+        fontFamily: fontMono,
         fontSize: 20,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w900,
         color: Colors.white,
         letterSpacing: 0.4,
       ),
       titleLarge: TextStyle(
+        fontFamily: fontMono,
         fontSize: 16,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w900,
         color: Colors.white,
         letterSpacing: 0.4,
       ),
       titleMedium: TextStyle(
+        fontFamily: fontMono,
         fontSize: 14,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w900,
         color: Colors.white,
         letterSpacing: 0.3,
       ),
       bodyLarge: TextStyle(
+        fontFamily: fontMono,
         fontSize: 14,
+        fontWeight: FontWeight.w900,
         color: Colors.white,
         letterSpacing: 0.3,
       ),
       bodyMedium: TextStyle(
+        fontFamily: fontMono,
         fontSize: 13,
+        fontWeight: FontWeight.w900,
         color: Colors.white,
         letterSpacing: 0.2,
       ),
       bodySmall: TextStyle(
+        fontFamily: fontMono,
         fontSize: 12,
+        fontWeight: FontWeight.w900,
         color: Colors.white70,
         letterSpacing: 0.2,
       ),
       labelLarge: TextStyle(
+        fontFamily: fontMono,
         fontSize: 12,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w900,
         color: Colors.white70,
         letterSpacing: 0.3,
       ),

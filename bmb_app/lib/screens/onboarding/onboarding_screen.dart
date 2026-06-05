@@ -183,12 +183,12 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                       ),
                       child: const Center(
                         child: Text(
-                          '⚕ BAG',
+                          'MAGENT',
                           style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.w700,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w900,
                             color: AppTheme.cCyan,
-                            letterSpacing: 2,
+                            letterSpacing: 1,
                           ),
                         ),
                       ),
@@ -198,7 +198,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                       AppTheme.section('BLACKMAGICBOX AGENT'),
                       style: TextStyle(
                         fontSize: 26,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w900,
                         color: Colors.white,
                         letterSpacing: 2,
                       ),
@@ -208,6 +208,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                       'CONECTA CON TU AGENTE REMOTO',
                       style: TextStyle(
                         fontSize: 14,
+                        fontWeight: FontWeight.w900,
                         color: Colors.white.withOpacity(0.5),
                       ),
                     ),
