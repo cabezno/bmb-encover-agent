@@ -1,0 +1,3 @@
+name: gbrain
+version: 1.0.0
+description: "GBrain memory engine with hybrid search, graph traversal, and automated page write indexing."
