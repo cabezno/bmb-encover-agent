@@ -1,3 +1,4 @@
+"""
 Magent — App API Server v0.4.0
 
 Server WebSocket + REST para apps mobile/desktop de Magent.
