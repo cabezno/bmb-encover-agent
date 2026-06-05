@@ -199,27 +199,29 @@ class AppServer:
     def _init_agent(self):
         """Inicializar el agente BMB al arrancar."""
         logger.info("🔄 Inicializando agente BMB...")
-        api_key = _get_env("DEEPSEEK_API_KEY", "")
-        if not api_key:
-            self._agent_error = "DEEPSEEK_API_KEY no configurada. Pone tu API key en Settings."
-            logger.warning(f"⚠️  {self._agent_error}")
-            return
-
         try:
             from bmb_cli.config import load_config
             from bmb_cli.env_loader import load_bmb_dotenv
+            from bmb_cli.runtime_provider import resolve_runtime_provider
+            from run_agent import AIAgent
 
             load_bmb_dotenv()
+            runtime = resolve_runtime_provider()
+            
+            provider = runtime.get("provider", "custom")
+            base_url = runtime.get("base_url")
+            api_key = runtime.get("api_key") or "no-key-required"
+            api_mode = runtime.get("api_mode", "chat_completions")
+            
             config = load_config()
-            provider_cfg = config.get("provider", {})
-            base_url = provider_cfg.get("base_url", _get_env("DEEPSEEK_API_URL", "https://api.deepseek.com/v1"))
-            model = provider_cfg.get("model", "deepseek-v4-pro")
+            model_cfg = config.get("model", {})
+            model = model_cfg.get("default", "qwen2.5:14b") if isinstance(model_cfg, dict) else "qwen2.5:14b"
 
-            from run_agent import AIAgent
             self.bmb_agent = AIAgent(
                 base_url=base_url,
                 api_key=api_key,
-                provider="custom",
+                provider=provider,
+                api_mode=api_mode,
                 model=model,
                 max_iterations=30,
                 enabled_toolsets=["web", "terminal", "file", "search"],
@@ -230,7 +232,7 @@ class AppServer:
                 ephemeral_system_prompt="Eres Magent, un asistente de IA personal. Tu nombre es Magent. Nunca te presentes como Hermes ni BMB ni menciones Nous Research. Respondes en español de forma natural y conversacional.",
             )
             self._agent_error = None
-            logger.info(f"✅ Agente Magent: model={model}")
+            logger.info(f"✅ Agente Magent: model={model} provider={provider} base_url={base_url}")
         except ImportError as e:
             self._agent_error = f"Error importando BMB: {e}. Asegurate de estar en la carpeta de BMB o tenerlo instalado."
             logger.error(f"❌ {self._agent_error}")
