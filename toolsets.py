@@ -47,7 +47,7 @@ _BMB_CORE_TOOLS = [
     # Text-to-speech
     "text_to_speech",
     # Planning & memory
-    "todo", "memory",
+    "todo", "memory", "pomodoro_action",
     # Session history search
     "session_search",
     # Clarifying questions
