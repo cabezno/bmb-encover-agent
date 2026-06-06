@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http';
+import 'package:http/http.dart' as http;
 import '../../providers/chat_provider.dart';
 import '../../providers/call_provider.dart';
 import '../../providers/connection_provider.dart';
