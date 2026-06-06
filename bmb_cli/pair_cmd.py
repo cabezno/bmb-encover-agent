@@ -258,7 +258,7 @@ def cmd_pair(args: list[str] = None):
     else:  # show (default)
         print()
         print("  ╔══════════════════════════════════════╗")
-        print("  ║      Magent — Vincular dispositivo   ║")
+        print("  ║      Magentic — Vincular dispositivo   ║")
         print("  ╚══════════════════════════════════════╝")
         print()
 

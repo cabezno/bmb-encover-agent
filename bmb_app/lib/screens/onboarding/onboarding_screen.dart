@@ -183,7 +183,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                       ),
                       child: const Center(
                         child: Text(
-                          'MAGENT',
+                          'MAGENTIC',
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w900,

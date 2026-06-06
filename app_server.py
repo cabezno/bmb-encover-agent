@@ -1,7 +1,7 @@
 """
-Magent — App API Server v0.4.0
+Magentic — App API Server v0.4.0
 
-Server WebSocket + REST para apps mobile/desktop de Magent.
+Server WebSocket + REST para apps mobile/desktop de Magentic.
 Corre en Linux (WSL) y Windows nativo.
 
 Endpoints:
@@ -229,10 +229,10 @@ class AppServer:
                 save_trajectories=False,
                 skip_memory=False,
                 platform="app",
-                ephemeral_system_prompt="Eres Magent, un asistente de IA personal. Tu nombre es Magent. Nunca te presentes como Hermes ni BMB ni menciones Nous Research. Respondes en español de forma natural y conversacional.",
+                ephemeral_system_prompt="Eres Magentic, un asistente de IA personal. Tu nombre es Magentic. Nunca te presentes como Hermes ni BMB ni menciones Nous Research. Respondes en español de forma natural y conversacional.",
             )
             self._agent_error = None
-            logger.info(f"✅ Agente Magent: model={model} provider={provider} base_url={base_url}")
+            logger.info(f"✅ Agente Magentic: model={model} provider={provider} base_url={base_url}")
         except ImportError as e:
             self._agent_error = f"Error importando BMB: {e}. Asegurate de estar en la carpeta de BMB o tenerlo instalado."
             logger.error(f"❌ {self._agent_error}")
@@ -286,7 +286,7 @@ class AppServer:
         return web.json_response({
             "status": "ok",
             "version": "0.5.0",
-            "name": "Magent App Server",
+            "name": "Magentic App Server",
             "agent": agent_status,
             "stt": self.whisper_available,
             "tts": self.tts_available,
@@ -389,7 +389,7 @@ class AppServer:
             "status": "paired",
             "device_id": dev_id,
             "api_key": api_key,
-            "agent_name": "Magent",
+            "agent_name": "Magentic",
         })
 
     async def handle_chat_rest(self, request):
@@ -1113,7 +1113,7 @@ class AppServer:
         return web.Response(
             content_type="text/html",
             text="""<!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>Magent Emparejado</title>
+<html><head><meta charset="utf-8"><title>Magentic Emparejado</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap">
 <style>
@@ -1124,7 +1124,7 @@ body { font-family: "Inter", sans-serif; font-weight: 900; text-transform: upper
 .success { color: #22c55e; }
 </style></head><body>
 <div class="card">
-<h1>  Magent</h1>
+<h1>  Magentic</h1>
 <p class="success">✅ Emparejado</p>
 <p>App conectada al servidor</p>
 </div>
@@ -1137,7 +1137,7 @@ body { font-family: "Inter", sans-serif; font-weight: 900; text-transform: upper
         return web.Response(
             content_type="text/html",
             text=f"""<!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>Magent Server</title>
+<html><head><meta charset="utf-8"><title>Magentic Server</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap">
 <style>
@@ -1150,7 +1150,7 @@ body {{ font-family: "Inter", sans-serif; font-weight: 900; text-transform: uppe
 .qr-img {{ width: 280px; height: 280px; border-radius: 0; border: 1px solid #2e2e2e; }}
 .status {{ color: #22c55e; font-weight: bold; }}
 </style></head><body>
-<h1>  Magent</h1>
+<h1>  Magentic</h1>
 <p>Servidor v0.5.0 funcionando</p>
 <div class="card">
 <p class="status">✅ Server activo</p>
@@ -1169,7 +1169,7 @@ body {{ font-family: "Inter", sans-serif; font-weight: 900; text-transform: uppe
         return web.Response(
             content_type="text/html",
             text=f"""<!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>Magent QR - Escanear</title>
+<html><head><meta charset="utf-8"><title>Magentic QR - Escanear</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap">
 <style>
@@ -1210,7 +1210,7 @@ setInterval(function() {{
 
     def run(self):
         logger.info("╔══════════════════════════════════════════════╗")
-        logger.info("║       Magent — App API Server v0.5.0        ║")
+        logger.info("║       Magentic — App API Server v0.5.0        ║")
         logger.info("╠══════════════════════════════════════════════╣")
         logger.info(f"║  REST: http://{self.host}:{self.port}/api/chat     ║")
         logger.info(f"║  WS:   ws://{self.host}:{self.port}/ws            ║")
@@ -1235,7 +1235,7 @@ setInterval(function() {{
 
 def main():
     import argparse
-    parser = argparse.ArgumentParser(description="Magent App Server v0.4.0")
+    parser = argparse.ArgumentParser(description="Magentic App Server v0.4.0")
     parser.add_argument("--host", default=DEFAULT_HOST)
     parser.add_argument("--port", type=int, default=DEFAULT_PORT)
     parser.add_argument("--verbose", "-v", action="store_true", help="Logs detallados")

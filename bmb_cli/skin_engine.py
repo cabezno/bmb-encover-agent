@@ -388,9 +388,9 @@ _BUILTIN_SKINS: Dict[str, Dict[str, Any]] = {
         },
         "tool_prefix": "╎",
     },
-    "magent": {
-        "name": "magent",
-        "description": "Magent Theme — Magenta BlackMagicBox Agent",
+    "magentic": {
+        "name": "magentic",
+        "description": "Magentic Theme — Cyan/Magenta/Yellow BlackMagicBox Agent",
         "colors": {
             "banner_border": "#1C1C1C",
             "banner_title": "#FF00FF",
@@ -417,26 +417,26 @@ _BUILTIN_SKINS: Dict[str, Dict[str, Any]] = {
             "session_border": "#1C1C1C",
         },
         "spinner": {
-            "thinking_verbs": ["transmuting", "thinking magenta", "solving", "synthesizing"],
+            "thinking_verbs": ["transmuting", "thinking magentic", "solving", "synthesizing"],
             "waiting_faces": ["(✿)", "(◡)", "(◕)"],
             "thinking_faces": ["(✿)", "(◡)", "(◕)"],
         },
         "branding": {
-            "agent_name": "Magent",
-            "welcome": "Welcome to Magent (BlackMagicBox Agent)! Type your message or /help for commands.",
-            "goodbye": "Goodbye from Magent! ⌁",
-            "response_label": " MAGENT ",
+            "agent_name": "Magentic",
+            "welcome": "Welcome to Magentic (BlackMagicBox Agent)! Type your message or /help for commands.",
+            "goodbye": "Goodbye from Magentic! ⌁",
+            "response_label": " MAGENTIC ",
             "prompt_symbol": "❯",
-            "help_header": "[Magent] Available Commands",
+            "help_header": "[Magentic] Available Commands",
         },
         "tool_prefix": "╎",
-        "banner_logo": """[bold #FF00FF]███╗   ███╗ █████╗  ██████╗ ███████╗███╗   ██╗████████╗[/]
-[bold #FF55FF]████╗ ████║██╔══██╗██╔════╝ ██╔════╝████╗  ██║╚══██╔══╝[/]
-[bold #FF88FF]██╔████╔██║███████║██║  ███╗█████╗  ██╔██╗ ██║   ██║   [/]
-[bold #FFAAFF]██║╚██╔╝██║██╔══██║██║   ██║██╔══╝  ██║╚██╗██║   ██║   [/]
-[bold #FFCCFF]██║ ╚═╝ ██║██║  ██║╚██████╔╝███████╗██║ ╚████║   ██║   [/]
-[bold #FFE5FF]╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝   [/]""",
-        "banner_hero": "[bold #FF00FF]       ─── blackmagicbox agent ───[/]"
+        "banner_logo": """[bold #00FFFF]███╗   ███╗ █████╗  ██████╗ ███████╗███╗   ██╗████████╗██████╗  ██████╗ [/]
+[bold #00FFFF]████╗ ████║██╔══██╗██╔════╝ ██╔════╝████╗  ██║╚══██╔══╝╚═██╔═╝ ██╔════╝ [/]
+[bold #FF00FF]██╔████╔██║███████║██║  ███╗█████╗  ██╔██╗ ██║   ██║     ██║   ██║      [/]
+[bold #FF00FF]██║╚██╔╝██║██╔══██║██║   ██║██╔══╝  ██║╚██╗██║   ██║     ██║   ██║      [/]
+[bold #FFFF00]██║ ╚═╝ ██║██║  ██║╚██████╔╝███████╗██║ ╚████║   ██║   ██████╗ ╚██████╗ [/]
+[bold #FFFF00]╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚═════╝  ╚═════╝ [/]""",
+        "banner_hero": "[bold #00FFFF]       ─── blackmagicbox agent ───[/]"
     },
     "daylight": {
         "name": "daylight",
